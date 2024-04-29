@@ -1,0 +1,38 @@
+/* .sidebar {
+  background-color: pink;
+  padding: 8em 0;
+  min-width: 200px;
+  border-top-right-radius: 8em;
+  border-bottom-right-radius: 8em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+} */
+
+.navbar {
+  /* padding: 6em 0; */
+  min-width: 200px;
+  /* border-top-right-radius: 8em;
+  border-bottom-right-radius: 8em; */
+  display: flex;
+  background-color: var(--primary-color);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar>ul {
+  display: flex;
+}
+
+ul>li {
+  text-decoration: none;
+  list-style-type: none;
+  padding: 20px 40px;
+}
+
+ul>li>a {
+  text-decoration: none;
+  color: white;
+}

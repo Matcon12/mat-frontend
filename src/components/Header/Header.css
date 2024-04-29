@@ -1,0 +1,9 @@
+.header>.logo>h1 {
+  padding: 10px;
+  color: var(--primary-color)
+}
+
+img {
+  width: 250px;
+  height: 50px;
+}
