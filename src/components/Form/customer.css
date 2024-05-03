@@ -1,11 +1,12 @@
 .customer-container {
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 9fr 1fr;
   width: 100%;
   height: 100%;
   align-items: center;
   justify-content: center;
   display: grid;
   gap: 4em;
+  margin: 30px 0;
 }
 
 .complete-form-container {
@@ -13,6 +14,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
+  gap: 30px;
 }
 
 .complete-customer-container {
@@ -20,12 +23,6 @@
   grid-template-rows: 1fr auto;
   justify-items: center;
   gap: 2em;
-}
-
-form {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 30px;
 }
 
 .form-header-container {
@@ -42,8 +39,9 @@ form {
 
 .form-container>form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
   gap: 2em;
+  justify-content: center;
 }
 
 .only-input-styles {
@@ -125,11 +123,12 @@ input[type="text"][required]+label[placeholder]:before {
   width: 100%;
 }
 
-.ant-picker {
+.ant-picker,
+.ant-select-selector {
   width: 100%;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 1.25em;
+  border: none !important;
+  padding: 15px 30px !important;
+  border-radius: 1.25em !important;
 }
 
 .ant-picker-input {
@@ -139,6 +138,11 @@ input[type="text"][required]+label[placeholder]:before {
 
 .ant-picker-input>input::placeholder,
 .ant-picker-suffix {
+  color: #898989 !important;
+}
+
+.ant-select-selection-placeholder {
+  padding: 15px 15px !important;
   color: #898989 !important;
 }
 
@@ -166,7 +170,8 @@ button[type="submit"] {
   background: var(--primary-color);
 }
 
-button[value="reset"] {
+button[value="reset"],
+button[value="nextEntry"] {
   padding: 0.5em 2em;
   font-size: 1em;
   outline: none;
@@ -174,11 +179,12 @@ button[value="reset"] {
   border-radius: 1.25em;
   color: var(--primary-color);
   background: #fff;
-  margin: 0 0 0 1em;
+  margin: 0 1em;
 }
 
 button[value="reset"]:hover,
-button[type="submit"]:hover {
+button[type="submit"]:hover,
+button[value="nextEntry"]:hover {
   cursor: pointer;
 }
 
@@ -216,11 +222,13 @@ button[type="submit"]:hover {
 /* product description exception styles */
 .productDescContainer {
   display: grid;
-  grid-template-rows: 2fr 1fr 1fr 2fr;
+  /* grid-template-rows: 1fr 1fr 2fr; */
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 18px;
-  align-content: end;
-  margin-bottom: 4em;
-  align-items: center;
+  /* margin-bottom: 4em; */
+  /* align-items: start; */
+  height: fit-content;
+  width: 50em;
 }
 
 .productDescContainer>div {
@@ -229,34 +237,55 @@ button[type="submit"]:hover {
 }
 
 .productDescContainer>div>input {
-  width: 70%;
+  /* width: 70%; */
   margin: 0;
-  margin-top: calc(-3.7em - 2px) !important;
-  margin-bottom: calc((3em - 1em) + 2px);
+  /* margin-top: calc(-3.7em - 2px) !important;
+  margin-bottom: calc((3em - 1em) + 2px); */
+  margin: 0 0 1em;
 }
 
-.productDescContainer>div>label {
+/* .productDescContainer>div>label {
   margin-top: calc(-4em - 2px) !important;
+} */
+
+.textAreaFilled+label[placeholder]:before {
+  transition-duration: .2s;
+  transform: translate(0, -1.5em) scale(0.9, 0.9);
+  content: attr(placeholder);
+}
+
+.additionalDescLabel {
+  /* display: none; */
 }
 
 textarea[name="productDesc"] {
   box-sizing: border-box;
-  width: 70%;
+  width: 100%;
   height: -webkit-fill-available;
-  margin: 0 0 1em;
+  /* margin: 0 0 1em; */
   border: none;
   border-radius: 1.25em;
   background: #fff;
   resize: none;
   outline: none;
   padding: 15px 30px;
-  /* flex-basis: calc(50% - 6em); */
   position: relative;
 }
 
-.textAreaFilled+label[placeholder]:before {
+textarea[name="productDesc"][required]:focus,
+.ant-select-selector:focus {
+  border-color: #00bafa;
+}
+
+textarea[name="productDesc"][required]:focus+label[placeholder]:before,
+.ant-select-selector:focus+label[placeholder]:before {
+  color: #00bafa;
+}
+
+textarea[name="productDesc"][required]:focus+label[placeholder]:before,
+textarea[name="productDesc"][required]:valid+label[placeholder]:before {
   transition-duration: .2s;
-  transform: translate(0, -1.5em) scale(0.9, 0.9);
+  transform: translate(0, -2em) scale(0.9, 0.9);
   content: attr(placeholder);
 }
 
@@ -268,7 +297,7 @@ textarea[name="productDesc"][required]+label[placeholder] {
   display: block;
   pointer-events: none;
   line-height: 1em;
-  margin-top: calc(-7.7em - 2px) !important;
+  margin-top: calc(-3em - 2px);
   margin-bottom: calc((3em - 1em) + 2px);
   position: absolute;
   z-index: 2;
@@ -289,10 +318,30 @@ textarea[name="productDesc"][required]+label[placeholder]:before {
   background-position: center;
 }
 
-.react-datepicker-popper {
-  z-index: 3 !important;
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-.react-datepicker-wrapper {
-  width: 100%;
+.poLabel,
+.deliveryLabel {
+  margin-top: -20px;
+  color: rgb(153, 153, 153);
+  font-size: 12px;
+  position: relative;
+  top: -52px;
+  left: 26px;
+}
+
+
+.grid-item-textarea {
+  grid-column: span 3;
+}
+
+.deliveryDate {
+  grid-column: 2;
+}
+
+.ant-picker-now-btn {
+  color: var(--primary-color)
 }

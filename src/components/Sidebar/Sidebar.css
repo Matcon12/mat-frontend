@@ -1,11 +1,21 @@
 .sidebar-container {
   min-width: 13em;
-  height: 100%;
-  background-color: #fff;
+  /* height: 100%; */
+  background-color: var(--primary-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 40px 0;
+  border-radius: 0 100px 100px 0;
+  width: 210px;
+  height: 400px;
+
+  position: sticky;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  overflow-y: auto;
 }
 
 .sidebar-container>ul {
@@ -19,7 +29,7 @@
 .sidebar-container>ul>li {
   width: 100%;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
 }
