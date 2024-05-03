@@ -82,7 +82,22 @@ export default function Customer() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    axios.post('http://127.0.0.1:8000/purchase_order/submitForm',
+      {
+        formData: formData,
+        productDetails: productDetails
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error.response.data.error);
+      });
   }
 
   const resetForm = () => {
