@@ -345,3 +345,22 @@ hr {
 .ant-picker-now-btn {
   color: var(--primary-color)
 }
+
+.deleteButton:hover {
+  cursor: pointer;
+  color: red;
+  transition: 0.2s ease-in-out;
+}
+
+.clearButton:hover {
+  cursor: pointer;
+  color: gray;
+  transition: 0.2s ease-in-ou
+}
+
+.clearAndDeleteContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}

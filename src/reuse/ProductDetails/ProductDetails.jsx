@@ -1,6 +1,8 @@
-
 import { DatePicker, Space, Select } from 'antd';
 import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faArrowsRotate } from '@fortawesome/free-solid-svg-icons'
 
 export default function ProductDetails({
   index,
@@ -14,10 +16,12 @@ export default function ProductDetails({
   additionalDescPlaceholder,
   descPlaceholderOnFocus,
   descPlaceholderOnBlur,
-  onDateChange,
+  onProductDateChange,
   setTotal,
   handleMultipleSelectChange,
-  onDeliveryDateChange
+  // onDeliveryDateChange,
+  handleProductDelete,
+  handleProductClear
 }) {
 
   useEffect(() => {
@@ -37,6 +41,14 @@ export default function ProductDetails({
     setIsFocused(false)
   }
 
+  const productDateHandle = (date, dateStr) => {
+    onProductDateChange(date, index, dateStr)
+  }
+
+  // const productDateHandle(date, dateStr) => {
+  //   onProductDateChange(date, index, dateStr)
+  // }
+  console.log(formData.deliveryDate)
   return (
     <div className="productDescContainer">
       <div>
@@ -87,6 +99,7 @@ export default function ProductDetails({
           placeholder={additionalDescPlaceholder}
           onFocus={descPlaceholderOnFocus}
           onBlur={descPlaceholderOnBlur}
+          value={formData.additionalDesc}
         />
         {/* <label className="additionalDescLabel">
                     Additional Desc
@@ -106,13 +119,35 @@ export default function ProductDetails({
       </div>
       <div className="deliveryDate">
         <Space direction="vertical">
-          <DatePicker onChange={(e) => onDeliveryDateChange(e)} placeholder={'Delivery Date'} format={"DD-MM-YYYY"} />
+          <DatePicker onChange={productDateHandle} value={formData.deliveryDate ? dayjs(formData.deliveryDate) : ""} placeholder={'Delivery Date'} />
         </Space>
         {formData.deliveryDate && (
           <label className="deliveryLabel">
             Delivery Date
           </label>
         )}
+      </div>
+      <div className="clearAndDeleteContainer">
+        {
+          index == 0 &&
+          <div className="clear_current_product">
+            {/* <button type="button" onClick={() => handleProductClear(index)}>Clear</button> */}
+            <FontAwesomeIcon className='clearButton' icon={faArrowsRotate} onClick={() => handleProductClear(index)} />
+          </div>
+        }
+        {
+          index != 0 &&
+          <>
+            <div className="delete_current_product">
+              {/* <button type="button" onClick={() => handleProductDelete(index)}> */}
+              <FontAwesomeIcon className='deleteButton' icon={faTrash} onClick={() => handleProductDelete(index)} />
+            </div>
+            <div className="clear_current_product">
+              {/* <button type="button" onClick={() => handleProductClear(index)}>Clear</button> */}
+              <FontAwesomeIcon className='clearButton' icon={faArrowsRotate} onClick={() => handleProductClear(index)} />
+            </div>
+          </>
+        }
       </div>
     </div>
   )

@@ -5,6 +5,7 @@ import axios from 'axios';
 import Sidebar from "../Sidebar/Sidebar.jsx";
 import { DatePicker, Space } from 'antd';
 import ProductDetails from "../../reuse/ProductDetails/ProductDetails.jsx";
+import dayjs from 'dayjs';
 
 export default function Customer() {
 
@@ -49,7 +50,6 @@ export default function Customer() {
       ...prevFormData,
       [name]: value
     }));
-    console.log(formData)
   }
 
   const handleProductChange = (key, event) => {
@@ -70,16 +70,15 @@ export default function Customer() {
     console.log(productDetails)
   }
 
-  const onDeliveryDateChange = (e, dateStr) => {
-    console.log(e, dateStr);
-    // setProductDetails(productDetails.map((productDetail, idx) => {
-    //   if (idx === index) {
-    //     return { ...productDetail, deliveryDate: event };
-    //   }
-    //   return productDetail;
-    // }));
-    // console.log(productDetails);
-  }
+  // const onDeliveryDateChange = (e, dateStr) => {
+  //   setProductDetails(productDetails.map((productDetail, idx) => {
+  //     if (idx === index) {
+  //       return { ...productDetail, deliveryDate: event };
+  //     }
+  //     return productDetail;
+  //   }));
+  //   console.log(productDetails);
+  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -142,17 +141,24 @@ export default function Customer() {
   }
 
 
-  const onDateChange = (event, index, date, dateString) => {
-    console.log(dateString)
+  const onDateChange = (date, dateString) => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      poDate: dateString
+    }))
+  }
+
+  const onProductDateChange = (date, index, dateStr) => {
+    console.log(dateStr)
     setProductDetails(productDetails.map((productDetail, idx) => {
       if (idx === index) {
-        return { ...productDetail, deliveryDate: dateString };
+        return { ...productDetail, deliveryDate: dateStr };
       }
       return productDetail;
     }));
-    console.log(productDetails);
   }
 
+  console.log('productDetails: ', productDetails);
 
   const setTotal = (total, index) => {
     setProductDetails(productDetails.map(productDetail => {
@@ -161,6 +167,18 @@ export default function Customer() {
       }
       return productDetail;
     }));
+  }
+
+  const handleProductDelete = (index) => {
+    setProductDetails(productDetails.filter((productDetail, idx) => idx !== index));
+  }
+
+  const handleProductClear = (index) => {
+    const updatedProductDetails = [...productDetails];
+
+    updatedProductDetails[index] = { ...initialProductDetails };
+
+    setProductDetails(updatedProductDetails);
   }
 
   // useEffect(() => {
@@ -255,7 +273,7 @@ export default function Customer() {
                 </div>
                 <div>
                   <Space direction="vertical">
-                    <DatePicker onChange={onDateChange} placeholder={'PO Date'} />
+                    <DatePicker onChange={onDateChange} value={formData.poDate ? dayjs(formData.poDate) : ""} placeholder={'PO Date'} />
                   </Space>
                   {formData.poDate && (
                     <label className="poLabel">
@@ -301,10 +319,11 @@ export default function Customer() {
                       additionalDescPlaceholder={additionalDescPlaceholder}
                       descPlaceholderOnFocus={descPlaceholderOnFocus}
                       descPlaceholderOnBlur={descPlaceholderOnBlur}
-                      onDateChange={onDateChange}
+                      onProductDateChange={onProductDateChange}
                       setTotal={setTotal}
                       handleMultipleSelectChange={handleMultipleSelectChange}
-                      onDeliveryDateChange={onDeliveryDateChange} />
+                      handleProductDelete={handleProductDelete}
+                      handleProductClear={handleProductClear} />
                   </>
                 )
               }
