@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faArrowsRotate } from '@fortawesome/free-solid-svg-icons'
+import "./ProductDetails.css";
 
 export default function ProductDetails({
   index,
@@ -21,8 +22,12 @@ export default function ProductDetails({
   handleMultipleSelectChange,
   // onDeliveryDateChange,
   handleProductDelete,
-  handleProductClear
+  handleProductClear,
+  productValidation,
+  productLength
 }) {
+
+  console.log('formData: ', productLength)
 
   useEffect(() => {
     let total = formData.quantity * formData.unitPrice
@@ -48,16 +53,18 @@ export default function ProductDetails({
   // const productDateHandle(date, dateStr) => {
   //   onProductDateChange(date, index, dateStr)
   // }
-  console.log(formData.deliveryDate)
+
+  // console.log('index: ', index, numberOfProduct - 1)
   return (
     <div className="productDescContainer">
       <div>
-        <input type="text" required="true" name="poSlNo" value={formData.poSlNo} onChange={(e) => handleChange(index, e)} />
+        {index == productLength - 1 && productValidation.poSlNo ? <p className='error'>{productValidation.poSlNo}</p> : <p>&nbsp;</p>}
+        <input type="text" required={true} name="poSlNo" value={formData.poSlNo} onChange={(e) => handleChange(index, e)} />
         <label alt='Enter the PO SL No' placeholder='PO SL No'></label>
       </div>
       <div className="autocomplete-wrapper">
-        <input type="text" required="true" name="prodId" value={formData.prodId} onChange={(e) => handleInputChange(index, e)} onFocus={handleFocus} onBlur={handleBlur} aria-autocomplete="list" aria-controls="autocomplete-list" />
-        {/* <input type="text" required="true" name="prodId" value={formData.prodId} onChange={(e) => handleInputChange(index, e)} onFocus={(e) => handleFocus(index, e)} onBlur={(e) => handleBlur(index, e)} aria-autocomplete="list" aria-controls="autocomplete-list" /> */}
+        <input type="text" required={true} name="prodId" value={formData.prodId} onChange={(e) => handleInputChange(index, e)} onFocus={handleFocus} onBlur={handleBlur} aria-autocomplete="list" aria-controls="autocomplete-list" />
+        {/* <input type="text" required={true} name="prodId" value={formData.prodId} onChange={(e) => handleInputChange(index, e)} onFocus={(e) => handleFocus(index, e)} onBlur={(e) => handleBlur(index, e)} aria-autocomplete="list" aria-controls="autocomplete-list" /> */}
         <label alt='Enter the Product Code' placeholder='Product Code'></label>
         {isFocused && suggestions.length > 0 && (
           <ul className="suggestions-list">
@@ -73,7 +80,7 @@ export default function ProductDetails({
         )}
       </div>
       <div>
-        <input type="text" required="true" name="packSize" value={formData.packSize} onChange={(e) => handleChange(index, e)} />
+        <input type="text" required={true} name="packSize" value={formData.packSize} onChange={(e) => handleChange(index, e)} />
         <label alt='Enter the Pack Size' placeholder='Pack Size'></label>
       </div>
       <div className="grid-item-textarea">
@@ -106,26 +113,28 @@ export default function ProductDetails({
                   </label> */}
       </div>
       <div>
-        <input type="text" required="true" name="quantity" value={formData.quantity} onChange={(e) => handleChange(index, e)} />
+        <input type="text" required={true} name="quantity" value={formData.quantity} onChange={(e) => handleChange(index, e)} />
         <label alt='Enter the Quantity' placeholder='Quantity'></label>
       </div>
       <div>
-        <input type="text" required="true" name="unitPrice" value={formData.unitPrice} onChange={(e) => handleChange(index, e)} />
+        <input type="text" required={true} name="unitPrice" value={formData.unitPrice} onChange={(e) => handleChange(index, e)} />
         <label alt='Enter the Unit Price' placeholder='Unit Price'></label>
       </div>
       <div>
-        <input type="text" required="true" name="totalPrice" value={formData.totalPrice} onChange={(e) => handleChange(index, e)} />
+        <input type="text" required={true} name="totalPrice" value={formData.totalPrice} onChange={(e) => handleChange(index, e)} />
         <label alt='Enter the Total Price' placeholder='Total Price'></label>
       </div>
       <div className="deliveryDate">
-        <Space direction="vertical">
-          <DatePicker onChange={productDateHandle} value={formData.deliveryDate ? dayjs(formData.deliveryDate) : ""} placeholder={'Delivery Date'} />
-        </Space>
-        {formData.deliveryDate && (
-          <label className="deliveryLabel">
-            Delivery Date
-          </label>
-        )}
+        <div className="datePickerContainer">
+          <Space direction="vertical">
+            <DatePicker onChange={productDateHandle} value={formData.deliveryDate ? dayjs(formData.deliveryDate) : ""} placeholder={'Delivery Date'} />
+            {formData.deliveryDate && (
+              <label className="deliveryLabel">
+                Delivery Date
+              </label>
+            )}
+          </Space>
+        </div>
       </div>
       <div className="clearAndDeleteContainer">
         {

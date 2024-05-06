@@ -1,13 +1,13 @@
-/* .customer-container {
-  grid-template-columns: 1fr 9fr 1fr;
+.customer-container {
+  /* grid-template-columns: 1fr 9fr 1fr; */
   width: 100%;
   height: 100%;
   align-items: center;
   justify-content: center;
-  display: grid;
-  gap: 4em;
+  /* display: grid; */
+  /* gap: 4em; */
   margin: 30px 0;
-} */
+}
 
 .complete-form-container {
   height: 100%;
@@ -27,8 +27,7 @@
 
 .form-header-container {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  justify-items: stretch;
+  justify-items: center;
   gap: 30px;
   width: 50em;
 }
@@ -47,7 +46,7 @@
 .only-input-styles {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  gap: 25px;
   width: 50em;
 }
 
@@ -63,7 +62,7 @@
 input[type="text"] {
   box-sizing: border-box;
   width: 100%;
-  margin: 0 0 1em;
+  /* margin: 0 0 1em; */
   border: none;
   border-radius: 1.25em;
   background: #fff;
@@ -98,8 +97,8 @@ input[type="text"][required]+label[placeholder] {
   display: block;
   pointer-events: none;
   line-height: 1em;
-  margin-top: calc(-3em - 2px);
-  margin-bottom: calc((3em - 1em) + 2px);
+  margin-top: calc(-2em - 2px);
+  /* margin-bottom: calc((3em - 1em) + 2px); */
   position: absolute;
   z-index: 2;
 }
@@ -233,7 +232,7 @@ button[value="nextEntry"]:hover {
 
 .productDescContainer>div {
   height: 100%;
-  align-content: center;
+  align-content: end;
 }
 
 .productDescContainer>div>input {
@@ -241,7 +240,7 @@ button[value="nextEntry"]:hover {
   margin: 0;
   /* margin-top: calc(-3.7em - 2px) !important;
   margin-bottom: calc((3em - 1em) + 2px); */
-  margin: 0 0 1em;
+  /* margin: 0 0 1em; */
 }
 
 /* .productDescContainer>div>label {
@@ -323,14 +322,19 @@ hr {
   margin-bottom: 20px;
 }
 
+.datePickerContainer {
+  position: relative;
+}
+
 .poLabel,
 .deliveryLabel {
-  margin-top: -20px;
   color: rgb(153, 153, 153);
   font-size: 12px;
-  position: relative;
-  top: -52px;
-  left: 26px;
+  margin-top: -8px;
+  margin-left: 21px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 

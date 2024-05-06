@@ -32,9 +32,35 @@ export default function Customer() {
     deliveryDate: ""
   }
 
+  const initialFormDataValidation = {
+    customerId: "",
+    customerName: "",
+    poNo: "",
+    poDate: "",
+    poValidity: "",
+    quoteId: "",
+    consigneeId: "",
+    consigneeName: "",
+  }
+
+  const initialProductValidation = {
+    poSlNo: "",
+    prodId: "",
+    packSize: "",
+    productDesc: "",
+    additionalDesc: "",
+    quantity: "",
+    unitPrice: "",
+    totalPrice: "",
+    deliveryDate: ""
+  }
+
   const [formData, setFormData] = useState(initialFormData);
   const [productDetails, setProductDetails] = useState([initialProductDetails]);
   const [suggestions, setSuggestions] = useState([]);
+  const [psn, setPsn] = useState([]);
+  // const [formDataValidation, setFormDataValidation] = useState(initialFormDataValidation);
+  const [productValidation, setProductValidation] = useState(initialProductValidation);
 
   const handleChange = async (event) => {
     const { name, value } = event.target;
@@ -54,7 +80,10 @@ export default function Customer() {
 
   const handleProductChange = (key, event) => {
     const { name, value } = event.target;
-
+    //validating PoSlNo to avoid repetition of PoSlNo
+    if (name == 'poSlNo') {
+      setPsn((prevPsn) => [...prevPsn, value])
+    }
     setProductDetails(productDetails.map(productDetail => {
       if (productDetails.indexOf(productDetail) == key) {
         return { ...productDetail, [name]: value };
@@ -69,16 +98,6 @@ export default function Customer() {
     setProductDetails(updatedProductDetails);
     console.log(productDetails)
   }
-
-  // const onDeliveryDateChange = (e, dateStr) => {
-  //   setProductDetails(productDetails.map((productDetail, idx) => {
-  //     if (idx === index) {
-  //       return { ...productDetail, deliveryDate: event };
-  //     }
-  //     return productDetail;
-  //   }));
-  //   console.log(productDetails);
-  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -104,11 +123,11 @@ export default function Customer() {
   const resetForm = () => {
     setFormData(initialFormData);
     setProductDetails([initialProductDetails])
+    setProductValidation(initialProductValidation);
   }
 
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
-    console.log('name: ', name, 'value:', value, 'index:', index);
     setProductDetails(productDetails.map(productDetail => {
       if (productDetails.indexOf(productDetail) == index) {
         return { ...productDetail, [name]: value };
@@ -127,7 +146,6 @@ export default function Customer() {
 
   const handleSuggestionClick = (value, index) => {
     setProductDetails(productDetails.map((productDetail, idx) => {
-      console.log(value)
       if (idx == index) {
         return { ...productDetail, ['prodId']: value };
       }
@@ -164,8 +182,14 @@ export default function Customer() {
     }))
   }
 
+  const onValidityChange = (date, dateString) => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      poValidity: dateString
+    }))
+  }
+
   const onProductDateChange = (date, index, dateStr) => {
-    console.log(dateStr)
     setProductDetails(productDetails.map((productDetail, idx) => {
       if (idx === index) {
         return { ...productDetail, deliveryDate: dateStr };
@@ -173,8 +197,6 @@ export default function Customer() {
       return productDetail;
     }));
   }
-
-  console.log('productDetails: ', productDetails);
 
   const setTotal = (total, index) => {
     setProductDetails(productDetails.map(productDetail => {
@@ -248,9 +270,6 @@ export default function Customer() {
       label: i.toString(36) + i,
     });
   }
-  const handleSelectChange = (value) => {
-    console.log(`selected ${value}`);
-  };
 
   let additionalDescPlaceholder = 'Additional Description';
   const descPlaceholderOnFocus = () => {
@@ -260,10 +279,31 @@ export default function Customer() {
     additionalDescPlaceholder = 'Additional Description'
   }
 
+
   const addMore = () => {
-    setProductDetails((prevProductDetails) => ([
-      ...prevProductDetails, initialProductDetails
-    ]))
+    const lastElement = psn[psn.length - 1];
+    let dup = false;
+
+    // Check for duplicates
+    for (let i = 0; i < psn.length - 1; i++) {
+      if (psn[i] === lastElement) {
+        dup = true;
+        break;
+      }
+    }
+
+    if (dup) {
+      setProductValidation((prevProductValidation) => ({
+        ...prevProductValidation, ['poSlNo']: 'Already Exists'
+      }))
+    } else {
+      setProductValidation((prevProductValidation) => ({
+        ...prevProductValidation, ['poSlNo']: ''
+      }))
+      setProductDetails((prevProductDetails) => ([
+        ...prevProductDetails, initialProductDetails
+      ]))
+    }
   }
 
   return (
@@ -271,50 +311,62 @@ export default function Customer() {
       {/* <Sidebar /> */}
       <div className="complete-form-container">
         <div className="form-header-container">
-
           <h1>Customer Purchase Order</h1>
-          <p></p>
         </div>
         <div className="form-container">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
             <div className="form-input-and-button-container">
               <div className="only-input-styles">
                 <div>
-                  <input type="text" required="true" name="customerId" value={formData.customerId} onChange={handleChange} />
+                  <input type="text" required={true} name="customerId" value={formData.customerId} onChange={handleChange} />
                   <label alt='Enter the Customer ID' placeholder='Customer ID'></label>
                 </div>
                 <div>
-                  <input type="text" required="true" name="poNo" value={formData.poNo} onChange={handleChange} />
+                  <input type="text" required={true} name="poNo" value={formData.poNo} onChange={handleChange} />
                   <label alt='Enter the PO No' placeholder='PO No'></label>
                 </div>
                 <div>
-                  <Space direction="vertical">
-                    <DatePicker onChange={onDateChange} value={formData.poDate ? dayjs(formData.poDate) : ""} placeholder={'PO Date'} />
-                  </Space>
-                  {formData.poDate && (
-                    <label className="poLabel">
-                      PO Date
-                    </label>
-                  )}
+                  <div className="datePickerContainer">
+                    <Space direction="vertical">
+                      <DatePicker onChange={onDateChange} value={formData.poDate ? dayjs(formData.poDate) : ""} placeholder={'PO Date'} />
+                      {formData.poDate && (
+                        <label className="poLabel">
+                          PO Date
+                        </label>
+                      )}
+                    </Space>
+                  </div>
                 </div>
                 <div>
-                  <input type="text" required="true" name="poValidity" value={formData.poValidity} onChange={handleChange} />
-                  <label alt='Enter the PO Validity' placeholder='PO Validity'></label>
+                  {/* <input type="text" required={true} name="poValidity" value={formData.poValidity} onChange={handleChange} />
+                  <label alt='Enter the PO Validity' placeholder='PO Validity'></label> */}
+                  <div>
+                    <Space direction="vertical">
+                      <div className="datePickerContainer">
+                        <DatePicker onChange={onValidityChange} value={formData.poValidity ? dayjs(formData.poValidity) : ""} placeholder={'PO Validity'} />
+                        {formData.poValidity && (
+                          <label className="poLabel">
+                            PO Validity
+                          </label>
+                        )}
+                      </div>
+                    </Space>
+                  </div>
                 </div>
                 <div>
-                  <input type="text" required="true" name="quoteId" value={formData.quoteId} onChange={handleChange} />
+                  <input type="text" required={true} name="quoteId" value={formData.quoteId} onChange={handleChange} />
                   <label alt='Enter the Quote ID' placeholder='Quote ID'></label>
                 </div>
                 <div>
-                  <input type="text" required="true" name="consigneeId" value={formData.consigneeId} onChange={handleChange} />
+                  <input type="text" required={true} name="consigneeId" value={formData.consigneeId} onChange={handleChange} />
                   <label alt='Enter the Consignee ID' placeholder='Consignee ID'></label>
                 </div>
                 <div>
-                  <input type="text" required="true" name="customerName" value={formData.customerName} onChange={handleChange} />
+                  <input type="text" required={true} name="customerName" value={formData.customerName} onChange={handleChange} />
                   <label alt='Enter the Customer Name' placeholder='Customer Name'></label>
                 </div>
                 <div>
-                  <input type="text" required="true" name="consigneeName" value={formData.consigneeName} onChange={handleChange} />
+                  <input type="text" required={true} name="consigneeName" value={formData.consigneeName} onChange={handleChange} />
                   <label alt='Enter the Consignee Name' placeholder='Consignee Name'></label>
                 </div>
               </div>
@@ -329,7 +381,6 @@ export default function Customer() {
                       handleChange={handleProductChange}
                       suggestions={suggestions}
                       handleSuggestionClick={handleSuggestionClick}
-                      handleSelectChange={handleSelectChange}
                       options={options}
                       handleInputChange={handleInputChange}
                       additionalDescPlaceholder={additionalDescPlaceholder}
@@ -339,7 +390,9 @@ export default function Customer() {
                       setTotal={setTotal}
                       handleMultipleSelectChange={handleMultipleSelectChange}
                       handleProductDelete={handleProductDelete}
-                      handleProductClear={handleProductClear} />
+                      handleProductClear={handleProductClear}
+                      productValidation={productValidation}
+                      productLength={productDetails.length} />
                   </>
                 )
               }
