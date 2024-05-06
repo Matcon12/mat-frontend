@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import './customer.css';
 import possibleValues from '../../../data.js';
 import axios from 'axios';
-import Sidebar from "../Sidebar/Sidebar.jsx";
+// import Sidebar from "../Sidebar/Sidebar.jsx";
 import { DatePicker, Space } from 'antd';
 import ProductDetails from "../../reuse/ProductDetails/ProductDetails.jsx";
 import dayjs from 'dayjs';
@@ -94,6 +94,7 @@ export default function Customer() {
       })
       .then(response => {
         console.log(response.data);
+        resetForm();
       })
       .catch(error => {
         console.log(error.response.data.error);
@@ -267,7 +268,7 @@ export default function Customer() {
 
   return (
     <div className="customer-container">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="complete-form-container">
         <div className="form-header-container">
 
