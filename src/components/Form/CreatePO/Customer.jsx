@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import './customer.css';
-import possibleValues from '../../../data.js';
+import possibleValues from '../../../../data.js';
 import axios from 'axios';
 // import Sidebar from "../Sidebar/Sidebar.jsx";
 import { DatePicker, Space } from 'antd';
-import ProductDetails from "../../reuse/ProductDetails/ProductDetails.jsx";
+import ProductDetails from "../../../reuse/ProductDetails/ProductDetails.jsx";
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 
 export default function Customer() {
 
@@ -312,6 +313,7 @@ export default function Customer() {
       <div className="complete-form-container">
         <div className="form-header-container">
           <h1>Customer Purchase Order</h1>
+          <Link to="/edit_customerPurchaseOrder">Edit</Link>
         </div>
         <div className="form-container">
           <form onSubmit={handleSubmit} autoComplete="off">

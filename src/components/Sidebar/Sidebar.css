@@ -33,3 +33,9 @@
   align-items: center;
   /* background-color: var(--background-color); */
 }
+
+.sidebar-container>ul>li>a:hover {
+  color: black;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}

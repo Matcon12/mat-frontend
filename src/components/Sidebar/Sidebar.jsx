@@ -28,7 +28,7 @@ export default function Sidebar() {
       <ul>
         <li><Link to="/purchase_order">Purchase Order</Link></li>
         <li><Link to="/invoice_generation">Invoice Generation</Link></li>
-        <li><Link to="/invoice_generation">Dummy</Link></li>
+        <li><Link to="/invoice_generation">Customer Details</Link></li>
         <li><Link to="/invoice_generation">Dummy</Link></li>
       </ul>
     </div>

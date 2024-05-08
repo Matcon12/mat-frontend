@@ -13,7 +13,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   align-items: center;
   gap: 30px;
 }
@@ -27,12 +27,19 @@
 
 .form-header-container {
   display: grid;
+  grid-template-columns: 8fr 1fr;
   justify-items: center;
+  align-items: center;
   gap: 30px;
   width: 50em;
 }
 
 .form-header-container>h1 {
+  color: var(--primary-color)
+}
+
+.form-header-container>a {
+  text-decoration: none;
   color: var(--primary-color)
 }
 
@@ -169,6 +176,12 @@ button[type="submit"] {
   background: var(--primary-color);
 }
 
+button[type="submit"]:hover {
+  background: #00bbfaf6;
+  border: 0.5px solid var(--primary-color);
+  transition: 0.2s ease-in-out;
+}
+
 button[value="reset"],
 button[value="nextEntry"] {
   padding: 0.5em 2em;
@@ -179,6 +192,13 @@ button[value="nextEntry"] {
   color: var(--primary-color);
   background: #fff;
   margin: 0 1em;
+}
+
+button[value="reset"]:hover,
+button[value="nextEntry"]:hover {
+  color: white;
+  background: var(--primary-color);
+  transition: 0.2s ease-in-out;
 }
 
 button[value="reset"]:hover,
