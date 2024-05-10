@@ -2,7 +2,6 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
 }
 
 html,
@@ -10,6 +9,7 @@ body,
 #root {
   height: 100%;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
 }
 
 :root {
