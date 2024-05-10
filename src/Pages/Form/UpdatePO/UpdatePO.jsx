@@ -1,6 +1,6 @@
 import './UpdatePO.css'
 import { Link } from 'react-router-dom'
-import '../CreatePO/customer.css'
+import '../CreatePO/Customer.css'
 import axios from 'axios'
 import { useState } from 'react'
 import Input from '../../../reuse/Input/Input'

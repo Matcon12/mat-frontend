@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import './customer.css';
+import './Customer.css';
 import possibleValues from '../../../../data.js';
 import axios from 'axios';
 // import Sidebar from "../Sidebar/Sidebar.jsx";
