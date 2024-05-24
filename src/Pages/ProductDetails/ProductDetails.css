@@ -1,0 +1,20 @@
+.addProductDetails-header-container {
+  display: grid;
+  grid-template-columns: 8fr 1fr;
+  width: 50em;
+  justify-items: center;
+  align-items: center;
+  color: var(--primary-color);
+  margin: 20px 0;
+}
+
+.addProductDetails-header-container > a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.addProductDetails-form-container > form {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}

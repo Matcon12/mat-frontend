@@ -1,5 +1,5 @@
-import './Sidebar.css';
-import { Link } from 'react-router-dom';
+import "./Sidebar.css"
+import { Link } from "react-router-dom"
 // import CreateProductList from '../../reuse/CreateProductList';
 
 export default function Sidebar() {
@@ -24,12 +24,19 @@ export default function Sidebar() {
     //   }
     // </div>
     <div className="sidebar-container">
-
       <ul>
-        <li><Link to="/purchase_order">Purchase Order</Link></li>
-        <li><Link to="/invoice_generation">Invoice Generation</Link></li>
-        <li><Link to="/invoice_generation">Customer Details</Link></li>
-        <li><Link to="/invoice_generation">Dummy</Link></li>
+        <li>
+          <Link to="/purchase_order">Purchase Order</Link>
+        </li>
+        <li>
+          <Link to="/invoice_generation">Invoice Generation</Link>
+        </li>
+        <li>
+          <Link to="/add_customer_details">Customer Details</Link>
+        </li>
+        <li>
+          <Link to="/add_product_details">Product Details</Link>
+        </li>
       </ul>
     </div>
   )

@@ -1,0 +1,40 @@
+.addCustomerDetails-header-container {
+  display: grid;
+  grid-template-columns: 8fr 1fr;
+  width: 50em;
+  justify-items: center;
+  align-items: center;
+  color: var(--primary-color);
+  margin: 20px 0;
+}
+
+.addCustomerDetails-header-container > a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.addCustomerDetails-form-container > form {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.get-data-button {
+  padding: 0.5em 2em;
+  font-size: 1em;
+  outline: none;
+  border: none;
+  border-radius: 1.25em;
+  color: white;
+  background: var(--primary-color);
+}
+
+.get-data-button:hover {
+  cursor: pointer;
+}
+
+.get-data-container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}

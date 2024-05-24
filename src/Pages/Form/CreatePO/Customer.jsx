@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
-import './Customer.css';
-import possibleValues from '../../../../data.js';
-import axios from 'axios';
+import { useEffect, useState } from "react"
+import "./Customer.css"
+import possibleValues from "../../../../data.js"
+import axios from "axios"
 // import Sidebar from "../Sidebar/Sidebar.jsx";
-import { DatePicker, Space } from 'antd';
-import ProductDetails from "../../../reuse/ProductDetails/ProductDetails.jsx";
-import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
+import { DatePicker, Space } from "antd"
+import dayjs from "dayjs"
+import ProductDetails from "../../../reuse/ProductDetails/ProductDetails.jsx"
+import { Link } from "react-router-dom"
 
 export default function Customer() {
-
   const initialFormData = {
     customerId: "",
     customerName: "",
@@ -19,7 +18,7 @@ export default function Customer() {
     quoteId: "",
     consigneeId: "",
     consigneeName: "",
-  };
+  }
 
   const initialProductDetails = {
     poSlNo: "",
@@ -30,7 +29,7 @@ export default function Customer() {
     quantity: "",
     unitPrice: "",
     totalPrice: "",
-    deliveryDate: ""
+    deliveryDate: "",
   }
 
   const initialFormDataValidation = {
@@ -53,171 +52,200 @@ export default function Customer() {
     quantity: "",
     unitPrice: "",
     totalPrice: "",
-    deliveryDate: ""
+    deliveryDate: "",
+    uom: "",
   }
 
-  const [formData, setFormData] = useState(initialFormData);
-  const [productDetails, setProductDetails] = useState([initialProductDetails]);
-  const [suggestions, setSuggestions] = useState([]);
-  const [psn, setPsn] = useState([]);
+  const [formData, setFormData] = useState(initialFormData)
+  const [productDetails, setProductDetails] = useState([initialProductDetails])
+  const [suggestions, setSuggestions] = useState([])
+  const [psn, setPsn] = useState([])
   // const [formDataValidation, setFormDataValidation] = useState(initialFormDataValidation);
-  const [productValidation, setProductValidation] = useState(initialProductValidation);
+  const [productValidation, setProductValidation] = useState(
+    initialProductValidation
+  )
 
   const handleChange = async (event) => {
-    const { name, value } = event.target;
-    if (name === 'customerId') {
+    const { name, value } = event.target
+    if (name === "customerId") {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
-        'consigneeId': value
-      }));
-      return;
+        consigneeId: value,
+      }))
+      return
     }
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value
-    }));
+      [name]: value,
+    }))
   }
 
   const handleProductChange = (key, event) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     //validating PoSlNo to avoid repetition of PoSlNo
-    if (name == 'poSlNo') {
+    if (name == "poSlNo") {
       setPsn((prevPsn) => [...prevPsn, value])
     }
-    setProductDetails(productDetails.map(productDetail => {
-      if (productDetails.indexOf(productDetail) == key) {
-        return { ...productDetail, [name]: value };
-      }
-      return productDetail;
-    }));
+    setProductDetails(
+      productDetails.map((productDetail) => {
+        if (productDetails.indexOf(productDetail) == key) {
+          return { ...productDetail, [name]: value }
+        }
+        return productDetail
+      })
+    )
   }
 
   const handleMultipleSelectChange = (key, event) => {
-    const updatedProductDetails = [...productDetails];
-    updatedProductDetails[key].additionalDesc = event;
-    setProductDetails(updatedProductDetails);
+    const updatedProductDetails = [...productDetails]
+    updatedProductDetails[key].additionalDesc = event
+    setProductDetails(updatedProductDetails)
     console.log(productDetails)
   }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    axios.post('http://127.0.0.1:8000/purchase_order/submitForm',
-      {
-        formData: formData,
-        productDetails: productDetails
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
+    event.preventDefault()
+    axios
+      .post(
+        "http://127.0.0.1:8000/purchase_order/submitForm",
+        {
+          formData: formData,
+          productDetails: productDetails,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
+      )
+      .then((response) => {
+        console.log(response.data)
+        // resetForm()
       })
-      .then(response => {
-        console.log(response.data);
-        resetForm();
+      .catch((error) => {
+        console.log(error.response.data.error)
       })
-      .catch(error => {
-        console.log(error.response.data.error);
-      });
   }
 
   const resetForm = () => {
-    setFormData(initialFormData);
+    setFormData(initialFormData)
     setProductDetails([initialProductDetails])
-    setProductValidation(initialProductValidation);
+    setProductValidation(initialProductValidation)
   }
 
   const handleInputChange = (index, event) => {
-    const { name, value } = event.target;
-    setProductDetails(productDetails.map(productDetail => {
-      if (productDetails.indexOf(productDetail) == index) {
-        return { ...productDetail, [name]: value };
-      }
-      return productDetail;
-    }));
-    if (value.length > 0) {
-      const filteredSuggestions = possibleValues.filter(suggestion =>
-        suggestion.toLowerCase().startsWith(value.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions.length > 0 ? filteredSuggestions : ['No matches found']);
-    } else {
-      setSuggestions([]);
-    }
-  };
-
-  const handleSuggestionClick = (value, index) => {
-    setProductDetails(productDetails.map((productDetail, idx) => {
-      if (idx == index) {
-        return { ...productDetail, ['prodId']: value };
-      }
-      return productDetail;
-    }));
-    setSuggestions([]);
-    getPackSizeAndDesc(value, index);
-  };
-
-  const getPackSizeAndDesc = (value, index) => {
-    axios.get('http://127.0.0.1:8000/purchase_order/packSize', {
-      params: {
-        prodId: value
-      }
-    })
-      .then(response => {
-        setProductDetails(productDetails.map((productDetail, idx) => {
-          if (idx === index) {
-            return { ...productDetail, prodId: value, packSize: response.data.pack_size, productDesc: response.data.prod_desc };
-          }
-          return productDetail;
-        }));
+    const { name, value } = event.target
+    setProductDetails(
+      productDetails.map((productDetail) => {
+        if (productDetails.indexOf(productDetail) == index) {
+          return { ...productDetail, [name]: value }
+        }
+        return productDetail
       })
-      .catch(error => {
-        console.log(error.response.data.error);
-      });
+    )
+    if (value.length > 0) {
+      const filteredSuggestions = possibleValues.filter((suggestion) =>
+        suggestion.toLowerCase().startsWith(value.toLowerCase())
+      )
+      setSuggestions(
+        filteredSuggestions.length > 0
+          ? filteredSuggestions
+          : ["No matches found"]
+      )
+    } else {
+      setSuggestions([])
+    }
   }
 
+  const handleSuggestionClick = (value, index) => {
+    setProductDetails(
+      productDetails.map((productDetail, idx) => {
+        if (idx == index) {
+          return { ...productDetail, ["prodId"]: value }
+        }
+        return productDetail
+      })
+    )
+    setSuggestions([])
+    getPackSizeAndDesc(value, index)
+  }
+
+  const getPackSizeAndDesc = (value, index) => {
+    axios
+      .get("http://127.0.0.1:8000/purchase_order/packSize", {
+        params: {
+          prodId: value,
+        },
+      })
+      .then((response) => {
+        setProductDetails(
+          productDetails.map((productDetail, idx) => {
+            if (idx === index) {
+              return {
+                ...productDetail,
+                prodId: value,
+                packSize: response.data.pack_size,
+                productDesc: response.data.prod_desc,
+              }
+            }
+            return productDetail
+          })
+        )
+      })
+      .catch((error) => {
+        console.log(error.response.data.error)
+      })
+  }
 
   const onDateChange = (date, dateString) => {
-    setFormData(prevFormData => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
-      poDate: dateString
+      poDate: dateString,
     }))
   }
 
   const onValidityChange = (date, dateString) => {
-    setFormData(prevFormData => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
-      poValidity: dateString
+      poValidity: dateString,
     }))
   }
 
   const onProductDateChange = (date, index, dateStr) => {
-    setProductDetails(productDetails.map((productDetail, idx) => {
-      if (idx === index) {
-        return { ...productDetail, deliveryDate: dateStr };
-      }
-      return productDetail;
-    }));
+    setProductDetails(
+      productDetails.map((productDetail, idx) => {
+        if (idx === index) {
+          return { ...productDetail, deliveryDate: dateStr }
+        }
+        return productDetail
+      })
+    )
   }
 
   const setTotal = (total, index) => {
-    setProductDetails(productDetails.map(productDetail => {
-      if (productDetails.indexOf(productDetail) == index) {
-        return { ...productDetail, ['totalPrice']: total };
-      }
-      return productDetail;
-    }));
+    setProductDetails(
+      productDetails.map((productDetail) => {
+        if (productDetails.indexOf(productDetail) == index) {
+          return { ...productDetail, ["totalPrice"]: total }
+        }
+        return productDetail
+      })
+    )
   }
 
   const handleProductDelete = (index) => {
-    setProductDetails(productDetails.filter((productDetail, idx) => idx !== index));
+    setProductDetails(
+      productDetails.filter((productDetail, idx) => idx !== index)
+    )
   }
 
   const handleProductClear = (index) => {
-    const updatedProductDetails = [...productDetails];
+    const updatedProductDetails = [...productDetails]
 
-    updatedProductDetails[index] = { ...initialProductDetails };
+    updatedProductDetails[index] = { ...initialProductDetails }
 
-    setProductDetails(updatedProductDetails);
+    setProductDetails(updatedProductDetails)
   }
 
   // useEffect(() => {
@@ -246,64 +274,67 @@ export default function Customer() {
   // }, [formData.prodId]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/purchase_order/customerName', {
-      params: {
-        customerId: formData.customerId
-      }
-    })
-      .then(response => {
-        setFormData(prevFormData => ({
+    axios
+      .get("http://127.0.0.1:8000/purchase_order/customerName", {
+        params: {
+          customerId: formData.customerId,
+        },
+      })
+      .then((response) => {
+        setFormData((prevFormData) => ({
           ...prevFormData,
           customerName: response.data.customer_name,
-          consigneeName: response.data.customer_name
-        }));
+          consigneeName: response.data.customer_name,
+        }))
       })
 
-      .catch(error => {
-        console.log(error.response.data.error);
-      });
-  }, [formData.customerId]);
+      .catch((error) => {
+        console.log(error.response.data.error)
+      })
+  }, [formData.customerId])
 
-  const options = [];
+  const options = []
   for (let i = 10; i < 36; i++) {
     options.push({
       value: i.toString(36) + i,
       label: i.toString(36) + i,
-    });
+    })
   }
 
-  let additionalDescPlaceholder = 'Additional Description';
+  let additionalDescPlaceholder = "Additional Description"
   const descPlaceholderOnFocus = () => {
-    additionalDescPlaceholder = ''
+    additionalDescPlaceholder = ""
   }
   const descPlaceholderOnBlur = () => {
-    additionalDescPlaceholder = 'Additional Description'
+    additionalDescPlaceholder = "Additional Description"
   }
 
-
   const addMore = () => {
-    const lastElement = psn[psn.length - 1];
-    let dup = false;
+    const lastElement = psn[psn.length - 1]
+    let dup = false
 
     // Check for duplicates
     for (let i = 0; i < psn.length - 1; i++) {
       if (psn[i] === lastElement) {
-        dup = true;
-        break;
+        dup = true
+        break
       }
     }
 
     if (dup) {
       setProductValidation((prevProductValidation) => ({
-        ...prevProductValidation, ['poSlNo']: 'Already Exists'
+        ...prevProductValidation,
+        ["poSlNo"]: "Already Exists",
       }))
     } else {
       setProductValidation((prevProductValidation) => ({
-        ...prevProductValidation, ['poSlNo']: ''
+        ...prevProductValidation,
+        ["poSlNo"]: "",
       }))
-      setProductDetails((prevProductDetails) => ([
-        ...prevProductDetails, initialProductDetails
-      ]))
+      setProductDetails((prevProductDetails) => [
+        ...prevProductDetails,
+        initialProductDetails,
+      ])
     }
   }
 
@@ -320,21 +351,38 @@ export default function Customer() {
             <div className="form-input-and-button-container">
               <div className="only-input-styles">
                 <div>
-                  <input type="text" required={true} name="customerId" value={formData.customerId} onChange={handleChange} />
-                  <label alt='Enter the Customer ID' placeholder='Customer ID'></label>
+                  <input
+                    type="text"
+                    required={true}
+                    name="customerId"
+                    value={formData.customerId}
+                    onChange={handleChange}
+                  />
+                  <label
+                    alt="Enter the Customer ID"
+                    placeholder="Customer ID"
+                  ></label>
                 </div>
                 <div>
-                  <input type="text" required={true} name="poNo" value={formData.poNo} onChange={handleChange} />
-                  <label alt='Enter the PO No' placeholder='PO No'></label>
+                  <input
+                    type="text"
+                    required={true}
+                    name="poNo"
+                    value={formData.poNo}
+                    onChange={handleChange}
+                  />
+                  <label alt="Enter the PO No" placeholder="PO No"></label>
                 </div>
                 <div>
                   <div className="datePickerContainer">
                     <Space direction="vertical">
-                      <DatePicker onChange={onDateChange} value={formData.poDate ? dayjs(formData.poDate) : ""} placeholder={'PO Date'} />
+                      <DatePicker
+                        onChange={onDateChange}
+                        value={formData.poDate ? dayjs(formData.poDate) : ""}
+                        placeholder={"PO Date"}
+                      />
                       {formData.poDate && (
-                        <label className="poLabel">
-                          PO Date
-                        </label>
+                        <label className="poLabel">PO Date</label>
                       )}
                     </Space>
                   </div>
@@ -345,66 +393,112 @@ export default function Customer() {
                   <div>
                     <Space direction="vertical">
                       <div className="datePickerContainer">
-                        <DatePicker onChange={onValidityChange} value={formData.poValidity ? dayjs(formData.poValidity) : ""} placeholder={'PO Validity'} />
+                        <DatePicker
+                          onChange={onValidityChange}
+                          value={
+                            formData.poValidity
+                              ? dayjs(formData.poValidity)
+                              : ""
+                          }
+                          placeholder={"PO Validity"}
+                        />
                         {formData.poValidity && (
-                          <label className="poLabel">
-                            PO Validity
-                          </label>
+                          <label className="poLabel">PO Validity</label>
                         )}
                       </div>
                     </Space>
                   </div>
                 </div>
                 <div>
-                  <input type="text" required={true} name="quoteId" value={formData.quoteId} onChange={handleChange} />
-                  <label alt='Enter the Quote ID' placeholder='Quote ID'></label>
+                  <input
+                    type="text"
+                    required={true}
+                    name="quoteId"
+                    value={formData.quoteId}
+                    onChange={handleChange}
+                  />
+                  <label
+                    alt="Enter the Quote ID"
+                    placeholder="Quote ID"
+                  ></label>
                 </div>
                 <div>
-                  <input type="text" required={true} name="consigneeId" value={formData.consigneeId} onChange={handleChange} />
-                  <label alt='Enter the Consignee ID' placeholder='Consignee ID'></label>
+                  <input
+                    type="text"
+                    required={true}
+                    name="consigneeId"
+                    value={formData.consigneeId}
+                    onChange={handleChange}
+                  />
+                  <label
+                    alt="Enter the Consignee ID"
+                    placeholder="Consignee ID"
+                  ></label>
                 </div>
                 <div>
-                  <input type="text" required={true} name="customerName" value={formData.customerName} onChange={handleChange} />
-                  <label alt='Enter the Customer Name' placeholder='Customer Name'></label>
+                  <input
+                    type="text"
+                    required={true}
+                    name="customerName"
+                    value={formData.customerName}
+                    onChange={handleChange}
+                  />
+                  <label
+                    alt="Enter the Customer Name"
+                    placeholder="Customer Name"
+                  ></label>
                 </div>
                 <div>
-                  <input type="text" required={true} name="consigneeName" value={formData.consigneeName} onChange={handleChange} />
-                  <label alt='Enter the Consignee Name' placeholder='Consignee Name'></label>
+                  <input
+                    type="text"
+                    required={true}
+                    name="consigneeName"
+                    value={formData.consigneeName}
+                    onChange={handleChange}
+                  />
+                  <label
+                    alt="Enter the Consignee Name"
+                    placeholder="Consignee Name"
+                  ></label>
                 </div>
               </div>
-              {productDetails && productDetails.map((productDetail, index) => {
-                return (
-                  <>
-                    <hr />
-                    <ProductDetails
-                      key={index}
-                      index={index}
-                      formData={productDetail}
-                      handleChange={handleProductChange}
-                      suggestions={suggestions}
-                      handleSuggestionClick={handleSuggestionClick}
-                      options={options}
-                      handleInputChange={handleInputChange}
-                      additionalDescPlaceholder={additionalDescPlaceholder}
-                      descPlaceholderOnFocus={descPlaceholderOnFocus}
-                      descPlaceholderOnBlur={descPlaceholderOnBlur}
-                      onProductDateChange={onProductDateChange}
-                      setTotal={setTotal}
-                      handleMultipleSelectChange={handleMultipleSelectChange}
-                      handleProductDelete={handleProductDelete}
-                      handleProductClear={handleProductClear}
-                      productValidation={productValidation}
-                      productLength={productDetails.length} />
-                  </>
-                )
-              }
-              )}
-
+              {productDetails &&
+                productDetails.map((productDetail, index) => {
+                  return (
+                    <>
+                      <hr />
+                      <ProductDetails
+                        key={index}
+                        index={index}
+                        formData={productDetail}
+                        handleChange={handleProductChange}
+                        suggestions={suggestions}
+                        handleSuggestionClick={handleSuggestionClick}
+                        options={options}
+                        handleInputChange={handleInputChange}
+                        additionalDescPlaceholder={additionalDescPlaceholder}
+                        descPlaceholderOnFocus={descPlaceholderOnFocus}
+                        descPlaceholderOnBlur={descPlaceholderOnBlur}
+                        onProductDateChange={onProductDateChange}
+                        setTotal={setTotal}
+                        handleMultipleSelectChange={handleMultipleSelectChange}
+                        handleProductDelete={handleProductDelete}
+                        handleProductClear={handleProductClear}
+                        productValidation={productValidation}
+                        productLength={productDetails.length}
+                      />
+                    </>
+                  )
+                })}
             </div>
             <div className="form-button-container">
-              <button type="button" value="nextEntry" onClick={addMore}>Add More</button>
+              <button type="button" value="nextEntry" onClick={addMore}>
+                Add More
+              </button>
               <button type="submit">Submit</button>
-              <button type="button" value="reset" onClick={resetForm}>Reset</button>
+              <button type="button" value="reset" onClick={resetForm}>
+                Reset
+              </button>
             </div>
           </form>
         </div>
