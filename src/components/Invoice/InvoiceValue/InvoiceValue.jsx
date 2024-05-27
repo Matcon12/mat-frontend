@@ -1,4 +1,4 @@
-export default function InvoiceValue() {
+export default function InvoiceValue({ amount, gt }) {
   return (
     <table className="invoice-value">
       <tbody>
@@ -6,10 +6,10 @@ export default function InvoiceValue() {
           <td>
             <div>
               <p>INVOICE VALUE (in Words)</p>
-              <strong>RUPEES NINETY NINE THOUSAND SEVEN HUNDRED TEN ONLY</strong>
+              <strong>{amount}</strong>
             </div>
           </td>
-          <td>Total: ₹{ }</td>
+          <td>Total: {gt}</td>
         </tr>
       </tbody>
     </table>

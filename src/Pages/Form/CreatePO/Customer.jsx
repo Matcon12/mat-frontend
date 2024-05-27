@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import "./Customer.css"
 import possibleValues from "../../../../data.js"
 import axios from "axios"
-// import Sidebar from "../Sidebar/Sidebar.jsx";
 import { DatePicker, Space } from "antd"
 import dayjs from "dayjs"
 import ProductDetails from "../../../reuse/ProductDetails/ProductDetails.jsx"
@@ -25,7 +24,9 @@ export default function Customer() {
     prodId: "",
     packSize: "",
     productDesc: "",
-    additionalDesc: [],
+    msrr: "",
+    omat: "",
+    uom: "",
     quantity: "",
     unitPrice: "",
     totalPrice: "",
@@ -121,7 +122,7 @@ export default function Customer() {
       )
       .then((response) => {
         console.log(response.data)
-        // resetForm()
+        resetForm()
       })
       .catch((error) => {
         console.log(error.response.data.error)
@@ -378,7 +379,12 @@ export default function Customer() {
                     <Space direction="vertical">
                       <DatePicker
                         onChange={onDateChange}
-                        value={formData.poDate ? dayjs(formData.poDate) : ""}
+                        value={
+                          formData.poDate
+                            ? dayjs(formData.poDate, "DD-MM-YYYY")
+                            : ""
+                        }
+                        format="DD-MM-YYYY"
                         placeholder={"PO Date"}
                       />
                       {formData.poDate && (
@@ -397,9 +403,10 @@ export default function Customer() {
                           onChange={onValidityChange}
                           value={
                             formData.poValidity
-                              ? dayjs(formData.poValidity)
+                              ? dayjs(formData.poValidity, "DD-MM-YYYY")
                               : ""
                           }
+                          format="DD-MM-YYYY"
                           placeholder={"PO Validity"}
                         />
                         {formData.poValidity && (

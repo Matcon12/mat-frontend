@@ -1,14 +1,18 @@
 import { useState } from "react"
+import axios from "axios"
 import "./Invoice.css"
+import { useNavigate } from "react-router-dom"
 
 export default function Invoice() {
   const [customerId, setCustomerId] = useState("")
-  const [consigneeName, setConsigneeName] = useState("");
+  const [consigneeName, setConsigneeName] = useState("")
   const [newConsigneeName, setNewConsigneeName] = useState("")
   const [poNo, setPoNo] = useState("")
   const [totalEntries, setTotalEntries] = useState()
   const [entries, setEntries] = useState([])
   const [show, setShow] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -19,7 +23,30 @@ export default function Invoice() {
       poNo,
       items: entries,
     }
+
     console.log(formData)
+    axios
+      .post(
+        "http://127.0.0.1:8000/purchase_order/invoiceProcessing",
+        {
+          formData,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data)
+        resetForm()
+        navigate("print_invoice", {
+          state: { gcn_no: response.data.gcn_no },
+        })
+      })
+      .catch((error) => {
+        console.log(error.response.data.error)
+      })
   }
 
   const handleChange = (index, e) => {
@@ -27,6 +54,15 @@ export default function Invoice() {
     const newEntries = [...entries]
     newEntries[index] = { ...newEntries[index], [name]: value }
     setEntries(newEntries)
+  }
+
+  const resetForm = () => {
+    setCustomerId("")
+    setConsigneeName("")
+    setNewConsigneeName("")
+    setPoNo("")
+    setTotalEntries("")
+    setEntries([])
   }
 
   const purchaseFields = (e) => {
@@ -42,7 +78,21 @@ export default function Invoice() {
     )
   }
 
-  console.log(entries)
+  const getData = () => {
+    console.log("pono:", poNo)
+    axios
+      .get("http://127.0.0.1:8000/purchase_order/getInvoiceData", {
+        params: { poNo: poNo },
+      })
+      .then((response) => {
+        setConsigneeName(response.data.consignee_id)
+        setCustomerId(response.data.cust_id)
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 
   return (
     <div className="invoice-generation-container">
@@ -56,6 +106,7 @@ export default function Invoice() {
               name="poNo"
               value={poNo}
               onChange={(e) => setPoNo(e.target.value)}
+              onBlur={getData}
             />
             <label alt="Enter the PO No" placeholder="PO No"></label>
           </div>

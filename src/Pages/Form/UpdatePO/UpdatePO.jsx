@@ -361,12 +361,13 @@ export default function UpdatePO() {
                         onChange={onDateChange}
                         value={
                           searchData.delivery_date
-                            ? dayjs(searchData.delivery_date)
+                            ? dayjs(searchData.delivery_date, "DD-MM-YYYY")
                             : ""
                         }
+                        format="DD-MM-YYYY"
                         placeholder={"Delivery Date"}
                       />
-                      {searchData.po_date && (
+                      {searchData.podate && (
                         <label className="poLabel">Delivery Date</label>
                       )}
                     </Space>
