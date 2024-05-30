@@ -14,35 +14,35 @@ export default function ConsigeeDetails({
             <td>
               <strong>Name</strong>
             </td>
-            <td>:</td>
+            <td>&nbsp;:&nbsp;</td>
             <td>{name}</td>
           </tr>
           <tr>
             <td>
               <strong>Address</strong>
             </td>
-            <td>:</td>
+            <td>&nbsp;:&nbsp;</td>
             <td className="table-address">{address}</td>
           </tr>
           <tr>
             <td>
               <strong>State</strong>
             </td>
-            <td>:</td>
+            <td>&nbsp;:&nbsp;</td>
             <td>{state}</td>
           </tr>
           <tr>
             <td>
               <strong>State Code</strong>
             </td>
-            <td>:</td>
+            <td>&nbsp;:&nbsp;</td>
             <td>{code}</td>
           </tr>
           <tr>
             <td>
               <strong>GST No</strong>
             </td>
-            <td>:</td>
+            <td>&nbsp;:&nbsp;</td>
             <td>
               <b>{gst_no}</b>
             </td>

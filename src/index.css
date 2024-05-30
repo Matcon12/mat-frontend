@@ -9,13 +9,16 @@ body,
 #root {
   height: 100%;
   font-size: 14px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 :root {
   --background-color: #f6f6fc;
   --primary-color: #187bcd;
+  --light-color: #beddf9;
+  --light-font: #0c5398;
   --font-color: #fff;
+  --font-color2: #113c69;
 }
 
 body {

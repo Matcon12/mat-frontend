@@ -12,7 +12,9 @@ export default function POTable({
       <thead>
         <tr>
           <th>Sl. No.</th>
-          <th>Description of Services</th>
+          <th style={{ width: "50%", textAlign: "center" }}>
+            Description of Services
+          </th>
           <th>PO Item Sl. No.</th>
           <th>SAC Code</th>
           <th>QTY</th>
@@ -46,7 +48,7 @@ export default function POTable({
         </tr>
         {po_data.map((data, index) => {
           return (
-            <tr>
+            <tr key={index}>
               <td>{index + 1}</td>
               <td>
                 {data.prod_desc} [{data.additional_desc}]

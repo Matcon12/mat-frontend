@@ -8,7 +8,7 @@ export default function InvoiceDetails({ gcn_no, gcn_date, gst_no }) {
             <td>
               <strong>GST No</strong>
             </td>
-            <td>: </td>
+            <td>&nbsp;:&nbsp;</td>
             <td>
               <b>{gst_no}</b>
             </td>
@@ -17,14 +17,14 @@ export default function InvoiceDetails({ gcn_no, gcn_date, gst_no }) {
             <td>
               <strong>Reverse charge</strong>
             </td>
-            <td>: </td>
+            <td>&nbsp;:&nbsp;</td>
             <td>N.A</td>
           </tr>
           <tr>
             <td>
               <strong>Invoice Number</strong>
             </td>
-            <td>: </td>
+            <td>&nbsp;:&nbsp;</td>
             <td>
               <b>{gcn_no}</b>
             </td>
@@ -33,7 +33,7 @@ export default function InvoiceDetails({ gcn_no, gcn_date, gst_no }) {
             <td>
               <strong>Invoice Date</strong>
             </td>
-            <td>: </td>
+            <td>&nbsp;:&nbsp;</td>
             <td>
               <b>{gcn_date}</b>
             </td>

@@ -5,13 +5,13 @@ import axios from "axios"
 
 export default function EditProductDetails() {
   const initialFormData = {
-    Prod_ID: "",
-    Supp_ID: "",
-    Prod_Desc: "",
-    Spec_ID: "",
-    Pack_Size: "",
-    Currency: "",
-    Price: "",
+    prod_id: "",
+    supp_id: "",
+    prod_desc: "",
+    spec_id: "",
+    pack_size: "",
+    currency: "",
+    price: "",
   }
 
   const [formData, setFormData] = useState(initialFormData)
@@ -21,12 +21,16 @@ export default function EditProductDetails() {
     setFormData({ ...formData, [name]: value })
   }
 
+  const resetForm = () => {
+    setFormData(initialFormData)
+  }
+
   const getProductDetails = (e) => {
     e.preventDefault()
     axios
       .get("http://127.0.0.1:8000/purchase_order/getProductDetails", {
         params: {
-          Prod_ID: formData.Prod_ID,
+          prod_id: formData.prod_id,
         },
       })
       .then((response) => {
@@ -38,6 +42,29 @@ export default function EditProductDetails() {
       })
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    axios
+      .put(
+        "http://localhost:8000/purchase_order/updateProductDetails",
+        {
+          formData,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response)
+        // resetForm()
+      })
+      .catch((error) => {
+        console.error("Error updating data: ", error)
+      })
+  }
+
   return (
     <div className="addProductDetails-complete-container">
       <div className="addProductDetails-header-container">
@@ -45,13 +72,13 @@ export default function EditProductDetails() {
         <Link to="/add_product_details">New Product</Link>
       </div>
       <div className="addProductDetails-form-container">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div>
             <input
               type="text"
               required={true}
-              name="Prod_ID"
-              value={formData.Prod_ID}
+              name="prod_id"
+              value={formData.prod_id}
               onChange={handleChange}
             />
             <label alt="Enter the Product ID" placeholder="Product ID"></label>
@@ -65,8 +92,8 @@ export default function EditProductDetails() {
             <input
               type="text"
               required={true}
-              name="Supp_ID"
-              value={formData.Supp_ID}
+              name="supp_id"
+              value={formData.supp_id}
               onChange={handleChange}
             />
             <label
@@ -78,8 +105,8 @@ export default function EditProductDetails() {
             <input
               type="text"
               required={true}
-              name="Prod_Desc"
-              value={formData.Prod_Desc}
+              name="prod_desc"
+              value={formData.prod_desc}
               onChange={handleChange}
             />
             <label
@@ -91,8 +118,8 @@ export default function EditProductDetails() {
             <input
               type="text"
               required={true}
-              name="Spec_ID"
-              value={formData.Spec_ID}
+              name="spec_id"
+              value={formData.spec_id}
               onChange={handleChange}
             />
             <label alt="Enter the Spec ID" placeholder="Spec ID"></label>
@@ -101,8 +128,8 @@ export default function EditProductDetails() {
             <input
               type="text"
               required={true}
-              name="Pack_Size"
-              value={formData.Pack_Size}
+              name="pack_size"
+              value={formData.pack_size}
               onChange={handleChange}
             />
             <label alt="Enter the Pack Size" placeholder="Pack Size"></label>
@@ -111,8 +138,8 @@ export default function EditProductDetails() {
             <input
               type="text"
               required={true}
-              name="Currency"
-              value={formData.Currency}
+              name="currency"
+              value={formData.currency}
               onChange={handleChange}
             />
             <label alt="Enter the Currency" placeholder="Currency"></label>
@@ -121,8 +148,8 @@ export default function EditProductDetails() {
             <input
               type="text"
               required={true}
-              name="Price"
-              value={formData.Price}
+              name="price"
+              value={formData.price}
               onChange={handleChange}
             />
             <label alt="Enter the Price" placeholder="Price"></label>

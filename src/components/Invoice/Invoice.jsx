@@ -8,12 +8,12 @@ import InvoiceValue from "./InvoiceValue/InvoiceValue"
 import Toc from "./Toc/Toc"
 
 export default function Invoice({ formData }) {
-  console.log(formData)
+  console.log("formData", formData)
   return (
     <>
       {formData ? (
         <div className="invoice-container">
-          <h4>TAX INVOICE</h4>
+          <p className="tax_invoice_heading">TAX INVOICE</p>
           <div className="column">
             <InvoiceDetails
               gcn_no={formData.odc1.gcn_no}
@@ -25,6 +25,7 @@ export default function Invoice({ formData }) {
             <TransportationMode
               po_no={formData.odc1.po_no}
               po_date={formData.odc1.po_date}
+              gcn_date={formData.odc1.gcn_date}
             />
           </div>
           <div className="column">
