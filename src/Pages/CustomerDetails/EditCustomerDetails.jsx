@@ -1,7 +1,7 @@
 import "./CustomerDetails.css"
 import { Link } from "react-router-dom"
-import axios from "axios"
 import { useState } from "react"
+import api from "../../api/api.jsx"
 
 export default function EditCustomerDetails() {
   const initialFormData = {
@@ -28,8 +28,8 @@ export default function EditCustomerDetails() {
   }
 
   const getCustomerDetails = () => {
-    axios
-      .get("http://localhost:8000/purchase_order/getCustomerData", {
+    api
+      .get("/getCustomerData", {
         params: { cust_id: formData.cust_id },
       })
       .then((response) => {
@@ -56,9 +56,9 @@ export default function EditCustomerDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios
+    api
       .put(
-        "http://127.0.0.1:8000/purchase_order/updateCustomerDetails",
+        "/updateCustomerDetails",
         { formData },
         {
           headers: {

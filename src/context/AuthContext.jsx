@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import api from "../api/api.jsx"
 
 const AuthContext = createContext()
 
@@ -11,16 +12,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("jwt")
     if (token) {
-      // Verify token and set user state (same as above)
-      fetch("http://127.0.0.1:8000/purchase_order/test_token", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `token ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
+      api
+        .get("/test_token", {
+          headers: { Authorization: `token ${token}` },
+        })
+        .then((response) => {
+          const data = response.data
           if (data.valid) {
             setUser({ token, ...data.userDetails })
           } else {
@@ -35,8 +32,8 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const signup = async (credentials) => {
-    axios
-      .post("http://127.0.0.1:8000/purchase_order/signup", credentials)
+    api
+      .post("/signup", credentials)
       .then((response) => {
         if (response.statusText) {
           console.log(response.data)
@@ -50,36 +47,31 @@ export const AuthProvider = ({ children }) => {
   }
 
   const login = async (credentials) => {
-    // Handle login (same as above)
-    const response = await fetch("http://127.0.0.1:8000/purchase_order/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    })
-    const data = await response.json()
-    if (response.ok) {
-      localStorage.setItem("jwt", data.token)
-      setUser({ token: data.token, ...data.user })
-      navigate("/", { replace: true })
-    } else {
-      console.error(data.message)
-    }
+    api
+      .post("/login", credentials)
+      .then((response) => {
+        const data = response
+        console.log("data", data)
+        if (response.statusText) {
+          localStorage.setItem("jwt", data.token)
+          setUser({ token: data.token, ...data.user })
+          navigate("/", { replace: true })
+        } else {
+          console.error(data.message)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   const logout = () => {
-    axios
-      .post(
-        "http://127.0.0.1:8000/purchase_order/logout",
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `token ${localStorage.getItem("jwt")}`,
-          },
-        }
-      )
+    api
+      .post("/logout", {
+        headers: {
+          Authorization: `token ${localStorage.getItem("jwt")}`,
+        },
+      })
       .then((response) => {
         if (response.statusText) {
           console.log(response.data)

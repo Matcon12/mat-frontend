@@ -1,7 +1,7 @@
 import "./UpdatePO.css"
 import { Link } from "react-router-dom"
 import "../CreatePO/Customer.css"
-import axios from "axios"
+import api from "../../../api/api.jsx"
 import { useState } from "react"
 import { DatePicker, Space } from "antd"
 import dayjs from "dayjs"
@@ -37,8 +37,8 @@ export default function UpdatePO() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios
-      .get("http://localhost:8000/purchase_order/getData", {
+    api
+      .get("/getData", {
         params: {
           cust_id: searchInputs.cust_id,
           po_no: searchInputs.po_no,
@@ -76,16 +76,8 @@ export default function UpdatePO() {
   const handleUpdate = (e) => {
     console.log("update")
     e.preventDefault()
-    axios
-      .put(
-        "http://127.0.0.1:8000/purchase_order/updateForm",
-        { searchInputs, searchData },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    api
+      .put("/updateForm", { searchInputs, searchData })
       .then((response) => {
         console.log(response.data)
       })

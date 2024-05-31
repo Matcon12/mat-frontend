@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import "./ProductDetails.css"
-import axios from "axios"
+import api from "../../api/api.jsx"
 
 export default function AddProductDetails() {
   const initialFormData = {
@@ -27,16 +27,8 @@ export default function AddProductDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios
-      .post(
-        "http://127.0.0.1:8000/purchase_order/addProductDetails",
-        { formData },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    api
+      .post("/addProductDetails", { formData })
       .then((response) => {
         console.log(response.data)
         resetForm()

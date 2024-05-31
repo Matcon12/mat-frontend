@@ -6,6 +6,7 @@ import { DatePicker, Space } from "antd"
 import dayjs from "dayjs"
 import ProductDetails from "../../../reuse/ProductDetails/ProductDetails.jsx"
 import { Link } from "react-router-dom"
+import api from "../../../api/api.jsx"
 
 export default function Customer() {
   const initialFormData = {
@@ -107,19 +108,11 @@ export default function Customer() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    axios
-      .post(
-        "http://127.0.0.1:8000/purchase_order/submitForm",
-        {
-          formData: formData,
-          productDetails: productDetails,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    api
+      .post("/submitForm", {
+        formData: formData,
+        productDetails: productDetails,
+      })
       .then((response) => {
         console.log(response.data)
         resetForm()
@@ -173,8 +166,8 @@ export default function Customer() {
   }
 
   const getPackSizeAndDesc = (value, index) => {
-    axios
-      .get("http://127.0.0.1:8000/purchase_order/packSize", {
+    api
+      .get("/packSize", {
         params: {
           prodId: value,
         },
@@ -275,8 +268,8 @@ export default function Customer() {
   // }, [formData.prodId]);
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/purchase_order/customerName", {
+    api
+      .get("/customerName", {
         params: {
           customerId: formData.customerId,
         },

@@ -2,6 +2,7 @@ import { useState } from "react"
 import axios from "axios"
 import "./Invoice.css"
 import { useNavigate } from "react-router-dom"
+import api from "../../api/api.jsx"
 
 export default function Invoice() {
   const [customerId, setCustomerId] = useState("")
@@ -25,9 +26,9 @@ export default function Invoice() {
     }
 
     console.log(formData)
-    axios
+    api
       .post(
-        "http://127.0.0.1:8000/purchase_order/invoiceProcessing",
+        "/invoiceProcessing",
         {
           formData,
         },
@@ -80,8 +81,8 @@ export default function Invoice() {
 
   const getData = () => {
     console.log("pono:", poNo)
-    axios
-      .get("http://127.0.0.1:8000/purchase_order/getInvoiceData", {
+    api
+      .get("/getInvoiceData", {
         params: { poNo: poNo },
       })
       .then((response) => {

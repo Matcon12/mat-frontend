@@ -1,7 +1,7 @@
 import "./CustomerDetails.css"
 import { Link } from "react-router-dom"
 import { useState } from "react"
-import axios from "axios"
+import api from "../../api/api.jsx"
 
 export default function AddCustomerDetails() {
   const initialFormData = {
@@ -33,18 +33,10 @@ export default function AddCustomerDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios
-      .post(
-        "http://127.0.0.1:8000/purchase_order/addCustomerDetails",
-        {
-          formData: formData,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    api
+      .post("/addCustomerDetails", {
+        formData: formData,
+      })
       .then((response) => {
         console.log(response.data)
         resetForm()

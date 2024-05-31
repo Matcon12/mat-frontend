@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom"
 import axios from "axios"
 import React, { useEffect, useState, useRef } from "react"
 import { useReactToPrint } from "react-to-print"
+import api from "../../api/api.jsx"
 
 export default function PrintInvoice() {
   const [formData, setFormData] = useState()
@@ -11,8 +12,8 @@ export default function PrintInvoice() {
   const [num, setNum] = useState(0)
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/purchase_order/invoiceGeneration", {
+    api
+      .get("/invoiceGeneration", {
         params: {
           gcn_no: gcn_no,
         },

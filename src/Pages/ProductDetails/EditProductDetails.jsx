@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import "./ProductDetails.css"
-import axios from "axios"
+import api from "../../api/api.jsx"
 
 export default function EditProductDetails() {
   const initialFormData = {
@@ -27,8 +27,8 @@ export default function EditProductDetails() {
 
   const getProductDetails = (e) => {
     e.preventDefault()
-    axios
-      .get("http://127.0.0.1:8000/purchase_order/getProductDetails", {
+    api
+      .get("/getProductDetails", {
         params: {
           prod_id: formData.prod_id,
         },
@@ -44,18 +44,10 @@ export default function EditProductDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios
-      .put(
-        "http://localhost:8000/purchase_order/updateProductDetails",
-        {
-          formData,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    api
+      .put("/updateProductDetails", {
+        formData,
+      })
       .then((response) => {
         console.log(response)
         // resetForm()
