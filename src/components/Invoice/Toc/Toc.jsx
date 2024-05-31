@@ -11,21 +11,30 @@ export default function Toc() {
                 <p>AS PER PO TERMS</p>
                 &nbsp;
                 <b>Our Bankers (NEFT/RTGS details):</b>
-                <p className="address-word-break">SBI, NRI Hebbal Branch A/c N. 41482639882 IFSC Code. SBIN0016858</p>
+                <p className="address-word-break">
+                  SBI, NRI Hebbal Branch <br /> A/c N. 414318044557 <br /> IFSC
+                  Code. SBIN0016858
+                </p>
               </div>
             </td>
             <td>
               <p>FOR MATCON ENGINEERING ENTERPRISES</p>
               &nbsp;
-              <p className="align-start"><b>Signature:</b></p>
+              <p className="align-start">
+                <b>Signature:</b>
+              </p>
               <div className="white-space"></div>
               <p>For Authorized Signatory</p>
-              <p className="align-start"><b>Name: </b>K V Sivaramkrishnan</p>
-              <p className="align-start"><b>Designation: </b>GENERAL MANAGER(FINANCE)</p>
+              <p className="align-start">
+                <b>Name: </b>Uma V Murthy
+              </p>
+              <p className="align-start">
+                <b>Designation: </b>Manager Commercial
+              </p>
             </td>
           </tr>
         </tbody>
       </table>
-    </div >
+    </div>
   )
 }

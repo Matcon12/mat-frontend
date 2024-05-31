@@ -10,7 +10,7 @@ export default function InvoiceDetails({ gcn_no, gcn_date, gst_no }) {
             </td>
             <td>&nbsp;:&nbsp;</td>
             <td>
-              <b>{gst_no}</b>
+              <b>29AAPFM1882M1ZG</b>
             </td>
           </tr>
           <tr>
