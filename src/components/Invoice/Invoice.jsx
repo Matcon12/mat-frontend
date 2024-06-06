@@ -53,10 +53,12 @@ export default function Invoice({ formData }) {
             total_sgst={formData.total_sgst}
             total_igst={formData.total_igst}
           />
-          <InvoiceValue amount={formData.amount} gt={formData.gt} />
-          <Toc />
-          <div className="footer">
-            <h5>MATCON/FORMS/021/00</h5>
+          <div className="page-break">
+            <InvoiceValue amount={formData.amount} gt={formData.gt} />
+            <Toc />
+            <div className="footer">
+              <h5>MATCON/FORMS/021/00</h5>
+            </div>
           </div>
         </div>
       ) : (

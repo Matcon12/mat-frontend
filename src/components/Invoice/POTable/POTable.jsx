@@ -68,6 +68,336 @@ export default function POTable({
             </tr>
           )
         })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
+        {po_data.map((data, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                {data.prod_desc} [{data.additional_desc}]
+              </td>
+              <td>{data.po_sl_no}</td>
+              <td>9988</td>
+              <td>{data.qty_delivered}</td>
+              <td>{data.uom}</td>
+              <td>{data.unit_price}</td>
+              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
+              <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
+              <td>{parseInt(total_sgst) == 0 ? "" : data.sgst_price}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : gr.igst_rate}</td>
+              <td>{parseInt(total_igst) == 0 ? "" : data.igst_price}</td>
+            </tr>
+          )
+        })}
         <tr>
           <td></td>
           <td></td>

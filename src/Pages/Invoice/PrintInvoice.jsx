@@ -4,12 +4,12 @@ import axios from "axios"
 import React, { useEffect, useState, useRef } from "react"
 import { useReactToPrint } from "react-to-print"
 import api from "../../api/api.jsx"
+import "./Invoice.css"
 
 export default function PrintInvoice() {
   const [formData, setFormData] = useState()
   const location = useLocation()
   const { gcn_no } = location.state
-  const [num, setNum] = useState(0)
 
   useEffect(() => {
     api
@@ -25,7 +25,7 @@ export default function PrintInvoice() {
       .catch((error) => {
         console.log(error.response.data.error)
       })
-  }, [gcn_no, num])
+  }, [gcn_no])
 
   const componentRef = useRef()
   const handlePrint = useReactToPrint({
@@ -41,7 +41,6 @@ export default function PrintInvoice() {
   return (
     <div className="print-invoice-container">
       <h1>Print Invoice: {gcn_no}</h1>
-      <button onClick={() => setNum(!num)}>click</button>
       <div>
         <button onClick={handlePrint}>Print this out!</button>
       </div>

@@ -30,30 +30,27 @@ export default function App() {
           <Sidebar />
           <Routes>
             <Route path="/" element={<CompletePage />} />
-            <Route element={<ProtectedLayout />}>
-              <Route path="purchase_order" element={<CreatePO />} />
-              <Route path="invoice_generation">
-                <Route index element={<Invoice />} />
-                <Route path="print_invoice" element={<PrintInvoice />} />
-              </Route>
-              <Route path="edit_customerPurchaseOrder" element={<UpdatePO />} />
-              <Route
-                path="add_customer_details"
-                element={<AddCustomerDetails />}
-              />
-              <Route
-                path="add_product_details"
-                element={<AddProductDetails />}
-              />
-              <Route
-                path="edit_customer_details"
-                element={<EditCustomerDetails />}
-              />
-              <Route
-                path="edit_product_details"
-                element={<EditProductDetails />}
-              />
+            {/* <Route element={<ProtectedLayout />}> */}
+            <Route path="purchase_order" element={<CreatePO />} />
+            <Route path="invoice_generation">
+              <Route index element={<Invoice />} />
+              <Route path="print_invoice" element={<PrintInvoice />} />
             </Route>
+            <Route path="edit_customerPurchaseOrder" element={<UpdatePO />} />
+            <Route
+              path="add_customer_details"
+              element={<AddCustomerDetails />}
+            />
+            <Route path="add_product_details" element={<AddProductDetails />} />
+            <Route
+              path="edit_customer_details"
+              element={<EditCustomerDetails />}
+            />
+            <Route
+              path="edit_product_details"
+              element={<EditProductDetails />}
+            />
+            {/* </Route> */}
             <Route path="signup" element={<Signup />} />
             <Route path="login" element={<Login />} />
             <Route path="*" element={<ErrorPage />} />
