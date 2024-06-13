@@ -5,6 +5,7 @@ import api from "../../../api/api.jsx"
 import { useState } from "react"
 import { DatePicker, Space } from "antd"
 import dayjs from "dayjs"
+import possibleValues from "../../../../data.js"
 
 export default function UpdatePO() {
   const initialSearchInputs = {
@@ -34,6 +35,8 @@ export default function UpdatePO() {
 
   const [searchInputs, setSearchInputs] = useState(initialSearchInputs)
   const [searchData, setSearchData] = useState(intialSearchData)
+  const [isFocused, setIsFocused] = useState(false)
+  const [suggestions, setSuggestions] = useState([])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -97,8 +100,43 @@ export default function UpdatePO() {
   const onDateChange = (date, dateString) => {
     setSearchData((prevFormData) => ({
       ...prevFormData,
-      po_date: dateString,
+      podate: dateString,
     }))
+  }
+
+  const onValidityDateChange = (date, dateString) => {
+    setSearchData((prevFormData) => ({
+      ...prevFormData,
+      po_validity: dateString,
+    }))
+  }
+
+  const handleFocus = () => {
+    setIsFocused(true)
+  }
+
+  const handleBlur = () => {
+    setIsFocused(false)
+  }
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target
+    setSearchData((prevSearchInputs) => ({
+      ...prevSearchInputs,
+      prod_code: value,
+    }))
+    if (value.length > 0) {
+      const filteredSuggestions = possibleValues.filter((suggestion) =>
+        suggestion.toLowerCase().startsWith(value.toLowerCase())
+      )
+      setSuggestions(
+        filteredSuggestions.length > 0
+          ? filteredSuggestions
+          : ["No matches found"]
+      )
+    } else {
+      setSuggestions([])
+    }
   }
 
   return (
@@ -170,41 +208,44 @@ export default function UpdatePO() {
           qty_bal: data.qty_bal */}
               <div className="only-input-styles">
                 <div>
-                  {/* <input
-                    type="text"
-                    required={true}
-                    name="po_date"
-                    value={searchData.po_date}
-                    onChange={handleChange}
-                  />
-                  <label alt="Enter the PO Date" placeholder="PO Date"></label> */}
                   <div className="datePickerContainer">
                     <Space direction="vertical">
                       <DatePicker
                         onChange={onDateChange}
+                        name="podate"
                         value={
-                          searchData.po_date ? dayjs(searchData.po_date) : ""
+                          searchData.podate
+                            ? dayjs(searchData.podate, "DD-MM-YYYY")
+                            : ""
                         }
+                        format="DD-MM-YYYY"
                         placeholder={"PO Date"}
                       />
-                      {searchData.po_date && (
+                      {searchData.podate && (
                         <label className="poLabel">PO Date</label>
                       )}
                     </Space>
                   </div>
                 </div>
                 <div>
-                  <input
-                    type="text"
-                    required={true}
-                    name="po_validity"
-                    value={searchData.po_validity}
-                    onChange={handleChangeDate}
-                  />
-                  <label
-                    alt="Enter the PO Validity"
-                    placeholder="PO Validity"
-                  ></label>
+                  <div className="datePickerContainer">
+                    <Space direction="vertical">
+                      <DatePicker
+                        onChange={onValidityDateChange}
+                        name="po_validity"
+                        value={
+                          searchData.po_validity
+                            ? dayjs(searchData.po_validity, "DD-MM-YYYY")
+                            : ""
+                        }
+                        format="DD-MM-YYYY"
+                        placeholder={"PO Validity"}
+                      />
+                      {searchData.po_validity && (
+                        <label className="poLabel">PO Validity</label>
+                      )}
+                    </Space>
+                  </div>
                 </div>
                 <div>
                   <input
@@ -232,7 +273,39 @@ export default function UpdatePO() {
                     placeholder="Consignee ID"
                   ></label>
                 </div>
-                <div>
+                <div className="autocomplete-wrapper">
+                  <input
+                    type="text"
+                    required={true}
+                    name="prodId"
+                    value={searchData.prod_code}
+                    onChange={(e) => handleInputChange(e)}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    aria-autocomplete="list"
+                    aria-controls="autocomplete-list"
+                  />
+                  {/* <input type="text" required={true} name="prodId" value={formData.prodId} onChange={(e) => handleInputChange(index, e)} onFocus={(e) => handleFocus(index, e)} onBlur={(e) => handleBlur(index, e)} aria-autocomplete="list" aria-controls="autocomplete-list" /> */}
+                  <label
+                    alt="Enter the Product Code"
+                    placeholder="Product Code"
+                  ></label>
+                  {isFocused && suggestions.length > 0 && (
+                    <ul className="suggestions-list">
+                      {suggestions.map((suggestion, i) => (
+                        <li
+                          key={i}
+                          onMouseDown={() =>
+                            handleSuggestionClick(suggestion, index)
+                          }
+                        >
+                          {suggestion}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                {/* <div>
                   <input
                     type="text"
                     required={true}
@@ -240,8 +313,8 @@ export default function UpdatePO() {
                     value={searchData.prod_id}
                     onChange={handleChangeDate}
                   />
-                  <label alt="Enter the prod Id" placeholder="Prod ID"></label>
-                </div>
+                  <label alt="Enter the prod Code" placeholder="Prod Code"></label>
+                </div> */}
                 <div>
                   <input
                     type="text"

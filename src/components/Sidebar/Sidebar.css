@@ -1,6 +1,7 @@
 .sidebar-container {
   min-width: 13em;
   /* height: 100%; */
+  /* height: 100vh; */
   background-color: var(--primary-color);
   display: flex;
   flex-direction: column;
@@ -13,7 +14,7 @@
   position: sticky;
   top: 50%;
   left: 0;
-  transform: translateY(-50%);
+  transform: translateY(-35%);
   overflow-y: auto;
 }
 
@@ -37,4 +38,17 @@
   color: black;
   cursor: pointer;
   transition: 0.3s ease-in-out;
+}
+
+.ps-menu-root > ul > li {
+  padding: 10px 0px;
+  text-align: center;
+}
+
+.ps-submenu-content > ul > li {
+  padding: 0;
+}
+
+.ps-menu-label > a {
+  color: black;
 }

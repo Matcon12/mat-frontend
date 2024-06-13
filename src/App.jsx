@@ -12,6 +12,7 @@ import AddCustomerDetails from "./Pages/CustomerDetails/AddCustomerDetails.jsx"
 import AddProductDetails from "./Pages/ProductDetails/AddProductDetails.jsx"
 import EditCustomerDetails from "./Pages/CustomerDetails/EditCustomerDetails.jsx"
 import EditProductDetails from "./Pages/ProductDetails/EditProductDetails.jsx"
+import Report from "./Pages/ViewPrint/ViewPrint.jsx"
 import Signup from "./Pages/Authentication/Signup.jsx"
 import Login from "./Pages/Authentication/Login.jsx"
 import ErrorPage from "./Pages/ErrorPage/error-page.jsx"
@@ -20,6 +21,8 @@ import "./App.css"
 import CompletePage from "./Pages/CompletePage/CompletePage.jsx"
 
 import ProtectedLayout from "./helper/ProtectedLayout.jsx"
+import InvoiceReport from "./Pages/ViewPrint/InvoicePrint.jsx"
+import DcReport from "./Pages/ViewPrint/DcPrint.jsx"
 
 export default function App() {
   return (
@@ -32,11 +35,11 @@ export default function App() {
             <Route path="/" element={<CompletePage />} />
             {/* <Route element={<ProtectedLayout />}> */}
             <Route path="purchase_order" element={<CreatePO />} />
+            <Route path="edit_customerPurchaseOrder" element={<UpdatePO />} />
             <Route path="invoice_generation">
               <Route index element={<Invoice />} />
               <Route path="print_invoice" element={<PrintInvoice />} />
             </Route>
-            <Route path="edit_customerPurchaseOrder" element={<UpdatePO />} />
             <Route
               path="add_customer_details"
               element={<AddCustomerDetails />}
@@ -50,6 +53,11 @@ export default function App() {
               path="edit_product_details"
               element={<EditProductDetails />}
             />
+            <Route path="report">
+              <Route index element={<Report />} />
+              <Route path="invoice-report" element={<InvoiceReport />} />
+              <Route path="dc-report" element={<DcReport />} />
+            </Route>
             {/* </Route> */}
             <Route path="signup" element={<Signup />} />
             <Route path="login" element={<Login />} />

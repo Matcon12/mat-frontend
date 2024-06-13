@@ -93,9 +93,9 @@ table {
   word-wrap: break-word;
 }
 
-.align-start {
+/* .align-start {
   text-align: start;
-}
+} */
 
 .toc-container {
   display: grid;

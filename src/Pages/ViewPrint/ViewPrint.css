@@ -1,0 +1,201 @@
+.report-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.button-container {
+  background: var(--light-color);
+  padding: 50px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  border-radius: 40px;
+}
+
+.button-container > h3 {
+  color: var(--font-color2);
+}
+
+.report-buttons {
+  display: flex;
+  gap: 30px;
+}
+
+.button2 {
+  --color: #0077ff;
+  font-family: inherit;
+  display: inline-block;
+  width: 5.5em;
+  height: 2.4em;
+  line-height: 2.5em;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 20px;
+  font-size: 17px;
+  z-index: 1;
+  color: var(--color);
+  border: 2px solid var(--color);
+  border-radius: 6px;
+  position: relative;
+  text-align: center;
+  background: var(--background-color);
+}
+
+.button2::before {
+  position: absolute;
+  content: "";
+  background: var(--color);
+  width: 150px;
+  height: 200px;
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.button2:hover {
+  color: white;
+}
+
+.button2:before {
+  top: 100%;
+  left: 100%;
+  transition: 0.3s all;
+}
+
+.button2:hover::before {
+  top: -30px;
+  left: -30px;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* DC Report */
+.card {
+  width: 240px;
+  height: 254px;
+  padding: 0 15px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff;
+  border-radius: 20px;
+}
+
+.card > * {
+  margin: 0;
+}
+
+.card__title {
+  font-size: 23px;
+  font-weight: 900;
+  color: #333;
+}
+
+.card__content {
+  font-size: 13px;
+  line-height: 18px;
+  color: #333;
+}
+
+.card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card__form input {
+  margin-top: 10px;
+  outline: 0;
+  background: rgb(255, 255, 255);
+  box-shadow: transparent 0px 0px 0px 1px inset;
+  padding: 0.6em;
+  border-radius: 14px;
+  border: 1px solid #333;
+  color: black;
+}
+
+.card__form button {
+  border: 0;
+  background: #111;
+  color: #fff;
+  padding: 0.68em;
+  border-radius: 14px;
+  font-weight: bold;
+}
+
+.sign-up:hover {
+  opacity: 0.8;
+}
+
+/* printing dc challan */
+.dc-report-container {
+  margin: 20mm;
+}
+
+.dc-report {
+  width: 600px;
+}
+
+.dc-report > h2 {
+  text-align: center;
+}
+
+.dc-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.message {
+  width: 100%;
+}
+
+.signature {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+.table {
+  width: 100%;
+}
+
+.dc-table {
+  width: 100%;
+}
+
+.dc-table > thead > tr > th,
+.dc-table > tbody > tr > td {
+  border: 1px solid #999;
+  padding: 0.3rem;
+  text-align: left;
+}
+
+@media print {
+  html,
+  body {
+    height: initial !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@media print {
+  .page-break {
+    margin-top: 1rem;
+    display: block;
+    page-break-before: auto;
+    break-inside: avoid;
+  }
+}
+
+@page {
+  size: auto;
+  margin: 40mm 0;
+}
