@@ -1,7 +1,8 @@
 import "./CustomerDetails.css"
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import api from "../../api/api.jsx"
+import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteComponent.jsx"
 
 export default function EditCustomerDetails() {
   const initialFormData = {
@@ -18,6 +19,15 @@ export default function EditCustomerDetails() {
     email: "",
   }
   const [formData, setFormData] = useState(initialFormData)
+  const [customerData, setCustomerData] = useState(0)
+  const [filteredCustomerData, setFilteredCustomerData] = useState()
+
+
+  useEffect(() => {
+    api.get("/getCustomerData").then((response) => {
+      setCustomerData(response.data.customerData)
+    })
+  }, [])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -29,11 +39,10 @@ export default function EditCustomerDetails() {
 
   const getCustomerDetails = () => {
     api
-      .get("/getCustomerData", {
+      .get("/getCustomerDetails", {
         params: { cust_id: formData.cust_id },
       })
       .then((response) => {
-        console.log(response.data)
         setFormData((prevFormData) => ({
           ...prevFormData,
           cust_name: response.data.cust_name,
@@ -82,7 +91,7 @@ export default function EditCustomerDetails() {
       </div>
       <div className="addCustomerDetails-form-container">
         <form onSubmit={handleSubmit}>
-          <div>
+          {/* <div>
             <input
               type="text"
               required={true}
@@ -94,6 +103,20 @@ export default function EditCustomerDetails() {
               alt="Enter the Customer ID"
               placeholder="Customer ID"
             ></label>
+          </div> */}
+          <div className="autocomplete-wrapper">
+            <AutoCompleteComponent
+              data={customerData}
+              mainData={formData}
+              setData={setCustomerData}
+              setMainData={setFormData}
+              // handleChange={handleChange}
+              filteredData={filteredCustomerData}
+              setFilteredData={setFilteredCustomerData}
+              name="cust_id"
+              placeholder="Customer ID"
+              search_value="cust_id"
+            />
           </div>
           <div className="get-data-container">
             <button

@@ -1,8 +1,8 @@
-import { useState } from "react"
-import axios from "axios"
+import { useState, useEffect } from "react"
 import "./Invoice.css"
 import { useNavigate } from "react-router-dom"
 import api from "../../api/api.jsx"
+import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteComponent.jsx"
 
 export default function Invoice() {
   const [customerId, setCustomerId] = useState("")
@@ -12,6 +12,8 @@ export default function Invoice() {
   const [totalEntries, setTotalEntries] = useState()
   const [entries, setEntries] = useState([])
   const [show, setShow] = useState(false)
+  const [purchaseOrder, setPurchaseOrder] = useState()
+  const [filteredPurchaseData, setFilteredPurchaseData] = useState()
 
   const navigate = useNavigate()
 
@@ -80,27 +82,37 @@ export default function Invoice() {
   }
 
   const getData = () => {
-    console.log("pono:", poNo)
-    api
-      .get("/getInvoiceData", {
-        params: { poNo: poNo },
-      })
+    api.get("/getInvoiceData", {
+      params: { poNo: poNo.poNo },
+    })
       .then((response) => {
-        setConsigneeName(response.data.consignee_id)
-        setCustomerId(response.data.cust_id)
-        console.log(response.data)
+        setConsigneeName(response.data.consignee_id);
+        setCustomerId(response.data.cust_id);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error(error)
       })
   }
 
+
+  useEffect(() => {
+    api.get("/getPurchaseOrder").then((response) => {
+      setPurchaseOrder(response.data.purchaseOrder)
+      console.log("response: ", response.data.purchaseOrder)
+    })
+  }, [])
+
+  useEffect(() => {
+    getData()
+  }, [poNo])
+
   return (
     <div className="invoice-generation-container">
       <h1>Invoice Generation</h1>
       <form onSubmit={handleSubmit} autoComplete="off">
         <div className="invoice-input-container">
-          <div>
+          {/* <div>
             <input
               type="text"
               required={true}
@@ -110,6 +122,20 @@ export default function Invoice() {
               onBlur={getData}
             />
             <label alt="Enter the PO No" placeholder="PO No"></label>
+          </div> */}
+          <div className="autocomplete-wrapper">
+            <AutoCompleteComponent
+              data={purchaseOrder}
+              mainData={poNo}
+              setData={setPurchaseOrder}
+              setMainData={setPoNo}
+              handleChange={handleChange}
+              filteredData={filteredPurchaseData}
+              setFilteredData={setFilteredPurchaseData}
+              name="poNo"
+              placeholder="Customer PO No."
+              search_value="pono"
+            />
           </div>
           <div>
             <input

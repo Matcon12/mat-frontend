@@ -2,17 +2,16 @@ import "./CustomerDetails.css"
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import api from "../../api/api.jsx"
+import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteComponent.jsx"
 
 export default function AddCustomerDetails() {
-  const [stateName, setStateName] = useState()
-  const [stateCode, setStateCode] = useState()
+  const [stateData, setStateData] = useState()
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     api.get("/getStateData").then((response) => {
-      let state_name = response.data.state_name
-      let state_code = response.data.state_code
-      setStateName(state_name)
-      setStateCode(state_code)
+      let state_data = response.data.state_data
+      setStateData(state_data)
     })
   }, [])
 
@@ -32,13 +31,52 @@ export default function AddCustomerDetails() {
 
   const [formData, setFormData] = useState(initialFormData)
 
+  useEffect(() => {
+    setFilteredData(stateData);
+  }, [stateData]);
+
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      Cust_St_Code: stateData?.find((state) => state.state_name === formData.Cust_St_Name)?.state_code
+    }))
+  }, [formData.Cust_St_Name, stateData])
+
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }))
+
+    if (name === 'Cust_St_Name') {
+      const filtered = stateData.filter(suggestion =>
+        suggestion.state_name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }
   }
+
+  // const [isFocused, setIsFocused] = useState(false)
+
+  // const handleFocus = () => {
+  //   setIsFocused(true)
+  // }
+
+  // const handleBlur = () => {
+  //   setIsFocused(false)
+  // }
+
+  // const handleSelect = (value) => {
+  //   const selectedState = stateData.find(state => state.name === value);
+  //   if (selectedState) {
+  //     setFormData({
+  //       ...formData,
+  //       Cust_St_Name: selectedState.name,
+  //       Cust_St_Code: selectedState.code
+  //     });
+  //   }
+  // };
 
   const resetForm = () => {
     setFormData(initialFormData)
@@ -58,6 +96,15 @@ export default function AddCustomerDetails() {
         console.log(error.response.data.error)
       })
   }
+
+  // const handleSuggestionClick = (suggestion) => {
+  //   setFormData({
+  //     ...formData,
+  //     Cust_St_Name: suggestion.state_name,
+  //     Cust_St_Code: suggestion.state_code
+  //   });
+  //   setIsFocused(false);
+  // };
 
   return (
     <div className="addCustomerDetails-complete-container">
@@ -113,6 +160,56 @@ export default function AddCustomerDetails() {
             />
             <label alt="Enter the Address 2" placeholder="Address 2"></label>
           </div>
+          {/* <div className="autocomplete-wrapper">
+            <input
+              type="text"
+              required={true}
+              name="Cust_St_Name"
+              value={formData.Cust_St_Name}
+              onChange={(e) => handleChange(e)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              aria-autocomplete="list"
+              aria-controls="autocomplete-list"
+            />
+            <label alt="Enter the Customer State Name" placeholder="Customer State Name"></label>
+            {isFocused && filteredData.length > 0 && (
+              <ul id="autocomplete-list" className="suggestions-list">
+                {filteredData.map((suggestion, i) => (
+                  <li
+                    key={i}
+                    onMouseDown={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion.state_name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div> */}
+          <div className="autocomplete-wrapper">
+            <AutoCompleteComponent
+              data={stateData}
+              mainData={formData}
+              setData={setStateData}
+              setMainData={setFormData}
+              handleChange={handleChange}
+              filteredData={filteredData}
+              setFilteredData={setFilteredData}
+              name="Cust_St_Name"
+              placeholder="Customer State Name"
+              search_value="state_name"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              required={true}
+              name="Cust_St_Code"
+              value={formData.Cust_St_Code}
+              onChange={handleChange}
+            />
+            <label alt="Enter the Customer State Code" placeholder="Customer State Code"></label>
+          </div>
           <div>
             <input
               type="text"
@@ -126,7 +223,8 @@ export default function AddCustomerDetails() {
               placeholder="Customer City"
             ></label>
           </div>
-          <div>
+
+          {/* <div>
             <input
               type="text"
               required={true}
@@ -151,7 +249,7 @@ export default function AddCustomerDetails() {
               alt="Enter the Customer State Name"
               placeholder="Customer State Name"
             ></label>
-          </div>
+          </div> */}
           <div>
             <input
               type="text"

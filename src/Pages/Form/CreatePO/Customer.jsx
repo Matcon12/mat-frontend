@@ -7,8 +7,35 @@ import dayjs from "dayjs"
 import ProductDetails from "../../../reuse/ProductDetails/ProductDetails.jsx"
 import { Link } from "react-router-dom"
 import api from "../../../api/api.jsx"
+import AutoCompleteComponent from "../../../components/AutoComplete/AutoCompleteComponent.jsx"
 
 export default function Customer() {
+  const [customerData, setCustomerData] = useState(0)
+  const [purchaseOrder, setPurchaseOrder] = useState()
+  const [filteredCustomerData, setFilteredCustomerData] = useState()
+  const [filteredPurchaseData, setFilteredPurchaseData] = useState()
+
+  useEffect(() => {
+    api.get("/getCustomerData").then((response) => {
+      setCustomerData(response.data.customerData)
+    })
+    api.get("/getPurchaseOrder").then((response) => {
+      setPurchaseOrder(response.data.purchaseOrder)
+      console.log("response: ", response.data.purchaseOrder)
+    })
+  }, [])
+
+  // useEffect(() => {
+  //   setFilteredData(customerData);
+  // }, [customerData]);
+
+  // const handleCustomerSuggestionClick = (suggestion) => {
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     customerId: suggestion.cust_id,
+  //   }))
+  // }
+
   const initialFormData = {
     customerId: "",
     customerName: "",
@@ -69,14 +96,18 @@ export default function Customer() {
 
   const handleChange = async (event) => {
     const { name, value } = event.target
-    if (name === "customerId") {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-        consigneeId: value,
-      }))
-      return
-    }
+    // if (name === "customerId") {
+    //   setFormData((prevFormData) => ({
+    //     ...prevFormData,
+    //     [name]: value,
+    //     consigneeId: value,
+    //   }))
+    //   const filtered = customerData.filter(suggestion =>
+    //     suggestion.cust_id.toLowerCase().includes(value.toLowerCase())
+    //   );
+    //   setFilteredData(filtered);
+    //   return
+    // }
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -268,6 +299,7 @@ export default function Customer() {
   // }, [formData.prodId]);
 
   useEffect(() => {
+    console.log(formData.customerId)
     api
       .get("/customerName", {
         params: {
@@ -277,6 +309,7 @@ export default function Customer() {
       .then((response) => {
         setFormData((prevFormData) => ({
           ...prevFormData,
+          consigneeId: formData.customerId,
           customerName: response.data.customer_name,
           consigneeName: response.data.customer_name,
         }))
@@ -332,6 +365,16 @@ export default function Customer() {
     }
   }
 
+  // const [isFocused, setIsFocused] = useState(false)
+
+  // const handleFocus = () => {
+  //   setIsFocused(true)
+  // }
+
+  // const handleBlur = () => {
+  //   setIsFocused(false)
+  // }
+
   return (
     <div className="customer-container">
       {/* <Sidebar /> */}
@@ -344,20 +387,21 @@ export default function Customer() {
           <form onSubmit={handleSubmit} autoComplete="off">
             <div className="form-input-and-button-container">
               <div className="only-input-styles">
-                <div>
-                  <input
-                    type="text"
-                    required={true}
+                <div className="autocomplete-wrapper">
+                  <AutoCompleteComponent
+                    data={customerData}
+                    mainData={formData}
+                    setData={setCustomerData}
+                    setMainData={setFormData}
+                    handleChange={handleChange}
+                    filteredData={filteredCustomerData}
+                    setFilteredData={setFilteredCustomerData}
                     name="customerId"
-                    value={formData.customerId}
-                    onChange={handleChange}
-                  />
-                  <label
-                    alt="Enter the Customer ID"
                     placeholder="Customer ID"
-                  ></label>
+                    search_value="cust_id"
+                  />
                 </div>
-                <div>
+                {/* <div>
                   <input
                     type="text"
                     required={true}
@@ -366,6 +410,20 @@ export default function Customer() {
                     onChange={handleChange}
                   />
                   <label alt="Enter the PO No" placeholder="PO No"></label>
+                </div> */}
+                <div className="autocomplete-wrapper">
+                  <AutoCompleteComponent
+                    data={purchaseOrder}
+                    mainData={formData}
+                    setData={setPurchaseOrder}
+                    setMainData={setFormData}
+                    handleChange={handleChange}
+                    filteredData={filteredPurchaseData}
+                    setFilteredData={setFilteredPurchaseData}
+                    name="poNo"
+                    placeholder="Customer PO No."
+                    search_value="pono"
+                  />
                 </div>
                 <div>
                   <div className="datePickerContainer">

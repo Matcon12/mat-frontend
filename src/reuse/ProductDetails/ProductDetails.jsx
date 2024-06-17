@@ -26,7 +26,6 @@ export default function ProductDetails({
   productValidation,
   productLength,
 }) {
-  console.log("formData: ", productLength)
 
   useEffect(() => {
     let total = formData.quantity * formData.unitPrice

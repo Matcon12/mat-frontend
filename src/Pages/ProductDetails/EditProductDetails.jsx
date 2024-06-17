@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import "./ProductDetails.css"
 import api from "../../api/api.jsx"
+import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteComponent.jsx"
 
 export default function EditProductDetails() {
+  const [productData, setProductData] = useState()
+  const [filteredData, setFilteredData] = useState([])
   const initialFormData = {
     prod_id: "",
     supp_id: "",
@@ -15,6 +18,12 @@ export default function EditProductDetails() {
   }
 
   const [formData, setFormData] = useState(initialFormData)
+
+  useEffect(() => {
+    api.get("/getProductData").then((response) => {
+      setProductData(response.data.products)
+    })
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -65,7 +74,7 @@ export default function EditProductDetails() {
       </div>
       <div className="addProductDetails-form-container">
         <form onSubmit={handleSubmit}>
-          <div>
+          {/* <div>
             <input
               type="text"
               required={true}
@@ -74,6 +83,20 @@ export default function EditProductDetails() {
               onChange={handleChange}
             />
             <label alt="Enter the Product ID" placeholder="Product ID"></label>
+          </div> */}
+          <div className="autocomplete-wrapper">
+            <AutoCompleteComponent
+              data={productData}
+              mainData={formData}
+              setData={setProductData}
+              setMainData={setFormData}
+              // handleChange={handleChange}
+              filteredData={filteredData}
+              setFilteredData={setFilteredData}
+              name="prod_id"
+              placeholder="Product ID"
+              search_value="prod_id"
+            />
           </div>
           <div className="get-data-container">
             <button onClick={getProductDetails} className="get-data-button">
