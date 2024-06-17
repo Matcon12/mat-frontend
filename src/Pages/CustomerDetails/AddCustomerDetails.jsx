@@ -1,9 +1,21 @@
 import "./CustomerDetails.css"
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import api from "../../api/api.jsx"
 
 export default function AddCustomerDetails() {
+  const [stateName, setStateName] = useState()
+  const [stateCode, setStateCode] = useState()
+
+  useEffect(() => {
+    api.get("/getStateData").then((response) => {
+      let state_name = response.data.state_name
+      let state_code = response.data.state_code
+      setStateName(state_name)
+      setStateCode(state_code)
+    })
+  }, [])
+
   const initialFormData = {
     Cust_ID: "",
     Cust_Name: "",
@@ -17,6 +29,7 @@ export default function AddCustomerDetails() {
     Phone_Num: "",
     Email: "",
   }
+
   const [formData, setFormData] = useState(initialFormData)
 
   const handleChange = (event) => {
