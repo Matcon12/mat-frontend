@@ -14,6 +14,11 @@ export default function Invoice() {
   const [show, setShow] = useState(false)
   const [purchaseOrder, setPurchaseOrder] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
+  const [contactName, setContactName] = useState()
+  const [contactOptions, setContactOptions] = useState([])
+  const [hsnSac, setHsnSac] = useState()
+  const [batch, setBatch] = useState()
+  const [coc, setCoc] = useState()
 
   const navigate = useNavigate()
 
@@ -23,6 +28,7 @@ export default function Invoice() {
       customerId,
       consigneeName,
       newConsigneeName,
+      contactName,
       poNo,
       items: entries,
     }
@@ -59,6 +65,8 @@ export default function Invoice() {
     setEntries(newEntries)
   }
 
+  console.log("entries: ", entries)
+
   const resetForm = () => {
     setCustomerId("")
     setConsigneeName("")
@@ -77,24 +85,29 @@ export default function Invoice() {
       Array.from({ length: Number(totalEntries) }, () => ({
         poSlNo: "",
         quantity: "",
+        hsnSac: "",
+        batch: "",
+        coc: "",
       }))
     )
   }
 
   const getData = () => {
-    api.get("/getInvoiceData", {
-      params: { poNo: poNo.poNo },
-    })
+    api
+      .get("/getInvoiceData", {
+        params: { poNo: poNo.poNo },
+      })
       .then((response) => {
-        setConsigneeName(response.data.consignee_id);
-        setCustomerId(response.data.cust_id);
-        console.log(response.data);
+        setConsigneeName(response.data.consignee_id)
+        setCustomerId(response.data.cust_id)
+        setContactOptions(response.data.contact)
+        setContactName(response.data.contact[0])
+        console.log(response.data)
       })
       .catch((error) => {
         console.error(error)
       })
   }
-
 
   useEffect(() => {
     api.get("/getPurchaseOrder").then((response) => {
@@ -167,7 +180,7 @@ export default function Invoice() {
             <input
               type="text"
               name="newConsigneeName"
-              required={false}
+              /*required={true}*/
               value={newConsigneeName}
               onChange={(e) => setNewConsigneeName(e.target.value)}
             />
@@ -175,6 +188,21 @@ export default function Invoice() {
               alt="Enter the new Consignee Name"
               placeholder="New Consignee Name(if required)"
             ></label>
+          </div>
+          <div className="input-container">
+            <select
+              name="contactName"
+              value={contactName}
+              onChange={(e) => setContactName(e.target.value)}
+              required
+            >
+              <option value="" disabled>
+                Select an option
+              </option>
+              <option value={contactOptions[0]}>{contactOptions[0]}</option>
+              <option value={contactOptions[1]}>{contactOptions[1]}</option>
+            </select>
+            <label alt="Select an Option" placeholder="Contact Name"></label>
           </div>
           <div>
             <input
@@ -228,6 +256,45 @@ export default function Invoice() {
                       <label
                         alt="Enter the quantity"
                         placeholder="Quantity"
+                      ></label>
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        required={true}
+                        name="hsnSac"
+                        value={entry.hsnSac}
+                        onChange={(e) => handleChange(index, e)}
+                      />
+                      <label
+                        alt="Enter the hsn/sac"
+                        placeholder="HSN/SAC"
+                      ></label>
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        required={true}
+                        name="batch"
+                        value={entry.batch}
+                        onChange={(e) => handleChange(index, e)}
+                      />
+                      <label
+                        alt="Enter the batch no."
+                        placeholder="Batch No."
+                      ></label>
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        required={true}
+                        name="coc"
+                        value={entry.coc}
+                        onChange={(e) => handleChange(index, e)}
+                      />
+                      <label
+                        alt="Enter the COC No."
+                        placeholder="COC No."
                       ></label>
                     </div>
                   </div>

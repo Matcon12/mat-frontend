@@ -88,3 +88,11 @@ input[type="password"] + label[placeholder]:before {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-column: 2;
+}

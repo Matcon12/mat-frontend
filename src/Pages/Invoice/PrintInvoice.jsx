@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from "react"
 import { useReactToPrint } from "react-to-print"
 import api from "../../api/api.jsx"
 import "./Invoice.css"
+import DcPrint from "../../Pages/ViewPrint/DcPrint"
 
 export default function PrintInvoice() {
   const [formData, setFormData] = useState()
@@ -32,6 +33,8 @@ export default function PrintInvoice() {
     content: () => componentRef.current,
   })
 
+  console.log("formdata: ", formData)
+
   const InvoiceC = React.forwardRef((props, ref) => (
     <div ref={ref} className="invoice-container-container">
       <Invoice ref={ref} formData={formData} />
@@ -45,6 +48,7 @@ export default function PrintInvoice() {
         <button onClick={handlePrint}>Print this out!</button>
       </div>
       <InvoiceC ref={componentRef} />
+      {formData ? <DcPrint formData={formData} /> : ""}
     </div>
   )
 }

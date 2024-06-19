@@ -5,3 +5,71 @@
   padding-right: 20px;
   padding-bottom: 5px;
 }
+
+input[type="text"],
+select {
+  box-sizing: border-box;
+  width: 100%;
+  border: none;
+  border-radius: 1.25em;
+  background: #fff !important;
+  resize: none;
+  outline: none;
+  padding: 15px 30px;
+  position: relative;
+}
+
+select {
+  -webkit-appearance: none; /* Remove default styling in Safari */
+  -moz-appearance: none; /* Remove default styling in Firefox */
+  appearance: none; /* Remove default styling in other browsers */
+  background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23999" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>')
+    no-repeat right 10px center;
+  background-size: 12px 12px;
+}
+
+select:focus {
+  border-color: #00bafa;
+}
+
+select + label[placeholder]:before,
+select:focus + label[placeholder]:before,
+select:valid + label[placeholder]:before {
+  transition-duration: 0.2s;
+  transform: translate(0, -1.5em) scale(0.9, 0.9);
+  content: attr(placeholder);
+}
+
+select:invalid + label[placeholder][alt]:before {
+  content: attr(placeholder);
+}
+
+select + label[placeholder] {
+  display: block;
+  pointer-events: none;
+  line-height: 1em;
+  margin-top: calc(-2em - 2px);
+  position: absolute;
+  z-index: 2;
+}
+
+select + label[placeholder]:before {
+  content: attr(placeholder);
+  font-size: 14px;
+  display: inline-block;
+  margin: 0 calc(1.5em + 2px);
+  padding: 0 2px;
+  color: #898989;
+  white-space: nowrap;
+  transition: 0.3s ease-in-out;
+  background-image: linear-gradient(to bottom, #fff, #fff);
+  background-size: 100% 5px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}

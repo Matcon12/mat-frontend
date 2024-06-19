@@ -6,7 +6,6 @@ import ConsigneeDetails from "./ConsigneeDetails/ConsigneeDetails"
 import POTable from "./POTable/POTable"
 import InvoiceValue from "./InvoiceValue/InvoiceValue"
 import Toc from "./Toc/Toc"
-import DcPrint from "../../Pages/ViewPrint/DcPrint"
 
 export default function Invoice({ formData }) {
   console.log("formData", formData)
@@ -63,7 +62,6 @@ export default function Invoice({ formData }) {
               </div>
             </div>
           </div>
-          <DcPrint formData={formData} />
         </>
       ) : (
         <h1>Error</h1>

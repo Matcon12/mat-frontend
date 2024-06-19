@@ -21,7 +21,7 @@ export default function Customer() {
     })
     api.get("/getPurchaseOrder").then((response) => {
       setPurchaseOrder(response.data.purchaseOrder)
-      console.log("response: ", response.data.purchaseOrder)
+      // console.log("response: ", response.data.purchaseOrder)
     })
   }, [])
 
@@ -55,6 +55,7 @@ export default function Customer() {
     msrr: "",
     omat: "",
     uom: "",
+    hsn_sac: "",
     quantity: "",
     unitPrice: "",
     totalPrice: "",
@@ -470,7 +471,7 @@ export default function Customer() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    // required={true}
                     name="quoteId"
                     value={formData.quoteId}
                     onChange={handleChange}
@@ -483,7 +484,7 @@ export default function Customer() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    // required={true}
                     name="consigneeId"
                     value={formData.consigneeId}
                     onChange={handleChange}
@@ -496,7 +497,7 @@ export default function Customer() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    // required={true}
                     name="customerName"
                     value={formData.customerName}
                     onChange={handleChange}
@@ -509,7 +510,7 @@ export default function Customer() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    // required={true}
                     name="consigneeName"
                     value={formData.consigneeName}
                     onChange={handleChange}

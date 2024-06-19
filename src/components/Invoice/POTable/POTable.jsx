@@ -7,6 +7,15 @@ export default function POTable({
   total_sgst,
   total_igst,
 }) {
+  const calculateTotal = (qty, price) => {
+    const quantity = parseFloat(qty)
+    const unitPrice = parseFloat(price)
+    if (isNaN(quantity) || isNaN(unitPrice)) {
+      return "Invalid data"
+    }
+    return (quantity * unitPrice).toFixed(2)
+  }
+
   return (
     <table className="table-border">
       <thead>
@@ -16,7 +25,7 @@ export default function POTable({
             Description of Services
           </th>
           <th>PO Item Sl. No.</th>
-          <th>SAC Code</th>
+          <th>HSN/SAC No</th>
           <th>QTY</th>
           <th>UOM</th>
           <th>Rate</th>
@@ -51,14 +60,14 @@ export default function POTable({
             <tr key={index}>
               <td>{index + 1}</td>
               <td>
-                {data.prod_desc} [{data.additional_desc}]
+                {data.prod_desc} [{data.additional_desc}, {data.omat}]
               </td>
               <td>{data.po_sl_no}</td>
-              <td>9988</td>
+              <td>{data.hsn}</td>
               <td>{data.qty_delivered}</td>
               <td>{data.uom}</td>
               <td>{data.unit_price}</td>
-              <td>{data.qty_delivered * data.unit_price}</td>
+              <td>{calculateTotal(data.qty_delivered, data.unit_price)}</td>
               <td>{parseInt(total_cgst) == 0 ? "" : gr.cgst_rate}</td>
               <td>{parseInt(total_cgst) == 0 ? "" : data.cgst_price}</td>
               <td>{parseInt(total_sgst) == 0 ? "" : gr.sgst_rate}</td>
@@ -73,7 +82,7 @@ export default function POTable({
           <td></td>
           <td colSpan={2}>Total:</td>
           <td>{total_qty}</td>
-          <td>Nos</td>
+          <td></td>
           <td></td>
           <td>{total_taxable_value}</td>
           <td></td>

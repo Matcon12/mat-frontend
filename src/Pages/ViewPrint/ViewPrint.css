@@ -153,6 +153,10 @@ a {
   justify-content: space-between;
 }
 
+.to-address {
+  flex: 1;
+}
+
 .message {
   width: 100%;
 }

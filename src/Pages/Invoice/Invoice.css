@@ -15,7 +15,7 @@
 }
 
 .invoice-input-container > div > input {
-  width: 300px;
+  width: 300px !important;
 }
 
 .invoice-input-complete-container > div > p {

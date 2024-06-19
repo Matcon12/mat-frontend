@@ -21,7 +21,7 @@ export default function Navbar() {
           </li>
           <li>
             {user ? (
-              <Link to="/" onClick={logout}>
+              <Link to="/Login" onClick={logout}>
                 Logout
               </Link>
             ) : (

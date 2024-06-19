@@ -3,6 +3,7 @@ import { useReactToPrint } from "react-to-print"
 import React, { useRef } from "react"
 
 function DcReportC({ formData }) {
+  console.log("dc: ", formData)
   return (
     <>
       <h2>DELIVERY CHALLAN</h2>
@@ -31,6 +32,7 @@ function DcReportC({ formData }) {
       <div className="message">
         <br />
         <p>Dear Sir,</p>
+        <p>Kind attention {formData.odc1.contact_name}</p>
         <br />
         <p>
           Please receive the goods in good considtion and acknowledge the same.
@@ -48,6 +50,7 @@ function DcReportC({ formData }) {
               <th>Total Qty</th>
               <th>UOM</th>
               <th>Batch No.</th>
+              <th>COC No.</th>
             </tr>
           </thead>
           <tbody>
@@ -66,7 +69,8 @@ function DcReportC({ formData }) {
                   <td>{data.qty_delivered * parseFloat(data.pack_size)}</td>
 
                   <td>{data.uom}</td>
-                  <td></td>
+                  <td>{data.batch}</td>
+                  <td>{data.coc}</td>
                 </tr>
               )
             })}

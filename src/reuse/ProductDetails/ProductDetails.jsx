@@ -26,7 +26,6 @@ export default function ProductDetails({
   productValidation,
   productLength,
 }) {
-
   useEffect(() => {
     let total = formData.quantity * formData.unitPrice
 
@@ -62,7 +61,7 @@ export default function ProductDetails({
         )}
         <input
           type="text"
-          required={true}
+          // required={true}
           name="poSlNo"
           value={formData.poSlNo}
           onChange={(e) => handleChange(index, e)}
@@ -72,7 +71,7 @@ export default function ProductDetails({
       <div className="autocomplete-wrapper">
         <input
           type="text"
-          required={true}
+          // required={true}
           name="prodId"
           value={formData.prodId}
           onChange={(e) => handleInputChange(index, e)}
@@ -99,7 +98,7 @@ export default function ProductDetails({
       <div>
         <input
           type="text"
-          required={true}
+          // required={true}
           name="packSize"
           value={formData.packSize}
           onChange={(e) => handleChange(index, e)}
@@ -108,7 +107,7 @@ export default function ProductDetails({
       </div>
       <div className="grid-item-textarea">
         <textarea
-          required={true}
+          // required={true}
           name="productDesc"
           value={formData.productDesc}
           className={
@@ -144,7 +143,7 @@ export default function ProductDetails({
 
         <input
           type="text"
-          required={true}
+          // required={true}
           name="msrr"
           value={formData.msrr}
           onChange={(e) => handleChange(index, e)}
@@ -154,7 +153,7 @@ export default function ProductDetails({
 
       <div className="grid-item-textarea">
         <textarea
-          required={true}
+          // required={true}
           name="omat"
           value={formData.omat}
           className={
@@ -169,7 +168,7 @@ export default function ProductDetails({
       <div>
         <input
           type="text"
-          required={true}
+          // required={true}
           name="quantity"
           value={formData.quantity}
           onChange={(e) => handleChange(index, e)}
@@ -179,7 +178,7 @@ export default function ProductDetails({
       <div>
         <input
           type="text"
-          required={true}
+          // required={true}
           name="unitPrice"
           value={formData.unitPrice}
           onChange={(e) => handleChange(index, e)}
@@ -189,7 +188,7 @@ export default function ProductDetails({
       <div>
         <input
           type="text"
-          required={true}
+          // required={true}
           name="totalPrice"
           value={formData.totalPrice}
           onChange={(e) => handleChange(index, e)}
@@ -199,12 +198,42 @@ export default function ProductDetails({
       <div>
         <input
           type="text"
+          // required={true}
+          name="hsn/sac"
+          value={formData.hsn_sac}
+          onChange={(e) => handleChange(index, e)}
+        />
+        <label alt="Enter the HSN/SAC" placeholder="HSN/SAC Code:"></label>
+      </div>
+      {/* <div>
+        <input
+          type="text"
           required={true}
           name="uom"
           value={formData.uom}
           onChange={(e) => handleChange(index, e)}
         />
         <label alt="Enter the UOM" placeholder="UOM"></label>
+      </div> */}
+
+      <div className="input-container">
+        <select
+          name="uom"
+          value={formData.uom}
+          onChange={(e) => handleChange(index, e)}
+          required
+        >
+          <option value="" disabled>
+            Select an option
+          </option>
+          <option value="L">L</option>
+          <option value="ML">ML</option>
+          <option value="Kg">Kg</option>
+          <option value="No.">No.</option>
+          <option value="Kit">Kit</option>
+          <option value="Doc">Doc</option>
+        </select>
+        <label alt="Select an Option" placeholder="UOM"></label>
       </div>
       <div className="deliveryDate">
         <div className="datePickerContainer">

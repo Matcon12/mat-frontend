@@ -2,10 +2,11 @@ import "./UpdatePO.css"
 import { Link } from "react-router-dom"
 import "../CreatePO/Customer.css"
 import api from "../../../api/api.jsx"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { DatePicker, Space } from "antd"
 import dayjs from "dayjs"
 import possibleValues from "../../../../data.js"
+import AutoCompleteComponent from "../../../components/AutoComplete/AutoCompleteComponent.jsx"
 
 export default function UpdatePO() {
   const initialSearchInputs = {
@@ -37,15 +38,27 @@ export default function UpdatePO() {
   const [searchData, setSearchData] = useState(intialSearchData)
   const [isFocused, setIsFocused] = useState(false)
   const [suggestions, setSuggestions] = useState([])
+  const [purchaseOrder, setPurchaseOrder] = useState()
+  const [filteredPurchaseData, setFilteredPurchaseData] = useState()
+
+  useEffect(() => {
+    // api.get("/getCustomerData").then((response) => {
+    //   setCustomerData(response.data.customerData)
+    // })
+    api.get("/getPurchaseOrder").then((response) => {
+      setPurchaseOrder(response.data.purchaseOrder)
+      // console.log("response: ", response.data.purchaseOrder)
+    })
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
     api
       .get("/getData", {
         params: {
-          cust_id: searchInputs.cust_id,
+          // cust_id: searchInputs.cust_id,
           po_no: searchInputs.po_no,
-          po_sl_no: searchInputs.po_sl_no,
+          // po_sl_no: searchInputs.po_sl_no,
         },
       })
       .then((response) => {
@@ -150,6 +163,33 @@ export default function UpdatePO() {
           {/* fetching the data from the database to edit */}
           <form onSubmit={handleSubmit} autoComplete="on">
             <div className="only-input-styles">
+              <div className="autocomplete-wrapper">
+                <AutoCompleteComponent
+                  data={purchaseOrder}
+                  mainData={searchInputs}
+                  setData={setPurchaseOrder}
+                  setMainData={setSearchInputs}
+                  handleChange={handleChange}
+                  filteredData={filteredPurchaseData}
+                  setFilteredData={setFilteredPurchaseData}
+                  name="po_no"
+                  placeholder="PO No."
+                  search_value="pono"
+                />
+              </div>
+              {/* <div>
+                <input
+                  type="text"
+                  required={true}
+                  name="po_no"
+                  onChange={handleChange}
+                />
+                <label alt="Enter the PO No" placeholder="PO No."></label>
+              </div> */}
+              <div className="form-button-container">
+                <button type="submit">Get Data</button>
+              </div>
+
               <div>
                 <input
                   type="text"
@@ -166,22 +206,10 @@ export default function UpdatePO() {
                 <input
                   type="text"
                   required={true}
-                  name="po_no"
-                  onChange={handleChange}
-                />
-                <label alt="Enter the PO No" placeholder="PO No."></label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  required={true}
                   name="po_sl_no"
                   onChange={handleChange}
                 />
                 <label alt="Enter the PO_Sl_No" placeholder="PO Sl No."></label>
-              </div>
-              <div className="form-button-container">
-                <button type="submit">Get Data</button>
               </div>
             </div>
           </form>
@@ -190,22 +218,6 @@ export default function UpdatePO() {
           <form onSubmit={handleUpdate}>
             {/* {searchData.po_no && ( */}
             <>
-              {/* po_no: data.po_no,
-          po_date: data.po_date,
-          po_validity: data.po_validity,
-          quote_id: data.quote_id,
-          cust_id: data.cust_id,
-          consignee_id: data.consignee_id,
-          po_sl_no: data.po_sl_no,
-          prod_id: data.prod_id,
-          prod_desc: data.prod_desc,
-          msrr: data.msrr,
-          pack_size: data.pack_size,
-          quantity: data.quantity,
-          staggered_deliver: data.staggered_deliver,
-          unit_price: data.unit_price,
-          qty_sent: data.qty_sent,
-          qty_bal: data.qty_bal */}
               <div className="only-input-styles">
                 <div>
                   <div className="datePickerContainer">
@@ -250,7 +262,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="quote_id"
                     value={searchData.quote_id}
                     onChange={handleChangeDate}
@@ -263,7 +275,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="consignee_id"
                     value={searchData.consignee_id}
                     onChange={handleChangeDate}
@@ -276,7 +288,7 @@ export default function UpdatePO() {
                 <div className="autocomplete-wrapper">
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="prodId"
                     value={searchData.prod_code}
                     onChange={(e) => handleInputChange(e)}
@@ -318,7 +330,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="prod_desc"
                     value={searchData.prod_desc}
                     onChange={handleChangeDate}
@@ -331,7 +343,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="additional_desc"
                     value={searchData.additional_desc}
                     onChange={handleChangeDate}
@@ -344,7 +356,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="pack_size"
                     value={searchData.pack_size}
                     onChange={handleChangeDate}
@@ -357,7 +369,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="quantity"
                     value={searchData.quantity}
                     onChange={handleChangeDate}
@@ -370,7 +382,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="staggered_delivery"
                     value={searchData.staggered_delivery}
                     onChange={handleChangeDate}
@@ -383,7 +395,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="unit_price"
                     value={searchData.unit_price}
                     onChange={handleChangeDate}
@@ -396,7 +408,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="qty_sent"
                     value={searchData.qty_sent}
                     onChange={handleChangeDate}
@@ -409,7 +421,7 @@ export default function UpdatePO() {
                 <div>
                   <input
                     type="text"
-                    required={true}
+                    /*required={true}*/
                     name="qty_bal"
                     value={searchData.qty_bal}
                     onChange={handleChangeDate}
