@@ -7,19 +7,18 @@ import { DatePicker, Space } from "antd"
 import dayjs from "dayjs"
 import possibleValues from "../../../../data.js"
 import AutoCompleteComponent from "../../../components/AutoComplete/AutoCompleteComponent.jsx"
+import { format, addYears, parse } from 'date-fns';
 
 export default function UpdatePO() {
   const initialSearchInputs = {
-    cust_id: "",
-    po_no: "",
-    po_sl_no: "",
+    customer_id: "",
   }
   const intialSearchData = {
-    po_no: "",
+    pono: "",
     podate: "",
     po_validity: "",
     quote_id: "",
-    cust_id: "",
+    customer_id: "",
     consignee_id: "",
     po_sl_no: "",
     prod_code: "",
@@ -32,6 +31,9 @@ export default function UpdatePO() {
     qty_sent: "",
     qty_balance: "",
     delivery_date: "",
+    omat: "",
+    hsn_sac: "",
+
   }
 
   const [searchInputs, setSearchInputs] = useState(initialSearchInputs)
@@ -40,6 +42,7 @@ export default function UpdatePO() {
   const [suggestions, setSuggestions] = useState([])
   const [purchaseOrder, setPurchaseOrder] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
+  const [success, setSucess] = useState()
 
   useEffect(() => {
     // api.get("/getCustomerData").then((response) => {
@@ -56,21 +59,20 @@ export default function UpdatePO() {
     api
       .get("/getData", {
         params: {
-          // cust_id: searchInputs.cust_id,
-          po_no: searchInputs.po_no,
-          // po_sl_no: searchInputs.po_sl_no,
+          pono: searchInputs.pono,
         },
       })
       .then((response) => {
-        let data = response.data[0]
-        console.log(data)
-        setSearchData((prevSearchData) => ({
-          ...prevSearchData,
-          po_no: data.po_no,
+        let data = response.data.data
+        const parsedDate = parse(data.podate, "dd-MM-yyyy", new Date());
+        const validityDate = addYears(parsedDate, 1);
+        const formattedValidityDate = format(validityDate, "dd-MM-yyyy");
+        setSearchData({
+          pono: data.pono,
           podate: data.podate,
-          po_validity: data.po_validity,
+          po_validity: formattedValidityDate,
           quote_id: data.quote_id,
-          cust_id: data.cust_id,
+          customer_id: data.customer_id,
           consignee_id: data.consignee_id,
           po_sl_no: data.po_sl_no,
           prod_code: data.prod_code,
@@ -81,9 +83,10 @@ export default function UpdatePO() {
           staggered_delivery: data.staggered_delivery,
           unit_price: data.unit_price,
           qty_sent: data.qty_sent,
-          qty_balance: data.qty_bal,
+          qty_balance: data.qty_balance,
           delivery_date: data.delivery_date,
-        }))
+        })
+        setSucess("Form Updated Successfully")
       })
       .catch((error) => {
         console.log(error.response.data.error)
@@ -103,7 +106,104 @@ export default function UpdatePO() {
   }
 
   const handleChange = (e) => {
-    setSearchInputs({ ...searchInputs, [e.target.name]: e.target.value })
+    if (e.target.name === "po_sl_no") {
+      console.log("po_sl_no: ", e.target.value, e.target.name)
+      setSearchData({
+        ...searchData,
+        po_sl_no: e.target.value
+      })
+      console.log('customer_id: ', searchData.customer_id, searchInputs.pono, searchData.po_sl_no)
+      api
+        .get("/getDataPoCust", {
+          params: {
+            customer_id: searchData.customer_id,
+            pono: searchInputs.pono,
+            po_sl_no: e.target.value,
+          },
+        })
+        .then((response) => {
+          let data = response.data[0]
+          console.log(data)
+          const parsedDate = parse(data.podate, "dd-MM-yyyy", new Date());
+          const validityDate = addYears(parsedDate, 1);
+          const formattedValidityDate = format(validityDate, "dd-MM-yyyy");
+          setSearchData({
+            pono: data.pono,
+            podate: data.podate,
+            po_validity: formattedValidityDate,
+            quote_id: data.quote_id,
+            customer_id: data.customer_id,
+            consignee_id: data.consignee_id,
+            po_sl_no: data.po_sl_no,
+            prod_code: data.prod_code,
+            prod_desc: data.prod_desc,
+            additional_desc: data.additional_desc,
+            pack_size: data.pack_size,
+            quantity: data.quantity,
+            staggered_delivery: data.staggered_delivery,
+            unit_price: data.unit_price,
+            qty_sent: data.qty_sent,
+            qty_balance: data.qty_balance,
+            delivery_date: data.delivery_date,
+          })
+          console.log("data: ", data)
+          console.log("searchData: ", searchData)
+        })
+        .catch((error) => {
+          console.log(error.response.data.error)
+        })
+    }
+    if (e.target.name === "customer_id") {
+      console.log("po_sl_no: ", e.target.value, e.target.name)
+      setSearchData({
+        ...searchData,
+        customer_id: e.target.value
+      })
+      console.log('customer_id: ', searchData.customer_id, searchInputs.pono, searchData.po_sl_no)
+      api
+        .get("/getDataPoCust", {
+          params: {
+            customer_id: e.target.value,
+            pono: searchInputs.pono,
+            po_sl_no: searchData.po_sl_no,
+          },
+        })
+        .then((response) => {
+          let data = response.data[0]
+          console.log(data)
+          const parsedDate = parse(data.podate, "dd-MM-yyyy", new Date());
+          const validityDate = addYears(parsedDate, 1);
+          const formattedValidityDate = format(validityDate, "dd-MM-yyyy");
+          setSearchData({
+            pono: data.pono,
+            podate: data.podate,
+            po_validity: formattedValidityDate,
+            quote_id: data.quote_id,
+            customer_id: data.customer_id,
+            consignee_id: data.consignee_id,
+            po_sl_no: data.po_sl_no,
+            prod_code: data.prod_code,
+            prod_desc: data.prod_desc,
+            additional_desc: data.additional_desc,
+            pack_size: data.pack_size,
+            quantity: data.quantity,
+            staggered_delivery: data.staggered_delivery,
+            unit_price: data.unit_price,
+            qty_sent: data.qty_sent,
+            qty_balance: data.qty_balance,
+            delivery_date: data.delivery_date,
+          })
+          console.log("data: ", data)
+          console.log("searchData: ", searchData)
+        })
+        .catch((error) => {
+          console.log(error.response.data.error)
+        })
+    }
+    else {
+      console.log('entered')
+      setSearchInputs({ ...searchInputs, [e.target.name]: e.target.value })
+    }
   }
 
   const handleChangeDate = (e) => {
@@ -114,6 +214,13 @@ export default function UpdatePO() {
     setSearchData((prevFormData) => ({
       ...prevFormData,
       podate: dateString,
+    }))
+  }
+
+  const onDeliveryDateChange = (date, dateString) => {
+    setSearchData((prevFormData) => ({
+      ...prevFormData,
+      delivery_date: dateString,
     }))
   }
 
@@ -161,7 +268,7 @@ export default function UpdatePO() {
         </div>
         <div className="form-container">
           {/* fetching the data from the database to edit */}
-          <form onSubmit={handleSubmit} autoComplete="on">
+          <form onSubmit={handleSubmit} autoComplete="off">
             <div className="only-input-styles">
               <div className="autocomplete-wrapper">
                 <AutoCompleteComponent
@@ -172,7 +279,7 @@ export default function UpdatePO() {
                   handleChange={handleChange}
                   filteredData={filteredPurchaseData}
                   setFilteredData={setFilteredPurchaseData}
-                  name="po_no"
+                  name="pono"
                   placeholder="PO No."
                   search_value="pono"
                 />
@@ -181,7 +288,7 @@ export default function UpdatePO() {
                 <input
                   type="text"
                   required={true}
-                  name="po_no"
+                  name="pono"
                   onChange={handleChange}
                 />
                 <label alt="Enter the PO No" placeholder="PO No."></label>
@@ -193,8 +300,9 @@ export default function UpdatePO() {
               <div>
                 <input
                   type="text"
-                  required={true}
-                  name="cust_id"
+                  // required={true}
+                  value={searchData.customer_id}
+                  name="customer_id"
                   onChange={handleChange}
                 />
                 <label
@@ -205,7 +313,8 @@ export default function UpdatePO() {
               <div>
                 <input
                   type="text"
-                  required={true}
+                  // required={true}
+                  value={searchData.po_sl_no}
                   name="po_sl_no"
                   onChange={handleChange}
                 />
@@ -216,7 +325,7 @@ export default function UpdatePO() {
         </div>
         <div className="form-container">
           <form onSubmit={handleUpdate}>
-            {/* {searchData.po_no && ( */}
+            {/* {searchData.pono && ( */}
             <>
               <div className="only-input-styles">
                 <div>
@@ -357,6 +466,19 @@ export default function UpdatePO() {
                   <input
                     type="text"
                     /*required={true}*/
+                    name="omat"
+                    value={searchData.omat}
+                    onChange={handleChangeDate}
+                  />
+                  <label
+                    alt="Enter the OMAT"
+                    placeholder="OMAT"
+                  ></label>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    /*required={true}*/
                     name="pack_size"
                     value={searchData.pack_size}
                     onChange={handleChangeDate}
@@ -423,7 +545,7 @@ export default function UpdatePO() {
                     type="text"
                     /*required={true}*/
                     name="qty_bal"
-                    value={searchData.qty_bal}
+                    value={searchData.qty_balance}
                     onChange={handleChangeDate}
                   />
                   <label
@@ -432,10 +554,23 @@ export default function UpdatePO() {
                   ></label>
                 </div>
                 <div>
+                  <input
+                    type="text"
+                    /*required={true}*/
+                    name="hsn_sac"
+                    value={searchData.hsn_sac}
+                    onChange={handleChangeDate}
+                  />
+                  <label
+                    alt="Enter the HSN_SAC Code"
+                    placeholder="HSN_SAC Code"
+                  ></label>
+                </div>
+                <div>
                   <div className="datePickerContainer">
                     <Space direction="vertical">
                       <DatePicker
-                        onChange={onDateChange}
+                        onChange={onDeliveryDateChange}
                         value={
                           searchData.delivery_date
                             ? dayjs(searchData.delivery_date, "DD-MM-YYYY")
@@ -451,6 +586,7 @@ export default function UpdatePO() {
                   </div>
                 </div>
               </div>
+              <div><p>{success}</p></div>
               <div className="form-button-container">
                 <button type="submit">Update</button>
               </div>

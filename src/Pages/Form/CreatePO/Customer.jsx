@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react"
 import "./Customer.css"
 import possibleValues from "../../../../data.js"
-import axios from "axios"
 import { DatePicker, Space } from "antd"
 import dayjs from "dayjs"
 import ProductDetails from "../../../reuse/ProductDetails/ProductDetails.jsx"
 import { Link } from "react-router-dom"
 import api from "../../../api/api.jsx"
 import AutoCompleteComponent from "../../../components/AutoComplete/AutoCompleteComponent.jsx"
+import { format, addYears, parse } from 'date-fns';
 
 export default function Customer() {
   const [customerData, setCustomerData] = useState(0)
   const [purchaseOrder, setPurchaseOrder] = useState()
   const [filteredCustomerData, setFilteredCustomerData] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
+  const [success, setSuccess] = useState()
 
   useEffect(() => {
     api.get("/getCustomerData").then((response) => {
@@ -121,6 +122,7 @@ export default function Customer() {
     if (name == "poSlNo") {
       setPsn((prevPsn) => [...prevPsn, value])
     }
+    console.log(key, name)
     setProductDetails(
       productDetails.map((productDetail) => {
         if (productDetails.indexOf(productDetail) == key) {
@@ -147,7 +149,8 @@ export default function Customer() {
       })
       .then((response) => {
         console.log(response.data)
-        resetForm()
+        // resetForm()
+        setSuccess("Form submitted successfully")
       })
       .catch((error) => {
         console.log(error.response.data.error)
@@ -225,9 +228,14 @@ export default function Customer() {
   }
 
   const onDateChange = (date, dateString) => {
+    const parsedDate = parse(dateString, "dd-MM-yyyy", new Date());
+    const validityDate = addYears(parsedDate, 1);
+    const formattedValidityDate = format(validityDate, "dd-MM-yyyy");
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       poDate: dateString,
+      poValidity: formattedValidityDate,
     }))
   }
 
@@ -258,6 +266,14 @@ export default function Customer() {
         return productDetail
       })
     )
+  }
+
+  const grandTotal = () => {
+    let total = 0.0
+    productDetails.forEach((productDetail) => {
+      total += parseFloat(productDetail.totalPrice)
+    })
+    return parseFloat(total).toFixed(2)
   }
 
   const handleProductDelete = (index) => {
@@ -550,6 +566,7 @@ export default function Customer() {
                   )
                 })}
             </div>
+            <div>Grand Total: {grandTotal()} {success}</div>
             <div className="form-button-container">
               <button type="button" value="nextEntry" onClick={addMore}>
                 Add More

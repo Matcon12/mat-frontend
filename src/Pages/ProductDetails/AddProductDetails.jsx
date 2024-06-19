@@ -45,7 +45,7 @@ export default function AddProductDetails() {
         <Link to="/edit_product_details">Edit</Link>
       </div>
       <div className="addProductDetails-form-container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div>
             <input
               type="text"

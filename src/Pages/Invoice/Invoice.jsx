@@ -16,9 +16,6 @@ export default function Invoice() {
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
   const [contactName, setContactName] = useState()
   const [contactOptions, setContactOptions] = useState([])
-  const [hsnSac, setHsnSac] = useState()
-  const [batch, setBatch] = useState()
-  const [coc, setCoc] = useState()
 
   const navigate = useNavigate()
 
@@ -136,7 +133,7 @@ export default function Invoice() {
             />
             <label alt="Enter the PO No" placeholder="PO No"></label>
           </div> */}
-          <div className="autocomplete-wrapper">
+          <div className="autocomplete-wrapper autocomplete-wrapper-invoice">
             <AutoCompleteComponent
               data={purchaseOrder}
               mainData={poNo}
@@ -189,7 +186,7 @@ export default function Invoice() {
               placeholder="New Consignee Name(if required)"
             ></label>
           </div>
-          <div className="input-container">
+          <div className="input-container-contact">
             <select
               name="contactName"
               value={contactName}

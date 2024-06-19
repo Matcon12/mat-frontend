@@ -49,10 +49,10 @@ export default function Login() {
             <label alt="Enter the Password" placeholder="Password"></label>
           </div>
           <button type="submit">Login</button>
-          <div className="form-footer">
+          {/* <div className="form-footer">
             <p>New User?</p>
             <Link to="/Signup">Signup</Link>
-          </div>
+          </div> */}
         </div>
       </form>
     </div>

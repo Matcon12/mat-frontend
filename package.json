@@ -18,6 +18,7 @@
     "@syncfusion/ej2-react-dropdowns": "^25.1.40",
     "antd": "^5.16.5",
     "axios": "^1.6.8",
+    "date-fns": "^3.6.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "pm2": "^5.4.0",

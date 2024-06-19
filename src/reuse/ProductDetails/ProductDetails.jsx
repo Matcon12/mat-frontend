@@ -32,6 +32,7 @@ export default function ProductDetails({
     setTotal(total.toFixed(2), index)
   }, [formData.quantity, formData.unitPrice])
 
+
   const [isFocused, setIsFocused] = useState(false)
 
   const handleFocus = () => {
@@ -199,7 +200,7 @@ export default function ProductDetails({
         <input
           type="text"
           // required={true}
-          name="hsn/sac"
+          name="hsn_sac"
           value={formData.hsn_sac}
           onChange={(e) => handleChange(index, e)}
         />
