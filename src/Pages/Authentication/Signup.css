@@ -89,7 +89,8 @@ input[type="password"] + label[placeholder]:before {
   background-position: center;
 }
 
-.login-container {
+.login-container,
+.signup-container {
   display: flex;
   flex-direction: column;
   justify-content: center;

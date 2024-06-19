@@ -21,11 +21,11 @@ export default function Navbar() {
           </li>
           <li>
             {user ? (
-              <Link to="/Login" onClick={logout}>
+              <Link to="/login" onClick={logout}>
                 Logout
               </Link>
             ) : (
-              <Link to="/Login">Login</Link>
+              <Link to="/login">Login</Link>
             )}
           </li>
         </ul>

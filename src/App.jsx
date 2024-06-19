@@ -35,38 +35,35 @@ export default function App() {
       <AuthProvider>
         <Navbar />
         <div className="sidebar-and-content">
-          {pathname !== "/Login" && pathname !== "/signup" && <Sidebar />}
+          {pathname !== "/login" && pathname !== "/Signup" && <Sidebar />}
           <Routes>
-            <Route element={<ProtectedLayout />}>
-              <Route path="/" element={<CompletePage />} />
-              <Route path="purchase_order" element={<CreatePO />} />
-              <Route path="edit_customerPurchaseOrder" element={<UpdatePO />} />
-              <Route path="invoice_generation">
-                <Route index element={<Invoice />} />
-                <Route path="print_invoice" element={<PrintInvoice />} />
-              </Route>
-              <Route
-                path="add_customer_details"
-                element={<AddCustomerDetails />}
-              />
-              <Route
-                path="add_product_details"
-                element={<AddProductDetails />}
-              />
-              <Route
-                path="edit_customer_details"
-                element={<EditCustomerDetails />}
-              />
-              <Route
-                path="edit_product_details"
-                element={<EditProductDetails />}
-              />
-              <Route path="report">
-                <Route index element={<Report />} />
-                <Route path="invoice-report" element={<InvoiceReport />} />
-                <Route path="dc-report" element={<DcReport />} />
-              </Route>
+            {/* <Route element={<ProtectedLayout />}> */}
+            <Route path="/" element={<CompletePage />} />
+            <Route path="purchase_order" element={<CreatePO />} />
+            <Route path="edit_customerPurchaseOrder" element={<UpdatePO />} />
+            <Route path="invoice_generation">
+              <Route index element={<Invoice />} />
+              <Route path="print_invoice" element={<PrintInvoice />} />
             </Route>
+            <Route
+              path="add_customer_details"
+              element={<AddCustomerDetails />}
+            />
+            <Route path="add_product_details" element={<AddProductDetails />} />
+            <Route
+              path="edit_customer_details"
+              element={<EditCustomerDetails />}
+            />
+            <Route
+              path="edit_product_details"
+              element={<EditProductDetails />}
+            />
+            <Route path="report">
+              <Route index element={<Report />} />
+              <Route path="invoice-report" element={<InvoiceReport />} />
+              <Route path="dc-report" element={<DcReport />} />
+            </Route>
+            {/* </Route> */}
             <Route path="signup" element={<Signup />} />
             <Route path="login" element={<Login />} />
             <Route path="*" element={<ErrorPage />} />
