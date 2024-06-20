@@ -46,83 +46,95 @@ export default function AddProductDetails() {
       </div>
       <div className="addProductDetails-form-container">
         <form onSubmit={handleSubmit} autoComplete="off">
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Prod_ID"
-              value={formData.Prod_ID}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Product ID" placeholder="Product ID"></label>
+          <div className="only-inputs">
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Prod_ID"
+                value={formData.Prod_ID}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Product ID"
+                placeholder="Product ID"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Supp_ID"
+                value={formData.Supp_ID}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Supplier ID"
+                placeholder="Supplier ID"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Prod_Desc"
+                value={formData.Prod_Desc}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Prod Description"
+                placeholder="Product Description"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Spec_ID"
+                value={formData.Spec_ID}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Spec ID" placeholder="Spec ID"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Pack_Size"
+                value={formData.Pack_Size}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Pack Size" placeholder="Pack Size"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Currency"
+                value={formData.Currency}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Currency" placeholder="Currency"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Price"
+                value={formData.Price}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Price" placeholder="Price"></label>
+            </div>
           </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Supp_ID"
-              value={formData.Supp_ID}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Supplier ID"
-              placeholder="Supplier ID"
-            ></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Prod_Desc"
-              value={formData.Prod_Desc}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Prod Description"
-              placeholder="Product Description"
-            ></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Spec_ID"
-              value={formData.Spec_ID}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Spec ID" placeholder="Spec ID"></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Pack_Size"
-              value={formData.Pack_Size}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Pack Size" placeholder="Pack Size"></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Currency"
-              value={formData.Currency}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Currency" placeholder="Currency"></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Price"
-              value={formData.Price}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Price" placeholder="Price"></label>
-          </div>
-          <div className="">
+          <div className="product-add-button-container">
             <button type="submit">ADD PRODUCT</button>
           </div>
         </form>

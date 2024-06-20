@@ -25,7 +25,7 @@ export default function Login() {
 
   return (
     <div className="login-container">
-      <form action="" onSubmit={handleSubmit}>
+      <form action="" onSubmit={handleSubmit} autoComplete="off">
         <div className="signup-container">
           <h1>Login</h1>
           <div>
@@ -35,6 +35,7 @@ export default function Login() {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              placeholder=" "
             />
             <label alt="Enter the Username" placeholder="Username"></label>
           </div>
@@ -45,6 +46,7 @@ export default function Login() {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              placeholder=" "
             />
             <label alt="Enter the Password" placeholder="Password"></label>
           </div>

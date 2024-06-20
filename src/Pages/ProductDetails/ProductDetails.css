@@ -13,8 +13,16 @@
   color: var(--primary-color);
 }
 
-.addProductDetails-form-container > form {
+.addProductDetails-form-container > form > .only-inputs {
   display: grid;
   gap: 20px;
   grid-template-columns: 1fr 1fr;
+  width: 50em;
+}
+
+.product-add-button-container,
+.product-update-button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }

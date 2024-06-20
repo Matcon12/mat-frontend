@@ -74,102 +74,102 @@ export default function EditProductDetails() {
       </div>
       <div className="addProductDetails-form-container">
         <form onSubmit={handleSubmit} autoComplete="off">
-          {/* <div>
-            <input
-              type="text"
-              required={true}
-              name="prod_id"
-              value={formData.prod_id}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Product ID" placeholder="Product ID"></label>
-          </div> */}
-          <div className="autocomplete-wrapper">
-            <AutoCompleteComponent
-              data={productData}
-              mainData={formData}
-              setData={setProductData}
-              setMainData={setFormData}
-              // handleChange={handleChange}
-              filteredData={filteredData}
-              setFilteredData={setFilteredData}
-              name="prod_id"
-              placeholder="Product ID"
-              search_value="prod_id"
-            />
+          <div className="only-inputs">
+            <div className="autocomplete-wrapper">
+              <AutoCompleteComponent
+                data={productData}
+                mainData={formData}
+                setData={setProductData}
+                setMainData={setFormData}
+                // handleChange={handleChange}
+                filteredData={filteredData}
+                setFilteredData={setFilteredData}
+                name="prod_id"
+                placeholder="Product ID"
+                search_value="prod_id"
+              />
+            </div>
+            <div className="get-data-container">
+              <button onClick={getProductDetails} className="get-data-button">
+                Get Data
+              </button>
+            </div>
+            <div>
+              <input
+                type="text"
+                // required={true}
+                name="supp_id"
+                value={formData.supp_id}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Supplier ID"
+                placeholder="Supplier ID"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                // required={true}
+                name="prod_desc"
+                value={formData.prod_desc}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Prod Description"
+                placeholder="Product Description"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                // required={true}
+                name="spec_id"
+                value={formData.spec_id}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Spec ID" placeholder="Spec ID"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                // required={true}
+                name="pack_size"
+                value={formData.pack_size}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Pack Size" placeholder="Pack Size"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                // required={true}
+                name="currency"
+                value={formData.currency}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Currency" placeholder="Currency"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                // required={true}
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Price" placeholder="Price"></label>
+            </div>
           </div>
-          <div className="get-data-container">
-            <button onClick={getProductDetails} className="get-data-button">
-              Get Data
-            </button>
+          <div className="product-update-button-container">
+            <button type="submit">UPDATE PRODUCT</button>
           </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="supp_id"
-              value={formData.supp_id}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Supplier ID"
-              placeholder="Supplier ID"
-            ></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="prod_desc"
-              value={formData.prod_desc}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Prod Description"
-              placeholder="Product Description"
-            ></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="spec_id"
-              value={formData.spec_id}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Spec ID" placeholder="Spec ID"></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="pack_size"
-              value={formData.pack_size}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Pack Size" placeholder="Pack Size"></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="currency"
-              value={formData.currency}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Currency" placeholder="Currency"></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Price" placeholder="Price"></label>
-          </div>
-          <button type="submit">UPDATE PRODUCT</button>
         </form>
       </div>
     </div>

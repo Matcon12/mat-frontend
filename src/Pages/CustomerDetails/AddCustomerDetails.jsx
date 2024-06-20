@@ -6,7 +6,7 @@ import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteCom
 
 export default function AddCustomerDetails() {
   const [stateData, setStateData] = useState()
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState([])
 
   useEffect(() => {
     api.get("/getStateData").then((response) => {
@@ -25,20 +25,26 @@ export default function AddCustomerDetails() {
     Cust_St_Name: "",
     Cust_PIN: "",
     Cust_GST_ID: "",
-    Phone_Num: "",
-    Email: "",
+    contact_name_1: "",
+    contact_phone_1: "",
+    contact_email_1: "",
+    contact_name_2: "",
+    contact_phone_2: "",
+    contact_email_2: "",
   }
 
   const [formData, setFormData] = useState(initialFormData)
 
   useEffect(() => {
-    setFilteredData(stateData);
-  }, [stateData]);
+    setFilteredData(stateData)
+  }, [stateData])
 
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      Cust_St_Code: stateData?.find((state) => state.state_name === formData.Cust_St_Name)?.state_code
+      Cust_St_Code: stateData?.find(
+        (state) => state.state_name === formData.Cust_St_Name
+      )?.state_code,
     }))
   }, [formData.Cust_St_Name, stateData])
 
@@ -49,11 +55,11 @@ export default function AddCustomerDetails() {
       [name]: value,
     }))
 
-    if (name === 'Cust_St_Name') {
-      const filtered = stateData.filter(suggestion =>
+    if (name === "Cust_St_Name") {
+      const filtered = stateData.filter((suggestion) =>
         suggestion.state_name.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredData(filtered);
+      )
+      setFilteredData(filtered)
     }
   }
 
@@ -113,197 +119,216 @@ export default function AddCustomerDetails() {
         <Link to="/edit_customer_details">Edit</Link>
       </div>
       <div className="addCustomerDetails-form-container">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_ID"
-              value={formData.Cust_ID}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer ID"
-              placeholder="Customer ID"
-            ></label>
+        <form onSubmit={handleSubmit} autoComplete="false">
+          <div className="only-inputs">
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Cust_ID"
+                value={formData.Cust_ID}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Customer ID"
+                placeholder="Customer ID"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Cust_Name"
+                value={formData.Cust_Name}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Customer Name"
+                placeholder="Customer Name"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Cust_addr1"
+                value={formData.Cust_addr1}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Address 1" placeholder="Address 1"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Cust_addr2"
+                value={formData.Cust_addr2}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Address 2" placeholder="Address 2"></label>
+            </div>
+            <div className="autocomplete-wrapper">
+              <AutoCompleteComponent
+                data={stateData}
+                mainData={formData}
+                setData={setStateData}
+                setMainData={setFormData}
+                handleChange={handleChange}
+                filteredData={filteredData}
+                setFilteredData={setFilteredData}
+                name="Cust_St_Name"
+                placeholder="Customer State Name"
+                search_value="state_name"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Cust_St_Code"
+                value={formData.Cust_St_Code}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Customer State Code"
+                placeholder="Customer State Code"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Cust_City"
+                value={formData.Cust_City}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Customer City"
+                placeholder="Customer City"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Cust_PIN"
+                value={formData.Cust_PIN}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Customer PIN"
+                placeholder="Customer PIN"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="Cust_GST_ID"
+                value={formData.Cust_GST_ID}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Customer GST ID"
+                placeholder="Customer GST ID"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="contact_name_1"
+                value={formData.contact_name_1}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Contact Name 1"
+                placeholder="Contact Name 1"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="contact_phone_1"
+                value={formData.contact_phone_1}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Contact Phone Number 1"
+                placeholder="Contact Phone 1"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="contact_email_1"
+                value={formData.contact_email_1}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Contact Email 1"
+                placeholder="Contact Email 1"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="contact_name_2"
+                value={formData.contact_name_2}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Contact Name 2"
+                placeholder="Contact Name 2"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="contact_phone_2"
+                value={formData.contact_phone_2}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Contact Phone Number 2"
+                placeholder="Contact Phone 2"
+              ></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                required={true}
+                name="contact_email_2"
+                value={formData.contact_email_2}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label
+                alt="Enter the Contact Email 1"
+                placeholder="Contact Email 1"
+              ></label>
+            </div>
           </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_Name"
-              value={formData.Cust_Name}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer Name"
-              placeholder="Customer Name"
-            ></label>
+          <div className="customer-add-button-container">
+            <button type="submit">ADD CUSTOMER</button>
           </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_addr1"
-              value={formData.Cust_addr1}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Address 1" placeholder="Address 1"></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_addr2"
-              value={formData.Cust_addr2}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Address 2" placeholder="Address 2"></label>
-          </div>
-          {/* <div className="autocomplete-wrapper">
-            <input
-              type="text"
-              required={true}
-              name="Cust_St_Name"
-              value={formData.Cust_St_Name}
-              onChange={(e) => handleChange(e)}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              aria-autocomplete="list"
-              aria-controls="autocomplete-list"
-            />
-            <label alt="Enter the Customer State Name" placeholder="Customer State Name"></label>
-            {isFocused && filteredData.length > 0 && (
-              <ul id="autocomplete-list" className="suggestions-list">
-                {filteredData.map((suggestion, i) => (
-                  <li
-                    key={i}
-                    onMouseDown={() => handleSuggestionClick(suggestion)}
-                  >
-                    {suggestion.state_name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div> */}
-          <div className="autocomplete-wrapper">
-            <AutoCompleteComponent
-              data={stateData}
-              mainData={formData}
-              setData={setStateData}
-              setMainData={setFormData}
-              handleChange={handleChange}
-              filteredData={filteredData}
-              setFilteredData={setFilteredData}
-              name="Cust_St_Name"
-              placeholder="Customer State Name"
-              search_value="state_name"
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_St_Code"
-              value={formData.Cust_St_Code}
-              onChange={handleChange}
-            />
-            <label alt="Enter the Customer State Code" placeholder="Customer State Code"></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_City"
-              value={formData.Cust_City}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer City"
-              placeholder="Customer City"
-            ></label>
-          </div>
-
-          {/* <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_St_Code"
-              value={formData.Cust_St_Code}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer State Code"
-              placeholder="Customer State Code"
-            ></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_St_Name"
-              value={formData.Cust_St_Name}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer State Name"
-              placeholder="Customer State Name"
-            ></label>
-          </div> */}
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_PIN"
-              value={formData.Cust_PIN}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer PIN"
-              placeholder="Customer PIN"
-            ></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Cust_GST_ID"
-              value={formData.Cust_GST_ID}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer GST ID"
-              placeholder="Customer GST ID"
-            ></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Phone_Num"
-              value={formData.Phone_Num}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer Phone Number"
-              placeholder="Customer Phone Number"
-            ></label>
-          </div>
-          <div>
-            <input
-              type="text"
-              required={true}
-              name="Email"
-              value={formData.Email}
-              onChange={handleChange}
-            />
-            <label
-              alt="Enter the Customer Email"
-              placeholder="Customer Email"
-            ></label>
-          </div>
-          <div></div>
-          <button type="submit">ADD CUSTOMER</button>
         </form>
       </div>
     </div>

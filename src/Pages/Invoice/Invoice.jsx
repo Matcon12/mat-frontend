@@ -108,8 +108,8 @@ export default function Invoice() {
 
   useEffect(() => {
     api.get("/getPurchaseOrder").then((response) => {
-      setPurchaseOrder(response.data.purchaseOrder)
-      console.log("response: ", response.data.purchaseOrder)
+      setPurchaseOrder(response.data.distinct_pono)
+      console.log("response: ", response.data.distinct_pono)
     })
   }, [])
 
@@ -154,6 +154,7 @@ export default function Invoice() {
               name="customerId"
               value={customerId}
               onChange={(e) => setCustomerId(e.target.value)}
+              placeholder=" "
             />
             <label
               alt="Enter the Customer ID"
@@ -167,6 +168,7 @@ export default function Invoice() {
               name="consigneeName"
               value={consigneeName}
               onChange={(e) => setConsigneeName(e.target.value)}
+              placeholder=" "
             />
             <label
               alt="Enter the Consignee Name"
@@ -180,6 +182,7 @@ export default function Invoice() {
               /*required={true}*/
               value={newConsigneeName}
               onChange={(e) => setNewConsigneeName(e.target.value)}
+              placeholder=" "
             />
             <label
               alt="Enter the new Consignee Name"
@@ -208,6 +211,7 @@ export default function Invoice() {
               required={true}
               value={totalEntries}
               onChange={(e) => setTotalEntries(e.target.value)}
+              placeholder=" "
             />
             <label
               alt="Enter the number of entries"

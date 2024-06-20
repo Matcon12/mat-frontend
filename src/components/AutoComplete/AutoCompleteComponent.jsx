@@ -10,13 +10,12 @@ export default function AutoCompleteComponent({
   placeholder,
   search_value,
   filteredData,
-  setFilteredData
+  setFilteredData,
 }) {
-
   const [isFocused, setIsFocused] = useState(false)
   useEffect(() => {
-    setFilteredData(data);
-  }, [data, setFilteredData]);
+    setFilteredData(data)
+  }, [data, setFilteredData])
 
   const handleChange = async (event) => {
     const { name, value } = event.target
@@ -27,7 +26,9 @@ export default function AutoCompleteComponent({
     const filtered = data.filter((suggestion) => {
       console.log("value: ", search_value)
       console.log("suggestion", suggestion)
-      return suggestion[search_value].toLowerCase().includes(value.toLowerCase())
+      return suggestion[search_value]
+        .toLowerCase()
+        .includes(value.toLowerCase())
     })
     setFilteredData(filtered)
   }
@@ -53,7 +54,7 @@ export default function AutoCompleteComponent({
     <>
       <input
         type="text"
-        required={true}
+        placeholder=" "
         name={name}
         value={mainData[name]}
         onChange={(e) => handleChange(e)}
@@ -63,13 +64,10 @@ export default function AutoCompleteComponent({
         aria-controls="autocomplete-list"
       />
       <label alt="Enter the Customer ID" placeholder={placeholder}></label>
-      {isFocused && filteredData.length > 0 && (
+      {isFocused && filteredData && filteredData.length > 0 && (
         <ul id="autocomplete-list" className="suggestions-list">
           {filteredData.map((suggestion, i) => (
-            <li
-              key={i}
-              onMouseDown={() => handleSuggestionClick(suggestion)}
-            >
+            <li key={i} onMouseDown={() => handleSuggestionClick(suggestion)}>
               {suggestion[search_value]}
             </li>
           ))}

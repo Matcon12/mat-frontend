@@ -7,7 +7,7 @@ import ProductDetails from "../../../reuse/ProductDetails/ProductDetails.jsx"
 import { Link } from "react-router-dom"
 import api from "../../../api/api.jsx"
 import AutoCompleteComponent from "../../../components/AutoComplete/AutoCompleteComponent.jsx"
-import { format, addYears, parse } from 'date-fns';
+import { format, addYears, parse } from "date-fns"
 
 export default function Customer() {
   const [customerData, setCustomerData] = useState(0)
@@ -21,8 +21,8 @@ export default function Customer() {
       setCustomerData(response.data.customerData)
     })
     api.get("/getPurchaseOrder").then((response) => {
-      setPurchaseOrder(response.data.purchaseOrder)
-      // console.log("response: ", response.data.purchaseOrder)
+      setPurchaseOrder(response.data.distinct_pono)
+      console.log("response: ", response.data.distinct_pono)
     })
   }, [])
 
@@ -228,9 +228,9 @@ export default function Customer() {
   }
 
   const onDateChange = (date, dateString) => {
-    const parsedDate = parse(dateString, "dd-MM-yyyy", new Date());
-    const validityDate = addYears(parsedDate, 1);
-    const formattedValidityDate = format(validityDate, "dd-MM-yyyy");
+    const parsedDate = parse(dateString, "dd-MM-yyyy", new Date())
+    const validityDate = addYears(parsedDate, 1)
+    const formattedValidityDate = format(validityDate, "dd-MM-yyyy")
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -491,6 +491,7 @@ export default function Customer() {
                     name="quoteId"
                     value={formData.quoteId}
                     onChange={handleChange}
+                    placeholder=" "
                   />
                   <label
                     alt="Enter the Quote ID"
@@ -504,6 +505,7 @@ export default function Customer() {
                     name="consigneeId"
                     value={formData.consigneeId}
                     onChange={handleChange}
+                    placeholder=" "
                   />
                   <label
                     alt="Enter the Consignee ID"
@@ -513,10 +515,10 @@ export default function Customer() {
                 <div>
                   <input
                     type="text"
-                    // required={true}
                     name="customerName"
                     value={formData.customerName}
                     onChange={handleChange}
+                    placeholder=" "
                   />
                   <label
                     alt="Enter the Customer Name"
@@ -530,6 +532,7 @@ export default function Customer() {
                     name="consigneeName"
                     value={formData.consigneeName}
                     onChange={handleChange}
+                    placeholder=" "
                   />
                   <label
                     alt="Enter the Consignee Name"
@@ -566,7 +569,9 @@ export default function Customer() {
                   )
                 })}
             </div>
-            <div>Grand Total: {grandTotal()} {success}</div>
+            <div>
+              Grand Total: {grandTotal()} {success}
+            </div>
             <div className="form-button-container">
               <button type="button" value="nextEntry" onClick={addMore}>
                 Add More

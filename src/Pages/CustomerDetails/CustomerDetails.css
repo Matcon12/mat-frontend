@@ -13,10 +13,11 @@
   color: var(--primary-color);
 }
 
-.addCustomerDetails-form-container > form {
+.addCustomerDetails-form-container > form > .only-inputs {
   display: grid;
   gap: 20px;
   grid-template-columns: 1fr 1fr;
+  width: 50em;
 }
 
 .get-data-button {
@@ -37,4 +38,18 @@
   display: grid;
   justify-content: center;
   align-items: center;
+}
+
+form {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 2em;
+  justify-content: center;
+}
+
+.customer-add-button-container,
+.customer-update-button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
