@@ -53,6 +53,7 @@ export default function Invoice({ formData }) {
               total_cgst={formData.total_cgst}
               total_sgst={formData.total_sgst}
               total_igst={formData.total_igst}
+              pack_size={formData.pack_size}
             />
             <div className="page-break">
               <InvoiceValue amount={formData.amount} gt={formData.gt} />

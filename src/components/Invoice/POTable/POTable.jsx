@@ -26,6 +26,7 @@ export default function POTable({
           </th>
           <th>PO Item Sl. No.</th>
           <th>HSN/SAC No</th>
+          <th>Pack Size</th>
           <th>QTY</th>
           <th>UOM</th>
           <th>Rate</th>
@@ -54,6 +55,7 @@ export default function POTable({
           <td></td>
           <td></td>
           <td></td>
+          <td></td>
         </tr>
         {po_data.map((data, index) => {
           return (
@@ -64,6 +66,7 @@ export default function POTable({
               </td>
               <td>{data.po_sl_no}</td>
               <td>{data.hsn}</td>
+              <td>{data.pack_size}</td>
               <td>{data.qty_delivered}</td>
               <td>{data.uom}</td>
               <td>{data.unit_price}</td>

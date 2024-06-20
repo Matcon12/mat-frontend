@@ -25,12 +25,29 @@ export default function EditCustomerDetails() {
   const [formData, setFormData] = useState(initialFormData)
   const [customerData, setCustomerData] = useState(0)
   const [filteredCustomerData, setFilteredCustomerData] = useState()
+  const [stateData, setStateData] = useState()
+  const [filteredStateData, setFilteredStateData] = useState([])
 
   useEffect(() => {
     api.get("/getCustomerData").then((response) => {
       setCustomerData(response.data.customerData)
     })
+    api.get("/getStateData").then((response) => {
+      let state_data = response.data.state_data
+      setStateData(state_data)
+    })
   }, [])
+
+  useEffect(() => {
+    console.log("stateData: ", stateData)
+    console.log("cust_st_name", formData.cust_st_name)
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      cust_st_code: stateData?.find(
+        (state) => state.state_name === formData.cust_st_name
+      )?.state_code,
+    }))
+  }, [formData.cust_st_name, stateData, filteredStateData])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -168,6 +185,19 @@ export default function EditCustomerDetails() {
                 placeholder="Customer City"
               ></label>
             </div>
+            <div className="autocomplete-wrapper">
+              <AutoCompleteComponent
+                data={stateData}
+                mainData={formData}
+                // setData={setStateData}
+                setMainData={setFormData}
+                filteredData={filteredStateData}
+                setFilteredData={setFilteredStateData}
+                name="cust_st_name"
+                placeholder="Customer State Name"
+                search_value="state_name"
+              />
+            </div>
             <div>
               <input
                 type="text"
@@ -175,25 +205,12 @@ export default function EditCustomerDetails() {
                 name="cust_st_code"
                 value={formData.cust_st_code}
                 onChange={handleChange}
+                readOnly="readonly"
                 placeholder=" "
               />
               <label
                 alt="Enter the Customer State Code"
                 placeholder="Customer State Code"
-              ></label>
-            </div>
-            <div>
-              <input
-                type="text"
-                required={true}
-                name="cust_st_name"
-                value={formData.cust_st_name}
-                onChange={handleChange}
-                placeholder=" "
-              />
-              <label
-                alt="Enter the Customer State Name"
-                placeholder="Customer State Name"
               ></label>
             </div>
             <div>
