@@ -1,0 +1,15 @@
+.input-details-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-details-form {
+  display: flex;
+  justify-content: center;
+}
+
+h3 {
+  text-align: center;
+}

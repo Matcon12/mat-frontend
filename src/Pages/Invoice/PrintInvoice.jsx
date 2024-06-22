@@ -41,6 +41,8 @@ export default function PrintInvoice() {
     </div>
   ))
 
+  console.log("formData: ", formData)
+
   return (
     <div className="print-invoice-container">
       <h1>Print Invoice: {gcn_no}</h1>

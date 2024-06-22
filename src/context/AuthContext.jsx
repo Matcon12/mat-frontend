@@ -15,11 +15,14 @@ export const AuthProvider = ({ children }) => {
       api
         .get("/test_token", {
           headers: { Authorization: `token ${token}` },
+          params: { token, user },
         })
         .then((response) => {
           const data = response.data
+          console.log("data: ", data)
           if (data.valid) {
-            setUser({ token, ...data.userDetails })
+            setUser({ token, ...data.user })
+            localStorage.setItem("jwt", data.token)
           } else {
             localStorage.removeItem("jwt")
           }
@@ -50,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     api
       .post("/login", credentials)
       .then((response) => {
-        const data = response
+        const data = response.data
         console.log("data", data)
         if (response.statusText) {
           localStorage.setItem("jwt", data.token)

@@ -3,7 +3,6 @@ import { useReactToPrint } from "react-to-print"
 import React, { useRef } from "react"
 
 function DcReportC({ formData }) {
-  console.log("dc: ", formData)
   return (
     <>
       <h2>DELIVERY CHALLAN</h2>
@@ -111,7 +110,7 @@ export default function DcPrint({ formData }) {
       <DcReportC ref={ref} formData={props.formData} />
     </div>
   ))
-  console.log("formdata1: ", formData)
+
   return (
     <div>
       <div>

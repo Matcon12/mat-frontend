@@ -236,7 +236,7 @@ export default function Invoice() {
                     <div>
                       <input
                         type="text"
-                        required={true}
+                        // required={true}
                         name="poSlNo"
                         value={entry.poSlNo}
                         onChange={(e) => handleChange(index, e)}
@@ -249,7 +249,7 @@ export default function Invoice() {
                     <div>
                       <input
                         type="text"
-                        required={true}
+                        // required={true}
                         name="quantity"
                         value={entry.quantity}
                         onChange={(e) => handleChange(index, e)}
@@ -262,7 +262,7 @@ export default function Invoice() {
                     <div>
                       <input
                         type="text"
-                        required={true}
+                        // required={true}
                         name="hsnSac"
                         value={entry.hsnSac}
                         onChange={(e) => handleChange(index, e)}
@@ -275,7 +275,7 @@ export default function Invoice() {
                     <div>
                       <input
                         type="text"
-                        required={true}
+                        // required={true}
                         name="batch"
                         value={entry.batch}
                         onChange={(e) => handleChange(index, e)}
@@ -288,7 +288,7 @@ export default function Invoice() {
                     <div>
                       <input
                         type="text"
-                        required={true}
+                        // required={true}
                         name="coc"
                         value={entry.coc}
                         onChange={(e) => handleChange(index, e)}

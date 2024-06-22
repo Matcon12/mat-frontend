@@ -45,11 +45,16 @@ table {
   border-collapse: collapse;
 }
 
-.table-border > thead > tr > th,
-.table-border > tbody > tr > td {
+table > tbody > tr > td {
+  vertical-align: top;
+}
+
+.po-table > thead > tr > th,
+.po-table > tbody > tr > td {
   border: 1px solid #999;
-  padding: 0.3rem;
+  padding: 0.2rem;
   text-align: left;
+  vertical-align: top;
 }
 
 .value-container {
@@ -73,6 +78,7 @@ table {
   text-align: left;
   width: 50%;
   text-align: center;
+  vertical-align: top;
 }
 
 .toc-signature-container {
@@ -109,4 +115,67 @@ table {
 
 .page-break {
   width: 100%;
+}
+
+/* po table width */
+.po-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.col1 {
+  width: 5%;
+}
+
+.col2 {
+  width: 50%;
+  text-align: center; /* Additional style as per inline style */
+}
+
+.col3 {
+  width: 10%;
+}
+
+.col4 {
+  width: 7%;
+}
+
+.col5 {
+  width: 6%;
+}
+
+.col6 {
+  width: 7%;
+}
+
+.col7 {
+  width: 8%;
+}
+
+.col8 {
+  width: 10%;
+}
+
+.col9 {
+  width: 8%;
+}
+
+.col10 {
+  width: 10%;
+}
+
+.col11 {
+  width: 8%;
+}
+
+.col12 {
+  width: 10%;
+}
+
+.col13 {
+  width: 7%;
+}
+
+.col14 {
+  width: 10%;
 }
