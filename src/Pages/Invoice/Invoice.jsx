@@ -11,13 +11,34 @@ export default function Invoice() {
   const [poNo, setPoNo] = useState("")
   const [totalEntries, setTotalEntries] = useState()
   const [entries, setEntries] = useState([])
+
   const [show, setShow] = useState(false)
   const [purchaseOrder, setPurchaseOrder] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
   const [contactName, setContactName] = useState()
   const [contactOptions, setContactOptions] = useState([])
 
+  // const initialFormData = {
+  //   customerId: "",
+  //   consigneeName: "",
+  //   newConsigneeName: "",
+  //   contactName: "",
+  //   poNo: "",
+  //   totalEntries: "",
+  //   entries: [],
+  // }
+
+  // const [formData, setFormData] = useState(initialFormData)
+  const [customerData, setCustomerData] = useState(0)
+  const [filteredCustomerData, setFilteredCustomerData] = useState()
+
   const navigate = useNavigate()
+
+  useEffect(() => {
+    api.get("/getCustomerData").then((response) => {
+      setCustomerData(response.data.customerData)
+    })
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -95,9 +116,9 @@ export default function Invoice() {
         params: { poNo: poNo.poNo },
       })
       .then((response) => {
-        setConsigneeName(response.data.consignee_id)
-        setCustomerId(response.data.cust_id)
-        setContactOptions(response.data.contact)
+        setConsigneeName(response.data.invoice_header_data.consignee_id)
+        setCustomerId(response.data.invoice_header_data.cust_id)
+        setContactOptions(response.data.invoice_header_data.contact_names)
         setContactName(response.data.contact[0])
         console.log(response.data)
       })
@@ -150,7 +171,7 @@ export default function Invoice() {
           <div>
             <input
               type="text"
-              required={true}
+              // required={true}
               name="customerId"
               value={customerId}
               onChange={(e) => setCustomerId(e.target.value)}
@@ -164,7 +185,7 @@ export default function Invoice() {
           <div>
             <input
               type="text"
-              required={true}
+              // required={true}
               name="consigneeName"
               value={consigneeName}
               onChange={(e) => setConsigneeName(e.target.value)}
@@ -175,11 +196,11 @@ export default function Invoice() {
               placeholder="Consignee Name"
             ></label>
           </div>
-          <div>
+          {/* <div>
             <input
               type="text"
               name="newConsigneeName"
-              /*required={true}*/
+              // required={true}
               value={newConsigneeName}
               onChange={(e) => setNewConsigneeName(e.target.value)}
               placeholder=" "
@@ -188,13 +209,27 @@ export default function Invoice() {
               alt="Enter the new Consignee Name"
               placeholder="New Consignee Name(if required)"
             ></label>
+          </div> */}
+          <div className="autocomplete-wrapper autocomplete-wrapper-invoice">
+            <AutoCompleteComponent
+              data={customerData}
+              mainData={newConsigneeName}
+              setData={setCustomerData}
+              setMainData={setConsigneeName}
+              handleChange={handleChange}
+              filteredData={filteredCustomerData}
+              setFilteredData={setFilteredCustomerData}
+              name="newConsigneeName"
+              placeholder="ConsigneeName (if required)"
+              search_value="cust_id"
+            />
           </div>
           <div className="input-container-contact">
             <select
               name="contactName"
               value={contactName}
               onChange={(e) => setContactName(e.target.value)}
-              required
+            // required
             >
               <option value="" disabled>
                 Select an option
@@ -208,7 +243,7 @@ export default function Invoice() {
             <input
               type="text"
               name="totalEntries"
-              required={true}
+              // required={true}
               value={totalEntries}
               onChange={(e) => setTotalEntries(e.target.value)}
               placeholder=" "
@@ -240,6 +275,7 @@ export default function Invoice() {
                         name="poSlNo"
                         value={entry.poSlNo}
                         onChange={(e) => handleChange(index, e)}
+                        placeholder=" "
                       />
                       <label
                         alt="Enter the PO Sl No."
@@ -253,6 +289,7 @@ export default function Invoice() {
                         name="quantity"
                         value={entry.quantity}
                         onChange={(e) => handleChange(index, e)}
+                        placeholder=" "
                       />
                       <label
                         alt="Enter the quantity"
@@ -266,6 +303,7 @@ export default function Invoice() {
                         name="hsnSac"
                         value={entry.hsnSac}
                         onChange={(e) => handleChange(index, e)}
+                        placeholder=" "
                       />
                       <label
                         alt="Enter the hsn/sac"
@@ -279,6 +317,7 @@ export default function Invoice() {
                         name="batch"
                         value={entry.batch}
                         onChange={(e) => handleChange(index, e)}
+                        placeholder=" "
                       />
                       <label
                         alt="Enter the batch no."
@@ -292,6 +331,7 @@ export default function Invoice() {
                         name="coc"
                         value={entry.coc}
                         onChange={(e) => handleChange(index, e)}
+                        placeholder=" "
                       />
                       <label
                         alt="Enter the COC No."

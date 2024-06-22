@@ -25,6 +25,7 @@ export default function UpdatePO() {
     prod_desc: "",
     additional_desc: "",
     pack_size: "",
+    uom: "",
     quantity: "",
     staggered_delivery: "",
     unit_price: "",
@@ -63,7 +64,7 @@ export default function UpdatePO() {
       })
       .then((response) => {
         let data = response.data.data
-        console.log(data)
+        console.log("data: ", data)
         const parsedDate = parse(data.podate, "dd-MM-yyyy", new Date())
         const validityDate = addYears(parsedDate, 1)
         const formattedValidityDate = format(validityDate, "dd-MM-yyyy")
@@ -86,6 +87,7 @@ export default function UpdatePO() {
           qty_sent: data.qty_sent,
           qty_balance: data.qty_balance,
           delivery_date: data.delivery_date,
+          uom: data.uom,
         })
       })
       .catch((error) => {
@@ -318,7 +320,7 @@ export default function UpdatePO() {
                 />
                 <label
                   alt="Enter the customer Id"
-                  placeholder="CustomerId"
+                  placeholder="Customer ID"
                 ></label>
               </div>
               <div>
@@ -462,7 +464,7 @@ export default function UpdatePO() {
                   />
                   <label
                     alt="Enter the Prod Description"
-                    placeholder="Prod Desc"
+                    placeholder="Product Description"
                   ></label>
                 </div>
                 <div>
@@ -476,7 +478,7 @@ export default function UpdatePO() {
                   />
                   <label
                     alt="Enter the Additional Desc"
-                    placeholder="Additional Desc"
+                    placeholder="Additional Description"
                   ></label>
                 </div>
                 <div>
@@ -503,6 +505,25 @@ export default function UpdatePO() {
                     alt="Enter the Pack Size"
                     placeholder="Pack Size"
                   ></label>
+                </div>
+                <div className="input-container">
+                  <select
+                    name="uom"
+                    value={searchData.uom}
+                    onChange={handleChangeDate}
+                    required
+                  >
+                    <option value="" disabled>
+                      Select an option
+                    </option>
+                    <option value="L">L</option>
+                    <option value="ML">ML</option>
+                    <option value="Kg">Kg</option>
+                    <option value="No.">No.</option>
+                    <option value="Kit">Kit</option>
+                    <option value="Doc">Doc</option>
+                  </select>
+                  <label alt="Select an Option" placeholder="UOM"></label>
                 </div>
                 <div>
                   <input

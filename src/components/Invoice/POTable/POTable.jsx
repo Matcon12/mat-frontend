@@ -26,6 +26,7 @@ export default function POTable({
           </th>
           <th className="col3">PO Sl. No.</th>
           <th className="col4">HSN Code</th>
+          <th className="col15">Pack Size</th>
           <th className="col5">QTY</th>
           <th className="col6">UOM</th>
           <th className="col7">Rate</th>
@@ -39,6 +40,22 @@ export default function POTable({
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <td className="col1 vertical-align-top"></td>
+          <td className="col2 vertical-align-top"></td>
+          <td className="col3 vertical-align-top"></td>
+          <td className="col4 vertical-align-top"></td>
+          <td className="col5 vertical-align-top"></td>
+          <td className="col6 vertical-align-top"></td>
+          <td className="col7 vertical-align-top"></td>
+          <td className="col8 vertical-align-top"></td>
+          <td className="col9 vertical-align-top"></td>
+          <td className="col10 vertical-align-top">Rs.</td>
+          <td className="col11 vertical-align-top"></td>
+          <td className="col12 vertical-align-top">Rs.</td>
+          <td className="col13 vertical-align-top"></td>
+          <td className="col14 vertical-align-top">Rs.</td>
+        </tr>
         {po_data.map((data, index) => {
           return (
             <tr key={index}>
@@ -48,6 +65,7 @@ export default function POTable({
               </td>
               <td className="col3">{data.po_sl_no}</td>
               <td className="col4">{data.hsn}</td>
+              <td className="col15">{data.pack_size}</td>
               <td className="col5">{data.qty_delivered}</td>
               <td className="col6">{data.uom}</td>
               <td className="col7">{data.unit_price}</td>

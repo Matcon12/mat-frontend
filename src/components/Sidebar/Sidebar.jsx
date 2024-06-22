@@ -37,17 +37,17 @@ export default function SidebarComponent() {
           },
         }}
       >
-        <MenuItem component={<Link to="/purchase_order" />}>
-          Purchase Order
-        </MenuItem>
-        <MenuItem component={<Link to="/invoice_generation" />}>
-          Invoice Generation
-        </MenuItem>
         <MenuItem component={<Link to="/add_customer_details" />}>
           Customer Details
         </MenuItem>
         <MenuItem component={<Link to="/add_product_details" />}>
           Product Details
+        </MenuItem>
+        <MenuItem component={<Link to="/purchase_order" />}>
+          Purchase Order
+        </MenuItem>
+        <MenuItem component={<Link to="/invoice_generation" />}>
+          Invoice Generation
         </MenuItem>
         <SubMenu label="Reports/challan">
           <MenuItem component={<Link to="/report" />}>View/Print</MenuItem>

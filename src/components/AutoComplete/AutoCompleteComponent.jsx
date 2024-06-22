@@ -10,7 +10,7 @@ export default function AutoCompleteComponent({
   placeholder,
   search_value,
   filteredData,
-  setFilteredData,
+  setFilteredData
 }) {
   const [isFocused, setIsFocused] = useState(false)
   useEffect(() => {
@@ -24,13 +24,14 @@ export default function AutoCompleteComponent({
       [name]: value,
     }))
     const filtered = data.filter((suggestion) => {
-      console.log("value: ", search_value)
-      console.log("suggestion", suggestion)
+      // console.log("value: ", search_value)
+      // console.log("suggestion", suggestion)
       return suggestion[search_value]
         .toLowerCase()
         .includes(value.toLowerCase())
     })
     setFilteredData(filtered)
+    console.log({ "data": data, "filtered data": filtered })
   }
 
   const handleSuggestionClick = (suggestion) => {
