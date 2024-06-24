@@ -18,14 +18,47 @@ function DcReportC({ formData }) {
             {/* International Aerospace Manufacturing Pvt Ltd <br />
             Survey No.3/1, Plot No. 2,3&4, ELCOT SEZ, <br />
             KRISHNAGIRI-635109, Tamil Nadu, India */}
+            {formData.c.cust_name}
             {formData.c.cust_addr1}
           </p>
         </div>
         <div className="dc-details">
-          <p>DC NO. : {formData.odc[0].gcn_no}</p>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>DC No.</strong>
+                </td>
+                <td>&nbsp;:&nbsp;</td>
+                <td>{formData.odc[0].gcn_no}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Date</strong>
+                </td>
+                <td>&nbsp;:&nbsp;</td>
+                <td>{formData.odc[0].gcn_date}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>P.O. No.</strong>
+                </td>
+                <td>&nbsp;:&nbsp;</td>
+                <td>{formData.odc[0].po_no}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Date</strong>
+                </td>
+                <td>&nbsp;:&nbsp;</td>
+                <td>{formData.odc[0].po_date}</td>
+              </tr>
+            </tbody>
+          </table>
+          {/* <p>DC No. : {formData.odc[0].gcn_no}</p>
           <p>DATE : {formData.odc[0].gcn_date}</p>
           <p>P.O. No. : {formData.odc[0].po_no}</p>
-          <p>DATE : {formData.odc[0].po_date}</p>
+          <p>DATE : {formData.odc[0].po_date}</p> */}
         </div>
       </div>
       <div className="message">
