@@ -34,16 +34,16 @@
   width: 50em;
 }
 
-.form-header-container > h1 {
+.form-header-container>h1 {
   color: var(--primary-color);
 }
 
-.form-header-container > a {
+.form-header-container>a {
   text-decoration: none;
   color: var(--primary-color);
 }
 
-.form-container > form {
+.form-container>form {
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 2em;
@@ -127,7 +127,7 @@ input[type="text"]:focus {
   border-color: #00bafa;
 }
 
-input[type="text"]:focus + label[placeholder]:before {
+input[type="text"]:focus+label[placeholder]:before {
   color: #00bafa;
 }
 
@@ -144,8 +144,8 @@ input[type="text"][required]:valid + label[placeholder]:before {
   content: attr(placeholder);
 } */
 
-input[type="text"]:focus + label[placeholder]:before,
-input[type="text"]:not(:placeholder-shown) + label[placeholder]:before {
+input[type="text"]:focus+label[placeholder]:before,
+input[type="text"]:not(:placeholder-shown)+label[placeholder]:before {
   transition-duration: 0.2s;
   transform: translate(0, -1.5em) scale(0.9, 0.9);
   content: attr(placeholder);
@@ -155,11 +155,11 @@ input[type="text"]::placeholder {
   color: transparent;
 }
 
-input[type="text"]:invalid + label[placeholder][alt]:before {
+input[type="text"]:invalid+label[placeholder][alt]:before {
   content: attr(placeholder);
 }
 
-input[type="text"] + label[placeholder] {
+input[type="text"]+label[placeholder] {
   display: block;
   pointer-events: none;
   line-height: 1em;
@@ -168,7 +168,7 @@ input[type="text"] + label[placeholder] {
   z-index: 2;
 }
 
-input[type="text"] + label[placeholder]:before {
+input[type="text"]+label[placeholder]:before {
   content: attr(placeholder);
   font-size: 14px;
   display: inline-block;
@@ -199,7 +199,7 @@ input[type="text"] + label[placeholder]:before {
   height: 14px;
 }
 
-.ant-picker-input > input::placeholder,
+.ant-picker-input>input::placeholder,
 .ant-picker-suffix {
   color: #898989 !important;
 }
@@ -209,17 +209,17 @@ input[type="text"] + label[placeholder]:before {
   color: #898989 !important;
 }
 
-.autocomplete-wrapper > input[type="text"] {
+.autocomplete-wrapper>input[type="text"] {
   width: -webkit-fill-available;
 }
 
-.autocomplete-wrapper > ul {
+.autocomplete-wrapper>ul {
   max-height: 200px;
   overflow-y: scroll;
   z-index: 3;
 }
 
-.autocomplete-wrapper > ul > li {
+.autocomplete-wrapper>ul>li {
   font-size: 14px;
 }
 
@@ -301,7 +301,8 @@ button[value="nextEntry"]:hover {
   grid-template-columns: auto 1fr;
   gap: 10px;
 }
-.productDescContainer > .product-desc-only-inputs {
+
+.productDescContainer>.product-desc-only-inputs {
   display: grid;
   /* grid-template-rows: 1fr 1fr 2fr; */
   grid-template-columns: 1fr 1fr 1fr;
@@ -312,12 +313,12 @@ button[value="nextEntry"]:hover {
   width: 50em;
 }
 
-.productDescContainer > div {
+.productDescContainer>div {
   height: 100%;
   align-content: end;
 }
 
-.productDescContainer > div > input {
+.productDescContainer>div>input {
   /* width: 70%; */
   margin: 0;
   /* margin-top: calc(-3.7em - 2px) !important;
@@ -329,7 +330,7 @@ button[value="nextEntry"]:hover {
   margin-top: calc(-4em - 2px) !important;
 } */
 
-.textAreaFilled + label[placeholder]:before {
+.textAreaFilled+label[placeholder]:before {
   transition-duration: 0.2s;
   transform: translate(0, -1.5em) scale(0.9, 0.9);
   content: attr(placeholder);
@@ -405,28 +406,28 @@ textarea[name="omat"]:focus .ant-select-selector:focus {
   border-color: #00bafa;
 }
 
-textarea[name="productDesc"]:focus + label[placeholder]:before,
-textarea[name="omat"]:focus + label[placeholder]:before,
-.ant-select-selector:focus + label[placeholder]:before {
+textarea[name="productDesc"]:focus+label[placeholder]:before,
+textarea[name="omat"]:focus+label[placeholder]:before,
+.ant-select-selector:focus+label[placeholder]:before {
   color: #00bafa;
 }
 
-textarea[name="productDesc"]:focus + label[placeholder]:before,
-textarea[name="productDesc"]:valid + label[placeholder]:before,
-textarea[name="omat"]:focus + label[placeholder]:before,
-textarea[name="omat"]:valid + label[placeholder]:before {
+textarea[name="productDesc"]:focus+label[placeholder]:before,
+textarea[name="productDesc"]:valid+label[placeholder]:before,
+textarea[name="omat"]:focus+label[placeholder]:before,
+textarea[name="omat"]:valid+label[placeholder]:before {
   transition-duration: 0.2s;
   transform: translate(0, -2em) scale(0.9, 0.9);
   content: attr(placeholder);
 }
 
-textarea[name="productDesc"]:invalid + label[placeholder][alt]:before,
-textarea[name="omat"]:invalid + label[placeholder][alt]:before {
+textarea[name="productDesc"]:invalid+label[placeholder][alt]:before,
+textarea[name="omat"]:invalid+label[placeholder][alt]:before {
   content: attr(placeholder);
 }
 
-textarea[name="productDesc"] + label[placeholder],
-textarea[name="omat"] + label[placeholder] {
+textarea[name="productDesc"]+label[placeholder],
+textarea[name="omat"]+label[placeholder] {
   display: block;
   pointer-events: none;
   line-height: 1em;
@@ -436,8 +437,8 @@ textarea[name="omat"] + label[placeholder] {
   z-index: 2;
 }
 
-textarea[name="productDesc"] + label[placeholder]:before,
-textarea[name="omat"] + label[placeholder]:before {
+textarea[name="productDesc"]+label[placeholder]:before,
+textarea[name="omat"]+label[placeholder]:before {
   content: attr(placeholder);
   font-size: 14px;
   display: inline-block;
@@ -502,4 +503,15 @@ hr {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.gstApplicable {
+  grid-column: 2;
+  text-align: end;
+}
+
+.gstApplicable>label {
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }

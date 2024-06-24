@@ -13,6 +13,10 @@ export default function Invoice() {
     customerData: [],
     totalEntries: "",
     contactName: "",
+    freight: false,
+    insurance: false,
+    freightCharges: "",
+    insuranceCharges: "",
   }
   const [formData, setFormData] = useState(initialFormData)
 
@@ -20,7 +24,7 @@ export default function Invoice() {
   const [show, setShow] = useState(false)
   const [purchaseOrder, setPurchaseOrder] = useState([])
   const [filteredPurchaseData, setFilteredPurchaseData] = useState([])
-  const [contactName, setContactName] = useState("")
+  // const [contactName, setContactName] = useState("")
   const [contactOptions, setContactOptions] = useState([])
   const [customerData, setCustomerData] = useState([])
   const [filteredCustomerData, setFilteredCustomerData] = useState([])
@@ -53,6 +57,8 @@ export default function Invoice() {
       contactName: formData.contactName,
       poNo: formData.poNo,
       items: entries,
+      freightCharges: formData.freightCharges,
+      insuranceCharges: formData.insuranceCharges,
     }
     api
       .post(
@@ -131,6 +137,14 @@ export default function Invoice() {
   useEffect(() => {
     getData()
   }, [formData.poNo])
+
+  const handleCheckboxChange = (event) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [event.target.name]: event.target.checked,
+    }))
+    console.log(formData)
+  };
 
   return (
     <div className="invoice-generation-container">
@@ -307,6 +321,67 @@ export default function Invoice() {
                     </div>
                   </div>
                 ))}
+              <div className="other-charges-container">
+                Other Charges:
+                <div className="other-charges">
+                  <div className="freight">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="freight"
+                        checked={formData.freight}
+                        onChange={handleCheckboxChange}
+                      />
+                      Freight Charges
+                    </label>
+                    {
+                      formData.freight && (
+                        <div>
+                          <input
+                            type="text"
+                            name="freightCharges"
+                            value={formData.freightCharges}
+                            onChange={handleInputChange}
+                            placeholder=" "
+                          />
+                          <label
+                            alt="Enter the Freight Charges"
+                            placeholder="Freight Charges"
+                          ></label>
+                        </div>
+                      )
+                    }
+                  </div>
+                  <div className="insurance">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="insurance"
+                        checked={formData.insurance}
+                        onChange={handleCheckboxChange}
+                      />
+                      Insurance Charges
+                    </label>
+                    {
+                      formData.insurance && (
+                        <div>
+                          <input
+                            type="text"
+                            name="insuranceCharges"
+                            value={formData.insuranceCharges}
+                            onChange={handleInputChange}
+                            placeholder=" "
+                          />
+                          <label
+                            alt="Enter the Insurance Charges"
+                            placeholder="Insurance Charges"
+                          ></label>
+                        </div>
+                      )
+                    }
+                  </div>
+                </div>
+              </div>
               <div className="submit-button">
                 <button type="submit">Submit</button>
               </div>

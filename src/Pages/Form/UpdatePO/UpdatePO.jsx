@@ -34,6 +34,7 @@ export default function UpdatePO() {
     delivery_date: "",
     omat: "",
     hsn_sac: "",
+    gst_applicable: "false",
   }
 
   const [searchInputs, setSearchInputs] = useState(initialSearchInputs)
@@ -89,6 +90,7 @@ export default function UpdatePO() {
           delivery_date: data.delivery_date,
           uom: data.uom,
           hsn_sac: data.hsn_sac,
+          gst_applicable: data.gst_applicable,
         })
       })
       .catch((error) => {
@@ -274,6 +276,14 @@ export default function UpdatePO() {
     }
   }
 
+  const handleCheckboxChange = (event) => {
+    setSearchData((prevFormData) => ({
+      ...prevFormData,
+      [event.target.name]: event.target.checked,
+    }))
+    console.log(searchData)
+  };
+
   return (
     <div className="customer-container">
       <div className="complete-form-container">
@@ -336,6 +346,19 @@ export default function UpdatePO() {
                   placeholder=" "
                 />
                 <label alt="Enter the PO_Sl_No" placeholder="PO Sl No."></label>
+              </div>
+              <div
+                className="gstApplicable">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="gstApplicable"
+                    checked={searchData.gstApplicable}
+                    onChange={handleCheckboxChange}
+                  />
+                  Is GST applicable
+                </label>
+                {/* <p>{formData.gstApplicable ? "Checkbox is checked!" : "Checkbox is not checked."}</p> */}
               </div>
             </div>
           </form>

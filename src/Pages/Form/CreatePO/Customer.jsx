@@ -46,6 +46,7 @@ export default function Customer() {
     quoteId: "",
     consigneeId: "",
     consigneeName: "",
+    gstApplicable: "",
   }
 
   const initialProductDetails = {
@@ -392,6 +393,15 @@ export default function Customer() {
   //   setIsFocused(false)
   // }
 
+  // Handle change events
+  const handleCheckboxChange = (event) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [event.target.name]: event.target.checked,
+    }))
+    console.log(formData)
+  };
+
   return (
     <div className="customer-container">
       {/* <Sidebar /> */}
@@ -538,6 +548,19 @@ export default function Customer() {
                     alt="Enter the Consignee Name"
                     placeholder="Consignee Name"
                   ></label>
+                </div>
+                <div
+                  className="gstApplicable">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="gstApplicable"
+                      checked={formData.gstApplicable}
+                      onChange={handleCheckboxChange}
+                    />
+                    Is GST applicable
+                  </label>
+                  {/* <p>{formData.gstApplicable ? "Checkbox is checked!" : "Checkbox is not checked."}</p> */}
                 </div>
               </div>
               {productDetails &&
