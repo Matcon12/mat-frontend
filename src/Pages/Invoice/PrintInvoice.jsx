@@ -5,7 +5,7 @@ import React, { useEffect, useState, useRef } from "react"
 import { useReactToPrint } from "react-to-print"
 import api from "../../api/api.jsx"
 import "./Invoice.css"
-import DcPrint from "../../Pages/ViewPrint/DcPrint"
+import DcPrint from "../../components/DC/Dc.jsx"
 
 export default function PrintInvoice() {
   const [formData, setFormData] = useState()

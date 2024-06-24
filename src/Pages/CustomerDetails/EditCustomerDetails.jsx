@@ -62,7 +62,9 @@ export default function EditCustomerDetails() {
       .get("/getCustomerDetails", {
         params: { cust_id: formData.cust_id },
       })
-      .then((response) => {
+      .then(async (response) => {
+        console.log(response.data)
+        // await resetForm()
         setFormData((prevFormData) => ({
           ...prevFormData,
           cust_name: response.data.cust_name,
@@ -73,14 +75,18 @@ export default function EditCustomerDetails() {
           cust_st_name: response.data.cust_st_name,
           cust_pin: response.data.cust_pin,
           cust_gst_id: response.data.cust_gst_id,
-          phone_no: response.data.phone_no,
-          email: response.data.email,
+          contact_name_1: response.data.contact_name_1,
+          contact_phone_1: response.data.contact_phone_1,
+          contact_email_1: response.data.contact_email_1,
+          contact_name_2: response.data.contact_name_2,
+          contact_phone_2: response.data.contact_phone_2,
+          contact_email_2: response.data.contact_email_2,
         }))
       })
   }
 
-  const resetForm = () => {
-    setFormData(initialFormData)
+  const resetForm = async () => {
+    await setFormData(initialFormData)
   }
 
   const handleSubmit = (e) => {
@@ -138,7 +144,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // //required={true}
                 name="cust_name"
                 value={formData.cust_name}
                 onChange={handleChange}
@@ -152,7 +158,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="cust_addr1"
                 value={formData.cust_addr1}
                 onChange={handleChange}
@@ -163,7 +169,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="cust_addr2"
                 value={formData.cust_addr2}
                 onChange={handleChange}
@@ -174,7 +180,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="cust_city"
                 value={formData.cust_city}
                 onChange={handleChange}
@@ -201,7 +207,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="cust_st_code"
                 value={formData.cust_st_code}
                 onChange={handleChange}
@@ -216,7 +222,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="cust_pin"
                 value={formData.cust_pin}
                 onChange={handleChange}
@@ -230,7 +236,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="cust_gst_id"
                 value={formData.cust_gst_id}
                 onChange={handleChange}
@@ -244,7 +250,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="contact_name_1"
                 value={formData.contact_name_1}
                 onChange={handleChange}
@@ -258,7 +264,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="contact_phone_1"
                 value={formData.contact_phone_1}
                 onChange={handleChange}
@@ -272,7 +278,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="contact_email_1"
                 value={formData.contact_email_1}
                 onChange={handleChange}
@@ -286,7 +292,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="contact_name_2"
                 value={formData.contact_name_2}
                 onChange={handleChange}
@@ -300,7 +306,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="contact_phone_2"
                 value={formData.contact_phone_2}
                 onChange={handleChange}
@@ -314,7 +320,7 @@ export default function EditCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                //required={true}
                 name="contact_email_2"
                 value={formData.contact_email_2}
                 onChange={handleChange}
@@ -328,6 +334,7 @@ export default function EditCustomerDetails() {
           </div>
           <div className="customer-update-button-container">
             <button type="submit">UPDATE CUSTOMER</button>
+            <button onClick={resetForm}>CLEAR</button>
           </div>
         </form>
       </div>

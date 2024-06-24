@@ -3,6 +3,7 @@ import "./InvoicePrint.css"
 import { useReactToPrint } from "react-to-print"
 import Invoice from "../../components/Invoice/Invoice"
 import api from "../../api/api"
+import DcPrint from "../../components/DC/Dc"
 
 export default function InvoiceReport() {
   const [formData, setFormData] = useState({
@@ -27,14 +28,14 @@ export default function InvoiceReport() {
 
   console.log("formdata: ", formData)
 
-  const generateGcnNumber = (gst_rate, fin_year, fyear) => {
-    const padWithZeros = (number, length) => {
-      return number.toString().padStart(length, "0")
-    }
+  // const generateGcnNumber = (gst_rate, fin_year, fyear) => {
+  //   const padWithZeros = (number, length) => {
+  //     return number.toString().padStart(length, "0")
+  //   }
 
-    const gcn_no = formData.invoiceNumber
-    return `${padWithZeros(gcn_no, 3)}/${formData.year}`
-  }
+  //   const gcn_no = formData.invoiceNumber
+  //   return `${padWithZeros(gcn_no, 3)}/${formData.year}`
+  // }
 
   const InvoiceC = React.forwardRef((props, ref) => (
     <div ref={ref} className="invoice-container-container">
@@ -47,7 +48,7 @@ export default function InvoiceReport() {
     api
       .get("/invoiceGeneration", {
         params: {
-          gcn_no: generateGcnNumber,
+          gcn_no: formData.invoiceNumber,
         },
       })
       .then((response) => {
@@ -94,10 +95,11 @@ export default function InvoiceReport() {
 
         {responseData && (
           <>
-            <InvoiceC ref={componentRef} />
             <div>
               <button onClick={handlePrint}>Print this out!</button>
             </div>
+            <InvoiceC ref={componentRef} />
+            <DcPrint formData={responseData} />
           </>
         )}
       </div>

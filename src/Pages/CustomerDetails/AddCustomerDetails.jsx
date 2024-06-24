@@ -124,7 +124,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Cust_ID"
                 value={formData.Cust_ID}
                 onChange={handleChange}
@@ -138,7 +138,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Cust_Name"
                 value={formData.Cust_Name}
                 onChange={handleChange}
@@ -152,7 +152,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Cust_addr1"
                 value={formData.Cust_addr1}
                 onChange={handleChange}
@@ -188,7 +188,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Cust_St_Code"
                 value={formData.Cust_St_Code}
                 onChange={handleChange}
@@ -202,7 +202,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Cust_City"
                 value={formData.Cust_City}
                 onChange={handleChange}
@@ -216,7 +216,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Cust_PIN"
                 value={formData.Cust_PIN}
                 onChange={handleChange}
@@ -230,7 +230,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Cust_GST_ID"
                 value={formData.Cust_GST_ID}
                 onChange={handleChange}
@@ -244,7 +244,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="contact_name_1"
                 value={formData.contact_name_1}
                 onChange={handleChange}
@@ -258,7 +258,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="contact_phone_1"
                 value={formData.contact_phone_1}
                 onChange={handleChange}
@@ -272,7 +272,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="contact_email_1"
                 value={formData.contact_email_1}
                 onChange={handleChange}
@@ -286,7 +286,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="contact_name_2"
                 value={formData.contact_name_2}
                 onChange={handleChange}
@@ -300,7 +300,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="contact_phone_2"
                 value={formData.contact_phone_2}
                 onChange={handleChange}
@@ -314,7 +314,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="contact_email_2"
                 value={formData.contact_email_2}
                 onChange={handleChange}

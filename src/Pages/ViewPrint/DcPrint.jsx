@@ -1,123 +1,105 @@
-import { Link } from "react-router-dom"
+import React, { useState, useRef } from "react"
+import "./InvoicePrint.css"
 import { useReactToPrint } from "react-to-print"
-import React, { useRef } from "react"
+import Invoice from "../../components/Invoice/Invoice"
+import api from "../../api/api"
 
-function DcReportC({ formData }) {
-  return (
-    <>
-      <h2>DELIVERY CHALLAN</h2>
-      <br />
-      <br />
-      <br />
-      <br />
-      <div className="dc-header">
-        <div className="to-address">
-          <p>
-            To,
-            <br />
-            {/* International Aerospace Manufacturing Pvt Ltd <br />
-            Survey No.3/1, Plot No. 2,3&4, ELCOT SEZ, <br />
-            KRISHNAGIRI-635109, Tamil Nadu, India */}
-            {formData.c.cust_addr1}
-          </p>
-        </div>
-        <div className="dc-details">
-          <p>DC NO. : {formData.odc[0].gcn_no}</p>
-          <p>DATE : {formData.odc[0].gcn_date}</p>
-          <p>P.O. No. : {formData.odc[0].po_no}</p>
-          <p>DATE : {formData.odc[0].po_date}</p>
-        </div>
-      </div>
-      <div className="message">
-        <br />
-        <p>Dear Sir,</p>
-        <p>Kind attention {formData.odc1.contact_name}</p>
-        <br />
-        <p>
-          Please receive the goods in good considtion and acknowledge the same.
-        </p>
-        <br />
-      </div>
-      <div className="table">
-        <table className="dc-table">
-          <thead>
-            <tr>
-              <th>Sl No.</th>
-              <th style={{ width: "250px" }}>Description of Goods</th>
-              <th>QTY</th>
-              <th>Pack Size</th>
-              <th>Total Qty</th>
-              <th>UOM</th>
-              <th>Batch No.</th>
-              <th>COC No.</th>
-            </tr>
-          </thead>
-          <tbody>
-            {formData.odc.map((data, index) => {
-              return (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    {data.prod_desc}
-                    {data.additional_desc === "N/A"
-                      ? ""
-                      : [data.additional_desc]}
-                  </td>
-                  <td>{data.qty_delivered}</td>
-                  <td>{data.pack_size}</td>
-                  <td>{data.qty_delivered * parseFloat(data.pack_size)}</td>
+export default function InvoiceReport() {
+  const [formData, setFormData] = useState({
+    invoiceNumber: "",
+    year: "2024-25",
+  })
 
-                  <td>{data.uom}</td>
-                  <td>{data.batch}</td>
-                  <td>{data.coc}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="gst_no">
-        <br />
-        <h3>GST NO: {formData.c.cust_gst_id}</h3>
-        <div></div>
-        <br />
-        <br />
-        <br />
-      </div>
-      <div className="signature">
-        <div className="matcon-signature">
-          <h3>For MATCON</h3>
-          <br />
-          <br />
-          <h3>Authorized Signatory</h3>
-        </div>
-        <div className="customer-signature">
-          <h3>Customer Signature</h3>
-        </div>
-      </div>
-    </>
-  )
-}
-export default function DcPrint({ formData }) {
+  const [responseData, setResponseData] = useState()
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }))
+  }
+
   const componentRef = useRef()
-
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   })
 
-  const DcReportComponent = React.forwardRef((props, ref) => (
-    <div ref={ref} className="dc-report">
-      <DcReportC ref={ref} formData={props.formData} />
+  console.log("formdata: ", formData)
+
+  // const generateGcnNumber = (gst_rate, fin_year, fyear) => {
+  //   const padWithZeros = (number, length) => {
+  //     return number.toString().padStart(length, "0")
+  //   }
+
+  //   const gcn_no = formData.invoiceNumber
+  //   return `${padWithZeros(gcn_no, 3)}/${formData.year}`
+  // }
+
+  const InvoiceC = React.forwardRef((props, ref) => (
+    <div ref={ref} className="invoice-container-container">
+      <Invoice ref={ref} formData={responseData} />
     </div>
   ))
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    api
+      .get("/invoiceGeneration", {
+        params: {
+          gcn_no: formData.invoiceNumber,
+        },
+      })
+      .then((response) => {
+        setResponseData(response.data.context)
+        console.log(response.data.context)
+      })
+      .catch((error) => {
+        console.log(error.response.data.error)
+      })
+  }
+
   return (
-    <div>
-      <div>
-        <button onClick={handlePrint}>Print this out!</button>
-      </div>
-      <div className="dc-report-container" ref={componentRef}>
-        <DcReportComponent formData={formData} />
+    <div className="invoice-report-container">
+      <div className="input-details-container">
+        <h3>Delivery Challan:</h3>
+        <form onSubmit={handleSubmit} className="input-details-form">
+          <div>
+            <input
+              type="text"
+              name="invoiceNumber"
+              /*required={true}*/
+              value={formData.invoiceNumber}
+              onChange={handleChange}
+              placeholder=" "
+            />
+            <label
+              alt="Enter the Invoice Number"
+              placeholder="Invoice Number"
+            ></label>
+          </div>
+          <div>
+            <input
+              type="text"
+              name="year"
+              /*required={true}*/
+              value={formData.year}
+              onChange={handleChange}
+              placeholder=" "
+            />
+            <label alt="Enter the year" placeholder="Year"></label>
+          </div>
+          <button type="submit">Get DC</button>
+        </form>
+
+        {responseData && (
+          <>
+            <DcPrint formData={responseData} />
+            <div>
+              <button onClick={handlePrint}>Print this out!</button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

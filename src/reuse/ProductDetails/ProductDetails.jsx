@@ -236,7 +236,7 @@ export default function ProductDetails({
             name="uom"
             value={formData.uom}
             onChange={(e) => handleChange(index, e)}
-            required
+            // required
           >
             <option value="" disabled>
               Select an option

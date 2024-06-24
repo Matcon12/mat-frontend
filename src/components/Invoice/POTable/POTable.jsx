@@ -28,7 +28,7 @@ export default function POTable({
           <th className="col4">HSN Code</th>
           <th className="col15">Pack Size</th>
           <th className="col5">QTY</th>
-          <th className="col6">UOM</th>
+          <th className="col6">U O M</th>
           <th className="col7">Rate</th>
           <th className="col8">Total</th>
           <th className="col9">CGST Rate (%)</th>
@@ -45,6 +45,7 @@ export default function POTable({
           <td className="col2 vertical-align-top"></td>
           <td className="col3 vertical-align-top"></td>
           <td className="col4 vertical-align-top"></td>
+          <td className="col15 vertical-align-top"></td>
           <td className="col5 vertical-align-top"></td>
           <td className="col6 vertical-align-top"></td>
           <td className="col7 vertical-align-top"></td>
@@ -61,7 +62,14 @@ export default function POTable({
             <tr key={index}>
               <td className="col1">{index + 1}</td>
               <td className="col2">
-                {data.prod_desc} [{data.additional_desc}, {data.omat}]
+                {data.prod_desc}
+                {data.additional_desc && data.omat
+                  ? ` [${data.additional_desc}, ${data.omat}]`
+                  : data.additional_desc
+                  ? ` [${data.additional_desc}]`
+                  : data.omat
+                  ? ` [${data.omat}]`
+                  : ""}
               </td>
               <td className="col3">{data.po_sl_no}</td>
               <td className="col4">{data.hsn}</td>
@@ -99,6 +107,7 @@ export default function POTable({
           <td className="col3" colSpan={2}>
             Total:
           </td>
+          <td className="col15"></td>
           <td className="col5">{total_qty}</td>
           <td className="col6"></td>
           <td className="col7"></td>

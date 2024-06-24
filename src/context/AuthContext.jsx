@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         })
         .then((response) => {
           const data = response.data
-          console.log("data: ", data)
+
           if (data.valid) {
             setUser({ token, ...data.user })
             localStorage.setItem("jwt", data.token)
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
         const data = response.data
         console.log("data", data)
         if (response.statusText) {
-          localStorage.setItem("jwt", data.data.token)
+          localStorage.setItem("jwt", data.token)
           setUser({ token: data.token, ...data.user })
           navigate("/", { replace: true })
         } else {

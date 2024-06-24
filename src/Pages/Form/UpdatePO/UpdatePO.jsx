@@ -88,6 +88,7 @@ export default function UpdatePO() {
           qty_balance: data.qty_balance,
           delivery_date: data.delivery_date,
           uom: data.uom,
+          hsn_sac: data.hsn_sac,
         })
       })
       .catch((error) => {
@@ -153,6 +154,7 @@ export default function UpdatePO() {
             qty_sent: data.qty_sent,
             qty_balance: data.qty_balance,
             delivery_date: data.delivery_date,
+            hsn_sac: data.hsn_sac,
           })
           console.log("data: ", data)
           console.log("searchData: ", searchData)
@@ -205,6 +207,7 @@ export default function UpdatePO() {
             qty_sent: data.qty_sent,
             qty_balance: data.qty_balance,
             delivery_date: data.delivery_date,
+            hsn_sac: data.hsn_sac,
           })
           console.log("data: ", data)
           console.log("searchData: ", searchData)

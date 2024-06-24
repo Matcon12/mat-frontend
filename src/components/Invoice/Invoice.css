@@ -57,6 +57,20 @@ table > tbody > tr > td {
   vertical-align: top;
 }
 
+.po-table > tbody > tr > td {
+  word-wrap: break-word;
+}
+
+.po-table > tbody > tr > td.col4,
+.po-table > tbody > tr > td.col5,
+.po-table > tbody > tr > td.col7,
+.po-table > tbody > tr > td.col8,
+.po-table > tbody > tr > td.col10,
+.po-table > tbody > tr > td.col14,
+.po-table > tbody > tr > td.col12 {
+  word-wrap: normal;
+}
+
 .value-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -128,16 +142,16 @@ table > tbody > tr > td {
 }
 
 .col2 {
-  width: 50%;
+  width: 45%;
   text-align: center; /* Additional style as per inline style */
 }
 
 .col3 {
-  width: 10%;
+  width: 4%;
 }
 
 .col4 {
-  width: 7%;
+  width: 12%;
 }
 
 .col5 {
@@ -145,15 +159,15 @@ table > tbody > tr > td {
 }
 
 .col6 {
-  width: 7%;
+  width: 5%;
 }
 
 .col7 {
-  width: 8%;
+  width: 15%;
 }
 
 .col8 {
-  width: 10%;
+  width: 17%;
 }
 
 .col9 {
@@ -161,7 +175,7 @@ table > tbody > tr > td {
 }
 
 .col10 {
-  width: 10%;
+  width: 15%;
 }
 
 .col11 {
@@ -169,7 +183,7 @@ table > tbody > tr > td {
 }
 
 .col12 {
-  width: 10%;
+  width: 15%;
 }
 
 .col13 {
@@ -177,5 +191,16 @@ table > tbody > tr > td {
 }
 
 .col14 {
-  width: 10%;
+  width: 13%;
+}
+
+.col15 {
+  width: 6%;
+}
+
+td.col8,
+td.col10,
+td.col12,
+td.col14 {
+  text-align: right !important;
 }

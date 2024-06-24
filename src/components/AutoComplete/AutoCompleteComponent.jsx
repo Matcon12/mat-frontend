@@ -3,14 +3,15 @@ import { useEffect, useState } from "react"
 export default function AutoCompleteComponent({
   data,
   mainData,
-  // setData,
   setMainData,
-  // handleChange,
   name,
   placeholder,
   search_value,
   filteredData,
-  setFilteredData
+  setFilteredData,
+  setPoSlNo,
+  index,
+  array,
 }) {
   const [isFocused, setIsFocused] = useState(false)
   useEffect(() => {
@@ -18,28 +19,62 @@ export default function AutoCompleteComponent({
   }, [data, setFilteredData])
 
   const handleChange = async (event) => {
+    setIsFocused(true)
     const { name, value } = event.target
-    setMainData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }))
-    const filtered = data.filter((suggestion) => {
-      // console.log("value: ", search_value)
-      // console.log("suggestion", suggestion)
-      return suggestion[search_value]
-        .toLowerCase()
-        .includes(value.toLowerCase())
-    })
-    setFilteredData(filtered)
-    console.log({ "data": data, "filtered data": filtered })
+
+    if (name == "poSlNo") {
+      setMainData((prevEntries) => {
+        const newEntries = [...prevEntries]
+        newEntries[index] = {
+          ...newEntries[index],
+          [name]: value,
+          hsnSac: findHsnCodeByPoSlNo(value),
+        }
+        return newEntries
+      })
+      setIsFocused(false)
+    } else {
+      setMainData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }))
+      const filtered = data.filter((suggestion) => {
+        // console.log("value: ", search_value)
+        // console.log("suggestion", suggestion)
+        return suggestion[search_value]
+          .toLowerCase()
+          .includes(value.toLowerCase())
+      })
+      setFilteredData(filtered)
+      setPoSlNo(e.target)
+      // console.log({ "data": data, "filtered data": filtered })
+    }
+  }
+
+  const findHsnCodeByPoSlNo = (poSlNo) => {
+    const item = data.find((item) => item.po_sl_no === poSlNo)
+    return item ? item.hsnSac : null // Return hsn_code if found, otherwise null
   }
 
   const handleSuggestionClick = (suggestion) => {
-    setMainData((prevFormData) => ({
-      ...prevFormData,
-      [name]: suggestion[search_value],
-    }))
-    setFilteredData([])
+    if (array) {
+      setMainData((prevEntries) => {
+        const newEntries = [...prevEntries]
+        newEntries[index] = {
+          ...newEntries[index],
+          [name]: suggestion[search_value],
+          hsnSac: findHsnCodeByPoSlNo(suggestion[search_value]),
+        }
+        setIsFocused(false)
+        return newEntries
+      })
+    } else {
+      setMainData((prevFormData) => ({
+        ...prevFormData,
+        [name]: suggestion[search_value],
+      }))
+      setFilteredData([])
+    }
     setIsFocused(false)
   }
 
@@ -57,7 +92,7 @@ export default function AutoCompleteComponent({
         type="text"
         placeholder=" "
         name={name}
-        value={mainData[name]}
+        value={array ? mainData[index][name] : mainData[name]}
         onChange={(e) => handleChange(e)}
         onFocus={handleFocus}
         onBlur={handleBlur}
