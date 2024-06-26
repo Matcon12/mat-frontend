@@ -46,7 +46,7 @@ export default function Customer() {
     quoteId: "",
     consigneeId: "",
     consigneeName: "",
-    gstApplicable: "",
+    gstApplicable: "True",
   }
 
   const initialProductDetails = {
@@ -400,7 +400,7 @@ export default function Customer() {
       [event.target.name]: event.target.checked,
     }))
     console.log(formData)
-  };
+  }
 
   return (
     <div className="customer-container">
@@ -549,8 +549,7 @@ export default function Customer() {
                     placeholder="Consignee Name"
                   ></label>
                 </div>
-                <div
-                  className="gstApplicable">
+                <div className="gstApplicable">
                   <label>
                     <input
                       type="checkbox"
