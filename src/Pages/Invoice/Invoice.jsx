@@ -124,7 +124,7 @@ export default function Invoice() {
         setPurchaseOrderDetails(response.data.result)
       })
       .catch((error) => {
-        resetForm()
+        // resetForm()
         console.error(error)
       })
   }
