@@ -99,8 +99,11 @@
 
 @media print {
   .page-break {
-    margin-top: 1rem;
-    display: block;
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     page-break-before: auto;
     break-inside: avoid;
   }

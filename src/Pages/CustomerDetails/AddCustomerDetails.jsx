@@ -31,6 +31,7 @@ export default function AddCustomerDetails() {
     contact_name_2: "",
     contact_phone_2: "",
     contact_email_2: "",
+    gst_exception: "0"
   }
 
   const [formData, setFormData] = useState(initialFormData)
@@ -90,13 +91,14 @@ export default function AddCustomerDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log('formData: ', formData)
     api
       .post("/addCustomerDetails", {
         formData: formData,
       })
       .then((response) => {
         console.log(response.data)
-        resetForm()
+        // resetForm()
       })
       .catch((error) => {
         console.log(error.response.data.error)

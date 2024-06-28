@@ -21,6 +21,7 @@ export default function EditCustomerDetails() {
     contact_name_2: "",
     contact_phone_2: "",
     contact_email_2: "",
+    gst_exception: 0,
   }
   const [formData, setFormData] = useState(initialFormData)
   const [customerData, setCustomerData] = useState(0)
@@ -81,6 +82,7 @@ export default function EditCustomerDetails() {
           contact_name_2: response.data.contact_name_2,
           contact_phone_2: response.data.contact_phone_2,
           contact_email_2: response.data.contact_email_2,
+          gst_exception: response.data.gst_exception ? 1 : 0,
         }))
       })
   }
@@ -330,6 +332,22 @@ export default function EditCustomerDetails() {
                 alt="Enter the Contact Email 1"
                 placeholder="Contact Email 1"
               ></label>
+            </div>
+
+            <div className="input-container">
+              <select
+                name="gst_exception"
+                value={formData.gst_exception}
+                onChange={handleChange}
+              // required
+              >
+                <option value="" disabled>
+                  Select an option
+                </option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <label alt="Select an Option" placeholder="Gst Exception"></label>
             </div>
           </div>
           <div className="customer-update-button-container">

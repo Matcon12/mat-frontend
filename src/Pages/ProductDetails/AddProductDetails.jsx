@@ -28,6 +28,7 @@ export default function AddProductDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log('formData: ', formData)
     api
       .post("/addProductDetails", { formData })
       .then((response) => {
