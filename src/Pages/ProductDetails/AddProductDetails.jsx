@@ -12,6 +12,7 @@ export default function AddProductDetails() {
     Pack_Size: "",
     Currency: "",
     Price: "",
+    hsn_code: "",
   }
 
   const [formData, setFormData] = useState(initialFormData)
@@ -50,7 +51,7 @@ export default function AddProductDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Prod_ID"
                 value={formData.Prod_ID}
                 onChange={handleChange}
@@ -64,7 +65,7 @@ export default function AddProductDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Supp_ID"
                 value={formData.Supp_ID}
                 onChange={handleChange}
@@ -78,7 +79,7 @@ export default function AddProductDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Prod_Desc"
                 value={formData.Prod_Desc}
                 onChange={handleChange}
@@ -92,7 +93,7 @@ export default function AddProductDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Spec_ID"
                 value={formData.Spec_ID}
                 onChange={handleChange}
@@ -103,7 +104,7 @@ export default function AddProductDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Pack_Size"
                 value={formData.Pack_Size}
                 onChange={handleChange}
@@ -114,7 +115,7 @@ export default function AddProductDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Currency"
                 value={formData.Currency}
                 onChange={handleChange}
@@ -125,13 +126,24 @@ export default function AddProductDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Price"
                 value={formData.Price}
                 onChange={handleChange}
                 placeholder=" "
               />
               <label alt="Enter the Price" placeholder="Price"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                // required={true}
+                name="hsn_code"
+                value={formData.hsn_code}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the Hsn Code" placeholder="HSN"></label>
             </div>
           </div>
           <div className="product-add-button-container">

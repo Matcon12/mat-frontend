@@ -15,6 +15,7 @@ export default function EditProductDetails() {
     pack_size: "",
     currency: "",
     price: "",
+    hsn_code: "",
   }
 
   const [formData, setFormData] = useState(initialFormData)
@@ -30,11 +31,11 @@ export default function EditProductDetails() {
     setFormData({ ...formData, [name]: value })
   }
 
-  const resetForm = () => {
-    setFormData(initialFormData)
+  const resetForm = async () => {
+    await setFormData(initialFormData)
   }
 
-  const getProductDetails = (e) => {
+  const getProductDetails = async (e) => {
     e.preventDefault()
     api
       .get("/getProductDetails", {
@@ -43,10 +44,21 @@ export default function EditProductDetails() {
         },
       })
       .then((response) => {
+        // resetForm()
         console.log(response.data)
-        setFormData(response.data)
+        setFormData({
+          prod_id: response.data.prod_id ? response.data.prod_id : "",
+          supp_id: response.data.supp_id ? response.data.supp_id : "",
+          prod_desc: response.data.prod_desc ? response.data.prod_desc : "",
+          spec_id: response.data.spec_id ? response.data.spec_id : "",
+          pack_size: response.data.pack_size ? response.data.pack_size : "",
+          currency: response.data.currency ? response.data.currency : "",
+          price: response.data.price ? response.data.price : "",
+          hsn_code: response.data.hsn_code ? response.data.hsn_code : "",
+        })
       })
       .catch((error) => {
+        resetForm()
         console.log(error.response.data.error)
       })
   }
@@ -165,6 +177,17 @@ export default function EditProductDetails() {
                 placeholder=" "
               />
               <label alt="Enter the Price" placeholder="Price"></label>
+            </div>
+            <div>
+              <input
+                type="text"
+                // required={true}
+                name="hsn_code"
+                value={formData.hsn_code}
+                onChange={handleChange}
+                placeholder=" "
+              />
+              <label alt="Enter the HSN code" placeholder="HSN Code"></label>
             </div>
           </div>
           <div className="product-update-button-container">

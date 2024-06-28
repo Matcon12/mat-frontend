@@ -46,7 +46,7 @@ export default function Customer() {
     quoteId: "",
     consigneeId: "",
     consigneeName: "",
-    gstApplicable: "True",
+    gstException: 0,
   }
 
   const initialProductDetails = {
@@ -325,16 +325,19 @@ export default function Customer() {
         },
       })
       .then((response) => {
+        console.log("response_data: ", response.data)
         setFormData((prevFormData) => ({
           ...prevFormData,
           consigneeId: formData.customerId,
           customerName: response.data.customer_name,
           consigneeName: response.data.customer_name,
+          gstException: response.data.gst_exception,
         }))
       })
 
       .catch((error) => {
-        console.log(error.response.data.error)
+        resetForm()
+        console.log(error.data.error)
       })
   }, [formData.customerId])
 
@@ -553,11 +556,11 @@ export default function Customer() {
                   <label>
                     <input
                       type="checkbox"
-                      name="gstApplicable"
-                      checked={formData.gstApplicable}
+                      name="gstException"
+                      checked={formData.gstException}
                       onChange={handleCheckboxChange}
                     />
-                    Is GST applicable
+                    Gst Exception
                   </label>
                   {/* <p>{formData.gstApplicable ? "Checkbox is checked!" : "Checkbox is not checked."}</p> */}
                 </div>

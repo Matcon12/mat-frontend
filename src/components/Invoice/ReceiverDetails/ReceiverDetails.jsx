@@ -4,6 +4,7 @@ export default function ReceiverDetails({
   state,
   code,
   gst_no,
+  gst_exception,
 }) {
   return (
     <div>
@@ -38,6 +39,17 @@ export default function ReceiverDetails({
             <td>&nbsp;:&nbsp;</td>
             <td>{code}</td>
           </tr>
+          {gst_exception && (
+            <tr>
+              <td>
+                <strong>GST Exception</strong>
+              </td>
+              <td>&nbsp;:&nbsp;</td>
+              <td>
+                <b>{gst_exception}</b>
+              </td>
+            </tr>
+          )}
           <tr>
             <td>
               <strong>GST No</strong>

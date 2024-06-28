@@ -124,6 +124,7 @@ export default function Invoice() {
         setPurchaseOrderDetails(response.data.result)
       })
       .catch((error) => {
+        resetForm()
         console.error(error)
       })
   }
@@ -144,7 +145,7 @@ export default function Invoice() {
       [event.target.name]: event.target.checked,
     }))
     console.log(formData)
-  };
+  }
 
   return (
     <div className="invoice-generation-container">
@@ -220,6 +221,33 @@ export default function Invoice() {
             </select>
             <label alt="Select an Option" placeholder="Contact Name"></label>
           </div>
+
+          <div>
+            <input
+              type="text"
+              name="freightCharges"
+              value={formData.freightCharges}
+              onChange={handleInputChange}
+              placeholder=" "
+            />
+            <label
+              alt="Enter the Freight Charges"
+              placeholder="Freight Charges"
+            ></label>
+          </div>
+          <div>
+            <input
+              type="text"
+              name="insuranceCharges"
+              value={formData.insuranceCharges}
+              onChange={handleInputChange}
+              placeholder=" "
+            />
+            <label
+              alt="Enter the Insurance Charges"
+              placeholder="Insurance Charges"
+            ></label>
+          </div>
           <div>
             <input
               type="text"
@@ -233,7 +261,6 @@ export default function Invoice() {
               placeholder="Total Entries"
             ></label>
           </div>
-
           <button
             className="PurchaseEntryButton"
             type="button"
@@ -321,7 +348,7 @@ export default function Invoice() {
                     </div>
                   </div>
                 ))}
-              <div className="other-charges-container">
+              {/* <div className="other-charges-container">
                 Other Charges:
                 <div className="other-charges">
                   <div className="freight">
@@ -334,23 +361,21 @@ export default function Invoice() {
                       />
                       Freight Charges
                     </label>
-                    {
-                      formData.freight && (
-                        <div>
-                          <input
-                            type="text"
-                            name="freightCharges"
-                            value={formData.freightCharges}
-                            onChange={handleInputChange}
-                            placeholder=" "
-                          />
-                          <label
-                            alt="Enter the Freight Charges"
-                            placeholder="Freight Charges"
-                          ></label>
-                        </div>
-                      )
-                    }
+                    {formData.freight && (
+                      <div>
+                        <input
+                          type="text"
+                          name="freightCharges"
+                          value={formData.freightCharges}
+                          onChange={handleInputChange}
+                          placeholder=" "
+                        />
+                        <label
+                          alt="Enter the Freight Charges"
+                          placeholder="Freight Charges"
+                        ></label>
+                      </div>
+                    )}
                   </div>
                   <div className="insurance">
                     <label>
@@ -362,26 +387,24 @@ export default function Invoice() {
                       />
                       Insurance Charges
                     </label>
-                    {
-                      formData.insurance && (
-                        <div>
-                          <input
-                            type="text"
-                            name="insuranceCharges"
-                            value={formData.insuranceCharges}
-                            onChange={handleInputChange}
-                            placeholder=" "
-                          />
-                          <label
-                            alt="Enter the Insurance Charges"
-                            placeholder="Insurance Charges"
-                          ></label>
-                        </div>
-                      )
-                    }
+                    {formData.insurance && (
+                      <div>
+                        <input
+                          type="text"
+                          name="insuranceCharges"
+                          value={formData.insuranceCharges}
+                          onChange={handleInputChange}
+                          placeholder=" "
+                        />
+                        <label
+                          alt="Enter the Insurance Charges"
+                          placeholder="Insurance Charges"
+                        ></label>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="submit-button">
                 <button type="submit">Submit</button>
               </div>

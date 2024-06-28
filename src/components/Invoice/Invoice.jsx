@@ -20,8 +20,8 @@ export default function Invoice({ formData }) {
                 gcn_no={formData.odc1.gcn_no}
                 gcn_date={formData.odc1.gcn_date}
                 gst_no={formData.c.cust_gst_id}
-              // gcn_no={0}
-              // gcn_date={0}
+                // gcn_no={0}
+                // gcn_date={0}
               />
               <TransportationMode
                 po_no={formData.odc1.po_no}
@@ -36,6 +36,7 @@ export default function Invoice({ formData }) {
                 state={formData.r.cust_st_name}
                 code={formData.r.cust_st_code}
                 gst_no={formData.r.cust_gst_id}
+                gst_exception={formData.r.gst_exception}
               />
               <ConsigneeDetails
                 name={formData.c.cust_name}
