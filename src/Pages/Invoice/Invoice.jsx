@@ -17,6 +17,7 @@ export default function Invoice() {
     insurance: false,
     freightCharges: "",
     insuranceCharges: "",
+    otherCharges: "",
   }
   const [formData, setFormData] = useState(initialFormData)
 
@@ -59,6 +60,7 @@ export default function Invoice() {
       items: entries,
       freightCharges: formData.freightCharges,
       insuranceCharges: formData.insuranceCharges,
+      otherCharges: formData.otherCharges,
     }
     api
       .post(
@@ -246,6 +248,19 @@ export default function Invoice() {
             <label
               alt="Enter the Insurance Charges"
               placeholder="Insurance Charges"
+            ></label>
+          </div>
+          <div>
+            <input
+              type="text"
+              name="otherCharges"
+              value={formData.otherCharges}
+              onChange={handleInputChange}
+              placeholder=" "
+            />
+            <label
+              alt="Enter the Other Charges"
+              placeholder="Other Charges"
             ></label>
           </div>
           <div>
