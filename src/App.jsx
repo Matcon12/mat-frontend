@@ -24,6 +24,8 @@ import ProtectedLayout from "./helper/ProtectedLayout.jsx"
 import InvoiceReport from "./Pages/ViewPrint/InvoicePrint.jsx"
 import DcReport from "./Pages/ViewPrint/DcPrint.jsx"
 
+import InvoiceReportInput from "./Pages/InvoiceReport/InvoiceReportInput.jsx"
+
 import { useAuth } from "./context/AuthContext.jsx"
 
 export default function App() {
@@ -61,10 +63,13 @@ export default function App() {
                 path="edit_product_details"
                 element={<EditProductDetails />}
               />
-              <Route path="report">
+              <Route path="print">
                 <Route index element={<Report />} />
-                <Route path="invoice-report" element={<InvoiceReport />} />
-                <Route path="dc-report" element={<DcReport />} />
+                <Route path="invoice-print" element={<InvoiceReport />} />
+                <Route path="dc-print" element={<DcReport />} />
+              </Route>
+              <Route path="report">
+                <Route index element={<InvoiceReportInput />} />
               </Route>
             </Route>
             <Route path="signup" element={<Signup />} />

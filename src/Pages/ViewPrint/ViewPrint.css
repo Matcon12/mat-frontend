@@ -1,4 +1,4 @@
-.report-container {
+.print-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,7 +19,7 @@
   color: var(--font-color2);
 }
 
-.report-buttons {
+.print-buttons {
   display: flex;
   gap: 30px;
 }
@@ -135,7 +135,7 @@ a {
 }
 
 /* printing dc challan */
-.dc-report-container {
+.dc-print-container {
   margin: 20mm;
 }
 

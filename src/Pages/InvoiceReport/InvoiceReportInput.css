@@ -1,0 +1,21 @@
+.report-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.datePickerContainers {
+  position: relative;
+  display: flex;
+}
+
+.datePickerFlex {
+  display: flex;
+  gap: 15px;
+}
+
+.invoiceReportInputSubmit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

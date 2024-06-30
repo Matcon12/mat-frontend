@@ -3,14 +3,14 @@ import { Link } from "react-router-dom"
 
 export default function Report() {
   return (
-    <div className="report-container">
+    <div className="print-container">
       <div className="button-container">
         <h3>Report</h3>
         <div className="report-buttons">
-          <Link to="invoice-report" className="button2">
+          <Link to="invoice-print" className="button2">
             Invoice
           </Link>
-          <Link to="dc-report" className="button2">
+          <Link to="dc-print" className="button2">
             DC
           </Link>
         </div>
