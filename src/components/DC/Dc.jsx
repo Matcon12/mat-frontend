@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useReactToPrint } from "react-to-print"
 import React, { useRef } from "react"
+import "./Dc.css"
 
 function DcReportC({ formData }) {
   return (
@@ -64,8 +65,12 @@ function DcReportC({ formData }) {
       <div className="message">
         <br />
         <br />
-        <p>Kind Attn: {formData.odc1.contact_name}</p>
-        <p>Mob No: {formData.odc1.contact_number}</p>
+        {formData.odc1.contact_name && (
+          <>
+            <p>Kind Attn: {formData.odc1.contact_name}</p>
+            <p>Mob No: {formData.odc1.contact_number}</p>
+          </>
+        )}
         <br />
         <br />
         <p>Dear Sir,</p>
@@ -122,15 +127,19 @@ function DcReportC({ formData }) {
         <br />
         <br />
       </div>
-      <div className="signature">
-        <div className="matcon-signature">
-          <h3>For MATCON</h3>
-          <br />
-          <br />
-          <h3>Authorized Signatory</h3>
-        </div>
-        <div className="customer-signature">
-          <h3>Customer Signature</h3>
+      <div className="page-break">
+        <div className="signature">
+          <div className="matcon-signature">
+            <h3>For MATCON</h3>
+            <br />
+            <br />
+            <br />
+            <br />
+            <h3>Authorized Signatory</h3>
+          </div>
+          <div className="customer-signature">
+            <h3>Customer Signature</h3>
+          </div>
         </div>
       </div>
     </>

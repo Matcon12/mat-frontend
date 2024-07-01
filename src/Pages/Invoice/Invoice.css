@@ -2,7 +2,7 @@
   margin: 30px 0;
 }
 
-.invoice-generation-container>h1 {
+.invoice-generation-container > h1 {
   color: var(--primary-color);
   margin-bottom: 20px;
   text-align: center;
@@ -14,15 +14,15 @@
   justify-items: center;
 }
 
-.invoice-input-container>div>input {
+.invoice-input-container > div > input {
   width: 300px !important;
 }
 
-.invoice-input-complete-container>div>p {
+.invoice-input-complete-container > div > p {
   margin: 20px 0;
 }
 
-.invoice-input-complete-container>.submit-button {
+.invoice-input-complete-container > .submit-button {
   display: grid;
   justify-items: center;
   margin: 20px 0;
@@ -75,8 +75,7 @@
   gap: 20px;
 }
 
-
-.freight>label {
+.freight > label {
   text-wrap: nowrap;
 }
 
@@ -87,8 +86,7 @@
   justify-content: space-between;
 }
 
-@media print {
-
+/* @media print {
   html,
   body {
     height: initial !important;
@@ -112,4 +110,4 @@
 @page {
   size: auto;
   margin: 40mm 0;
-}
+} */

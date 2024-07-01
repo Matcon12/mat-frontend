@@ -139,6 +139,12 @@ a {
   margin: 20mm;
 }
 
+.dc-report-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .dc-report {
   width: 600px;
 }

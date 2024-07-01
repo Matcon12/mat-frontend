@@ -27,6 +27,7 @@ import DcReport from "./Pages/ViewPrint/DcPrint.jsx"
 import InvoiceReportInput from "./Pages/InvoiceReport/InvoiceReportInput.jsx"
 
 import { useAuth } from "./context/AuthContext.jsx"
+import InvoicePrint from "./Pages/ViewPrint/InvoicePrint.jsx"
 
 export default function App() {
   const location = useLocation()
@@ -64,9 +65,9 @@ export default function App() {
                 element={<EditProductDetails />}
               />
               <Route path="print">
-                <Route index element={<Report />} />
-                <Route path="invoice-print" element={<InvoiceReport />} />
-                <Route path="dc-print" element={<DcReport />} />
+                <Route index element={<InvoicePrint />} />
+                {/* <Route path="invoice-print" element={<InvoiceReport />} />
+                <Route path="dc-print" element={<DcReport />} /> */}
               </Route>
               <Route path="report">
                 <Route index element={<InvoiceReportInput />} />

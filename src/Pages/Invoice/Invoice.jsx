@@ -49,6 +49,10 @@ export default function Invoice() {
     })
   }, [])
 
+  useEffect(() => {
+    console.log(formData.contactName)
+  }, [formData])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const formData2 = {

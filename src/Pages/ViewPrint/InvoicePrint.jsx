@@ -5,7 +5,7 @@ import Invoice from "../../components/Invoice/Invoice"
 import api from "../../api/api"
 import DcPrint from "../../components/DC/Dc"
 
-export default function InvoiceReport() {
+export default function InvoicePrint() {
   const [formData, setFormData] = useState({
     invoiceNumber: "",
     year: "2024-25",
@@ -27,15 +27,6 @@ export default function InvoiceReport() {
   })
 
   console.log("formdata: ", formData)
-
-  // const generateGcnNumber = (gst_rate, fin_year, fyear) => {
-  //   const padWithZeros = (number, length) => {
-  //     return number.toString().padStart(length, "0")
-  //   }
-
-  //   const gcn_no = formData.invoiceNumber
-  //   return `${padWithZeros(gcn_no, 3)}/${formData.year}`
-  // }
 
   const InvoiceC = React.forwardRef((props, ref) => (
     <div ref={ref} className="invoice-container-container">
