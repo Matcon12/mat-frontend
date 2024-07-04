@@ -21,7 +21,7 @@ export default function EditCustomerDetails() {
     contact_name_2: "",
     contact_phone_2: "",
     contact_email_2: "",
-    gst_exception: 0,
+    gst_exemption: 0,
   }
   const [formData, setFormData] = useState(initialFormData)
   const [customerData, setCustomerData] = useState(0)
@@ -40,8 +40,6 @@ export default function EditCustomerDetails() {
   }, [])
 
   useEffect(() => {
-    console.log("stateData: ", stateData)
-    console.log("cust_st_name", formData.cust_st_name)
     setFormData((prevFormData) => ({
       ...prevFormData,
       cust_st_code: stateData?.find(
@@ -59,6 +57,7 @@ export default function EditCustomerDetails() {
   }
 
   const getCustomerDetails = () => {
+    resetFormExcludeCustId()
     api
       .get("/getCustomerDetails", {
         params: { cust_id: formData.cust_id },
@@ -82,35 +81,113 @@ export default function EditCustomerDetails() {
           contact_name_2: response.data.contact_name_2,
           contact_phone_2: response.data.contact_phone_2,
           contact_email_2: response.data.contact_email_2,
-          gst_exception: response.data.gst_exception ? 1 : 0,
+          gst_exemption: response.data.gst_exemption ? 1 : 0,
         }))
       })
   }
 
-  const resetForm = async () => {
-    await setFormData(initialFormData)
+  const resetForm = () => {
+    setFormData(initialFormData)
+  }
+  const resetFormExcludeCustId = () => {
+    setFormData({
+      ...formData,
+      cust_name: "",
+      cust_addr1: "",
+      cust_addr2: "",
+      cust_city: "",
+      cust_st_code: "",
+      cust_st_name: "",
+      cust_pin: "",
+      cust_gst_id: "",
+      contact_name_1: "",
+      contact_phone_1: "",
+      contact_email_1: "",
+      contact_name_2: "",
+      contact_phone_2: "",
+      contact_email_2: "",
+      gst_exemption: 0,
+    })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    api
-      .put(
-        "/updateCustomerDetails",
-        { formData },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data)
-        resetForm()
-      })
-      .catch((error) => {
-        console.error("Error updating data: ", error)
-      })
+    if (validateForm()) {
+      api
+        .put(
+          "/updateCustomerDetails",
+          { formData },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response.data)
+          resetForm()
+        })
+        .catch((error) => {
+          console.error("Error updating data: ", error)
+        })
+    } else {
+      console.log("Validation Error!!")
+    }
   }
+
+  const [formErrors, setFormErrors] = useState({
+    Cust_PIN: "",
+    Cust_GST_ID: "",
+    contact_phone_1: "",
+    contact_phone_2: "",
+  })
+
+  const validateForm = () => {
+    let valid = true
+    const errors = {
+      Cust_PIN: "",
+      Cust_GST_ID: "",
+      contact_phone_1: "",
+      contact_phone_2: "",
+    }
+
+    //validation for Pincode
+    if (formData.cust_pin && !/^\d{6}$/.test(formData.cust_pin)) {
+      errors.Cust_PIN = "City PIN must be exactly 6 digits"
+      valid = false
+    }
+
+    //validation for GST ID
+    if (
+      formData.cust_gst_id &&
+      !/^[A-Za-z0-9]{15}$/.test(formData.cust_gst_id)
+    ) {
+      errors.Cust_GST_ID = "GST ID must be exactly 15 alphanumeric characters"
+      valid = false
+    }
+
+    //validation for phone number 1
+    if (
+      formData.contact_phone_1 &&
+      !/^\d{10}$/.test(formData.contact_phone_1)
+    ) {
+      errors.contact_phone_1 = "Phone number must be exactly 10 digits"
+      valid = false
+    }
+
+    //validation for phone number 2
+    if (
+      formData.contact_phone_2 &&
+      !/^\d{10}$/.test(formData.contact_phone_2)
+    ) {
+      errors.contact_phone_2 = "Phone number must be exactly 10 digits"
+      valid = false
+    }
+
+    setFormErrors(errors)
+    return valid
+  }
+
   return (
     <div className="addCustomerDetails-complete-container">
       <div className="addCustomerDetails-header-container">
@@ -202,7 +279,7 @@ export default function EditCustomerDetails() {
                 filteredData={filteredStateData}
                 setFilteredData={setFilteredStateData}
                 name="cust_st_name"
-                placeholder="Customer State Name"
+                placeholder="State Name"
                 search_value="state_name"
               />
             </div>
@@ -218,7 +295,7 @@ export default function EditCustomerDetails() {
               />
               <label
                 alt="Enter the Customer State Code"
-                placeholder="Customer State Code"
+                placeholder="State Code"
               ></label>
             </div>
             <div>
@@ -230,10 +307,10 @@ export default function EditCustomerDetails() {
                 onChange={handleChange}
                 placeholder=" "
               />
-              <label
-                alt="Enter the Customer PIN"
-                placeholder="Customer PIN"
-              ></label>
+              <label alt="Enter the Customer PIN" placeholder="PIN"></label>
+              {formErrors.Cust_PIN && (
+                <span className="error">{formErrors.Cust_PIN}</span>
+              )}
             </div>
             <div>
               <input
@@ -244,12 +321,27 @@ export default function EditCustomerDetails() {
                 onChange={handleChange}
                 placeholder=" "
               />
-              <label
-                alt="Enter the Customer GST ID"
-                placeholder="Customer GST ID"
-              ></label>
+              <label alt="Enter the GST ID" placeholder="GSTIN"></label>
+              {formErrors.Cust_GST_ID && (
+                <span className="error">{formErrors.Cust_GST_ID}</span>
+              )}
             </div>
-            <div>
+            <div className="input-container">
+              <select
+                name="gst_exemption"
+                value={formData.gst_exemption}
+                onChange={handleChange}
+                // required
+              >
+                <option value="" disabled>
+                  Select an option
+                </option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <label alt="Select an Option" placeholder="Gst Exemption"></label>
+            </div>
+            <div className="grid-column-1">
               <input
                 type="text"
                 //required={true}
@@ -276,8 +368,11 @@ export default function EditCustomerDetails() {
                 alt="Enter the Contact Phone Number 1"
                 placeholder="Contact Phone 1"
               ></label>
+              {formErrors.contact_phone_1 && (
+                <span className="error">{formErrors.contact_phone_1}</span>
+              )}
             </div>
-            <div>
+            <div className="grid-column-2">
               <input
                 type="text"
                 //required={true}
@@ -291,7 +386,7 @@ export default function EditCustomerDetails() {
                 placeholder="Contact Email 1"
               ></label>
             </div>
-            <div>
+            <div className="grid-column-1">
               <input
                 type="text"
                 //required={true}
@@ -318,8 +413,11 @@ export default function EditCustomerDetails() {
                 alt="Enter the Contact Phone Number 2"
                 placeholder="Contact Phone 2"
               ></label>
+              {formErrors.contact_phone_2 && (
+                <span className="error">{formErrors.contact_phone_2}</span>
+              )}
             </div>
-            <div>
+            <div className="grid-column-2">
               <input
                 type="text"
                 //required={true}
@@ -332,22 +430,6 @@ export default function EditCustomerDetails() {
                 alt="Enter the Contact Email 1"
                 placeholder="Contact Email 1"
               ></label>
-            </div>
-
-            <div className="input-container">
-              <select
-                name="gst_exception"
-                value={formData.gst_exception}
-                onChange={handleChange}
-              // required
-              >
-                <option value="" disabled>
-                  Select an option
-                </option>
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-              </select>
-              <label alt="Select an Option" placeholder="Gst Exception"></label>
             </div>
           </div>
           <div className="customer-update-button-container">

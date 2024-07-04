@@ -66,6 +66,7 @@ export default function Invoice() {
       insuranceCharges: formData.insuranceCharges,
       otherCharges: formData.otherCharges,
     }
+    console.log("items: ", entries)
     api
       .post(
         "/invoiceProcessing",
@@ -89,10 +90,26 @@ export default function Invoice() {
       })
   }
 
-  const handleChange = (index, e) => {
-    const { name, value } = e.target
+  const handleChange = (entryIndex, fieldIndex, field, value) => {
     const newEntries = [...entries]
-    newEntries[index] = { ...newEntries[index], [name]: value }
+    if (field === "noOfBatches") {
+      const noOfBatches = Number(value)
+      newEntries[entryIndex].noOfBatches = noOfBatches
+      newEntries[entryIndex].quantities = Array.from(
+        { length: noOfBatches },
+        (_, i) => newEntries[entryIndex].quantities[i] || ""
+      )
+      newEntries[entryIndex].batches = Array.from(
+        { length: noOfBatches },
+        (_, i) => newEntries[entryIndex].batches[i] || ""
+      )
+      newEntries[entryIndex].cocs = Array.from(
+        { length: noOfBatches },
+        (_, i) => newEntries[entryIndex].cocs[i] || ""
+      )
+    } else {
+      newEntries[entryIndex][field][fieldIndex] = value
+    }
     setEntries(newEntries)
   }
 
@@ -105,11 +122,12 @@ export default function Invoice() {
     setShow(true)
     setEntries(
       Array.from({ length: Number(formData.totalEntries) }, () => ({
+        noOfBatches: 1,
         poSlNo: "",
-        quantity: "",
         hsnSac: "",
-        batch: "",
-        coc: "",
+        quantities: [""],
+        batches: [""],
+        cocs: [""],
       }))
     )
   }
@@ -291,10 +309,30 @@ export default function Invoice() {
           {show && (
             <div className="invoice-input-complete-container">
               {Array.isArray(entries) &&
-                entries.map((entry, index) => (
-                  <div key={index}>
-                    <p>Entry {index + 1}</p>
+                entries.map((entry, entryIndex) => (
+                  <div key={entryIndex}>
+                    <p>Entry {entryIndex + 1}</p>
                     <div className="invoice-form-input-container">
+                      <div className="noOfBatches">
+                        <input
+                          type="text"
+                          name="noOfBatches"
+                          value={entry.noOfBatches}
+                          onChange={(e) =>
+                            handleChange(
+                              entryIndex,
+                              null,
+                              "noOfBatches",
+                              e.target.value
+                            )
+                          }
+                          placeholder=" "
+                        />
+                        <label
+                          alt="Enter the number of Batches"
+                          placeholder="Number of Batches"
+                        ></label>
+                      </div>
                       <div className="autocomplete-wrapper">
                         <AutoCompleteComponent
                           data={purchaseOrderDetails}
@@ -302,35 +340,36 @@ export default function Invoice() {
                           setData={setPurchaseOrderDetails}
                           setMainData={setEntries}
                           filteredData={filteredCustomerData}
-                          handleArrayChange={(e) => handleChange(index, e)}
+                          handleArrayChange={(e) =>
+                            handleChange(
+                              entryIndex,
+                              null,
+                              "poSlNo",
+                              e.target.value
+                            )
+                          }
                           setFilteredData={setFilteredCustomerData}
                           name="poSlNo"
                           placeholder="PO Sl No."
                           search_value="po_sl_no"
                           setPoSlNo={setPoSlNo}
                           array={true}
-                          index={index}
+                          index={entryIndex}
                         />
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          name="quantity"
-                          value={entry.quantity}
-                          onChange={(e) => handleChange(index, e)}
-                          placeholder=" "
-                        />
-                        <label
-                          alt="Enter the quantity"
-                          placeholder="Quantity"
-                        ></label>
                       </div>
                       <div>
                         <input
                           type="text"
                           name="hsnSac"
                           value={entry.hsnSac}
-                          onChange={(e) => handleChange(index, e)}
+                          onChange={(e) =>
+                            handleChange(
+                              entryIndex,
+                              null,
+                              "hsnSac",
+                              e.target.value
+                            )
+                          }
                           placeholder=" "
                         />
                         <label
@@ -338,92 +377,76 @@ export default function Invoice() {
                           placeholder="HSN/SAC"
                         ></label>
                       </div>
-                      <div>
-                        <input
-                          type="text"
-                          name="batch"
-                          value={entry.batch}
-                          onChange={(e) => handleChange(index, e)}
-                          placeholder=" "
-                        />
-                        <label
-                          alt="Enter the batch no."
-                          placeholder="Batch No."
-                        ></label>
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          name="coc"
-                          value={entry.coc}
-                          onChange={(e) => handleChange(index, e)}
-                          placeholder=" "
-                        />
-                        <label
-                          alt="Enter the COC No."
-                          placeholder="COC No."
-                        ></label>
-                      </div>
+                      {entry.quantities.map((quantity, fieldIndex) => (
+                        <>
+                          <p>Batch: {fieldIndex + 1}</p>
+                          <div className="batch_quant" key={fieldIndex}>
+                            <div>
+                              <input
+                                type="text"
+                                name={`quantity-${fieldIndex}`}
+                                value={quantity}
+                                onChange={(e) =>
+                                  handleChange(
+                                    entryIndex,
+                                    fieldIndex,
+                                    "quantities",
+                                    e.target.value
+                                  )
+                                }
+                                placeholder=" "
+                              />
+                              <label
+                                alt="Enter the quantity"
+                                placeholder="Quantity"
+                              ></label>
+                            </div>
+                            <div>
+                              <input
+                                type="text"
+                                name={`batch-${fieldIndex}`}
+                                value={entry.batches[fieldIndex]}
+                                onChange={(e) =>
+                                  handleChange(
+                                    entryIndex,
+                                    fieldIndex,
+                                    "batches",
+                                    e.target.value
+                                  )
+                                }
+                                placeholder=" "
+                              />
+                              <label
+                                alt="Enter the batch no."
+                                placeholder="Batch No."
+                              ></label>
+                            </div>
+                            <div>
+                              <input
+                                type="text"
+                                name={`coc-${fieldIndex}`}
+                                value={entry.cocs[fieldIndex]}
+                                onChange={(e) =>
+                                  handleChange(
+                                    entryIndex,
+                                    fieldIndex,
+                                    "cocs",
+                                    e.target.value
+                                  )
+                                }
+                                placeholder=" "
+                              />
+                              <label
+                                alt="Enter the COC No."
+                                placeholder="COC No."
+                              ></label>
+                            </div>
+                          </div>
+                        </>
+                      ))}
                     </div>
                   </div>
                 ))}
-              {/* <div className="other-charges-container">
-                Other Charges:
-                <div className="other-charges">
-                  <div className="freight">
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="freight"
-                        checked={formData.freight}
-                        onChange={handleCheckboxChange}
-                      />
-                      Freight Charges
-                    </label>
-                    {formData.freight && (
-                      <div>
-                        <input
-                          type="text"
-                          name="freightCharges"
-                          value={formData.freightCharges}
-                          onChange={handleInputChange}
-                          placeholder=" "
-                        />
-                        <label
-                          alt="Enter the Freight Charges"
-                          placeholder="Freight Charges"
-                        ></label>
-                      </div>
-                    )}
-                  </div>
-                  <div className="insurance">
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="insurance"
-                        checked={formData.insurance}
-                        onChange={handleCheckboxChange}
-                      />
-                      Insurance Charges
-                    </label>
-                    {formData.insurance && (
-                      <div>
-                        <input
-                          type="text"
-                          name="insuranceCharges"
-                          value={formData.insuranceCharges}
-                          onChange={handleInputChange}
-                          placeholder=" "
-                        />
-                        <label
-                          alt="Enter the Insurance Charges"
-                          placeholder="Insurance Charges"
-                        ></label>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div> */}
               <div className="submit-button">
                 <button type="submit">Submit</button>
               </div>

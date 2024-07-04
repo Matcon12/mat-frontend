@@ -46,7 +46,6 @@ export default function Customer() {
     quoteId: "",
     consigneeId: "",
     consigneeName: "",
-    gstException: 0,
   }
 
   const initialProductDetails = {
@@ -123,11 +122,22 @@ export default function Customer() {
     if (name == "poSlNo") {
       setPsn((prevPsn) => [...prevPsn, value])
     }
+    if (name == "quantity" && value < 0) {
+      return
+    }
+    if (name == "unitPrice" && value < 0) {
+      return
+    }
     console.log(key, name)
     setProductDetails(
       productDetails.map((productDetail) => {
         if (productDetails.indexOf(productDetail) == key) {
-          return { ...productDetail, [name]: value }
+          return {
+            ...productDetail,
+            [name]: ["totalPrice", "quantity", "unitPrice"].includes(name)
+              ? parseFloat(value)
+              : value,
+          }
         }
         return productDetail
       })
@@ -143,6 +153,7 @@ export default function Customer() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    console.log("formData: ", formData, "productDetails: ", productDetails)
     api
       .post("/submitForm", {
         formData: formData,
@@ -229,9 +240,9 @@ export default function Customer() {
   }
 
   const onDateChange = (date, dateString) => {
-    const parsedDate = parse(dateString, "dd-MM-yyyy", new Date())
+    const parsedDate = parse(dateString, "yyyy-MM-dd", new Date())
     const validityDate = addYears(parsedDate, 1)
-    const formattedValidityDate = format(validityDate, "dd-MM-yyyy")
+    const formattedValidityDate = format(validityDate, "yyyy-MM-dd")
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -248,10 +259,15 @@ export default function Customer() {
   }
 
   const onProductDateChange = (date, index, dateStr) => {
+    const poDate = new Date(formData.poDate)
+    const deliveryDate = new Date(dateStr)
     setProductDetails(
       productDetails.map((productDetail, idx) => {
         if (idx === index) {
-          return { ...productDetail, deliveryDate: dateStr }
+          return {
+            ...productDetail,
+            deliveryDate: poDate <= deliveryDate ? dateStr : "",
+          }
         }
         return productDetail
       })
@@ -262,7 +278,7 @@ export default function Customer() {
     setProductDetails(
       productDetails.map((productDetail) => {
         if (productDetails.indexOf(productDetail) == index) {
-          return { ...productDetail, ["totalPrice"]: total }
+          return { ...productDetail, ["totalPrice"]: parseFloat(total) }
         }
         return productDetail
       })
@@ -331,7 +347,6 @@ export default function Customer() {
           consigneeId: formData.customerId,
           customerName: response.data.customer_name,
           consigneeName: response.data.customer_name,
-          gstException: response.data.gst_exception,
         }))
       })
 
@@ -405,6 +420,36 @@ export default function Customer() {
     console.log(formData)
   }
 
+  useEffect(() => {
+    formData.consigneeId != formData.customerId
+      ? api
+          .get("/customerName", {
+            params: {
+              customerId: formData.consigneeId,
+            },
+          })
+          .then((response) => {
+            console.log("response_data: ", response.data)
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              consigneeId: formData.consigneeId,
+              consigneeName: response.data.customer_name,
+            }))
+          })
+
+          .catch((error) => {
+            // resetForm()
+            console.log(error.data.error)
+          })
+      : ""
+    if (formData.consigneeId == "") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        consigneeName: "",
+      }))
+    }
+  }, [formData.consigneeId])
+
   return (
     <div className="customer-container">
       {/* <Sidebar /> */}
@@ -431,16 +476,6 @@ export default function Customer() {
                     search_value="cust_id"
                   />
                 </div>
-                {/* <div>
-                  <input
-                    type="text"
-                    required={true}
-                    name="poNo"
-                    value={formData.poNo}
-                    onChange={handleChange}
-                  />
-                  <label alt="Enter the PO No" placeholder="PO No"></label>
-                </div> */}
                 <div className="autocomplete-wrapper">
                   <AutoCompleteComponent
                     data={purchaseOrder}
@@ -462,7 +497,7 @@ export default function Customer() {
                         onChange={onDateChange}
                         value={
                           formData.poDate
-                            ? dayjs(formData.poDate, "DD-MM-YYYY")
+                            ? dayjs(formData.poDate, "YYYY-MM-DD")
                             : ""
                         }
                         format="DD-MM-YYYY"
@@ -484,7 +519,7 @@ export default function Customer() {
                           onChange={onValidityChange}
                           value={
                             formData.poValidity
-                              ? dayjs(formData.poValidity, "DD-MM-YYYY")
+                              ? dayjs(formData.poValidity, "YYYY-MM-DD")
                               : ""
                           }
                           format="DD-MM-YYYY"
@@ -511,7 +546,7 @@ export default function Customer() {
                     placeholder="Quote ID"
                   ></label>
                 </div>
-                <div>
+                {/* <div>
                   <input
                     type="text"
                     // required={true}
@@ -524,6 +559,20 @@ export default function Customer() {
                     alt="Enter the Consignee ID"
                     placeholder="Consignee ID"
                   ></label>
+                </div> */}
+                <div className="autocomplete-wrapper">
+                  <AutoCompleteComponent
+                    data={customerData}
+                    mainData={formData}
+                    setData={setCustomerData}
+                    setMainData={setFormData}
+                    handleChange={handleChange}
+                    filteredData={filteredCustomerData}
+                    setFilteredData={setFilteredCustomerData}
+                    name="consigneeId"
+                    placeholder="Consignee ID"
+                    search_value="cust_id"
+                  />
                 </div>
                 <div>
                   <input
@@ -532,6 +581,7 @@ export default function Customer() {
                     value={formData.customerName}
                     onChange={handleChange}
                     placeholder=" "
+                    readOnly
                   />
                   <label
                     alt="Enter the Customer Name"
@@ -546,13 +596,14 @@ export default function Customer() {
                     value={formData.consigneeName}
                     onChange={handleChange}
                     placeholder=" "
+                    readOnly
                   />
                   <label
                     alt="Enter the Consignee Name"
                     placeholder="Consignee Name"
                   ></label>
                 </div>
-                <div className="gstApplicable">
+                {/* <div className="gstApplicable">
                   <label>
                     <input
                       type="checkbox"
@@ -562,8 +613,7 @@ export default function Customer() {
                     />
                     Gst Exception
                   </label>
-                  {/* <p>{formData.gstApplicable ? "Checkbox is checked!" : "Checkbox is not checked."}</p> */}
-                </div>
+                </div> */}
               </div>
               {productDetails &&
                 productDetails.map((productDetail, index) => {

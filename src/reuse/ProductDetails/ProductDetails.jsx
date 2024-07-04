@@ -27,7 +27,7 @@ export default function ProductDetails({
   productLength,
 }) {
   useEffect(() => {
-    let total = formData.quantity * formData.unitPrice
+    let total = parseFloat(formData.quantity * formData.unitPrice)
 
     setTotal(total.toFixed(2), index)
   }, [formData.quantity, formData.unitPrice])
@@ -178,7 +178,8 @@ export default function ProductDetails({
         </div>
         <div>
           <input
-            type="text"
+            type="number"
+            step="0.01"
             // required={true}
             name="quantity"
             value={formData.quantity}
@@ -189,23 +190,24 @@ export default function ProductDetails({
         </div>
         <div>
           <input
-            type="text"
+            type="number"
             // required={true}
             name="unitPrice"
             value={formData.unitPrice}
             onChange={(e) => handleChange(index, e)}
             placeholder=" "
           />
-          <label alt="Enter the Unit Price" placeholder="Unit Price"></label>
+          <label alt="Enter the Unit Price" placeholder="Pack Price"></label>
         </div>
         <div>
           <input
-            type="text"
+            type="number"
             // required={true}
             name="totalPrice"
             value={formData.totalPrice}
             onChange={(e) => handleChange(index, e)}
             placeholder=" "
+            readOnly
           />
           <label alt="Enter the Total Price" placeholder="Total Price"></label>
         </div>
@@ -257,10 +259,10 @@ export default function ProductDetails({
                 onChange={productDateHandle}
                 value={
                   formData.deliveryDate
-                    ? dayjs(formData.deliveryDate, "DD-MM-YYYY")
+                    ? dayjs(formData.deliveryDate, "YYYY-MM-DD")
                     : ""
                 }
-                format="DD-MM-YYYY"
+                format="YYYY-MM-DD"
                 placeholder={"Delivery Date"}
               />
               {formData.deliveryDate && (

@@ -26,15 +26,15 @@ export default function UpdatePO() {
     additional_desc: "",
     pack_size: "",
     uom: "",
-    quantity: "",
+    quantity: 0.0,
     staggered_delivery: "",
-    unit_price: "",
-    qty_sent: "",
-    qty_balance: "",
+    unit_price: 0.0,
+    total_price: 0.0,
+    qty_sent: 0.0,
+    qty_balance: 0.0,
     delivery_date: "",
     omat: "",
     hsn_sac: "",
-    gst_applicable: "false",
   }
 
   const [searchInputs, setSearchInputs] = useState(initialSearchInputs)
@@ -64,14 +64,16 @@ export default function UpdatePO() {
         },
       })
       .then((response) => {
-        let data = response.data.data
-        console.log("data: ", data)
-        const parsedDate = parse(data.podate, "dd-MM-yyyy", new Date())
-        const validityDate = addYears(parsedDate, 1)
-        const formattedValidityDate = format(validityDate, "dd-MM-yyyy")
+        const data = response.data.data
+
+        const parsedDate = parse(data.podate, "yyyy-MM-dd", new Date())
+        const formattedPoDate = format(parsedDate, "yyyy-MM-dd")
+        const validityDate = addYears(formattedPoDate, 1)
+        const formattedValidityDate = format(validityDate, "yyyy-MM-dd")
+
         setSearchData({
           pono: data.pono,
-          podate: data.podate,
+          podate: formattedPoDate,
           po_validity: formattedValidityDate,
           quote_id: data.quote_id,
           customer_id: data.customer_id,
@@ -82,15 +84,15 @@ export default function UpdatePO() {
           additional_desc: data.additional_desc,
           omat: data.omat,
           pack_size: data.pack_size,
-          quantity: data.quantity,
           staggered_delivery: data.staggered_delivery,
-          unit_price: data.unit_price,
-          qty_sent: data.qty_sent,
-          qty_balance: data.qty_balance,
+          quantity: parseFloat(data.quantity),
+          unit_price: parseFloat(data.unit_price),
+          total_price: parseFloat(data.total_price),
+          qty_sent: parseFloat(data.qty_sent),
+          qty_balance: parseFloat(data.qty_balance),
           delivery_date: data.delivery_date,
           uom: data.uom,
           hsn_sac: data.hsn_sac,
-          gst_applicable: data.gst_applicable,
         })
       })
       .catch((error) => {
@@ -135,9 +137,11 @@ export default function UpdatePO() {
         .then((response) => {
           let data = response.data[0]
           console.log(data)
-          const parsedDate = parse(data.podate, "dd-MM-yyyy", new Date())
-          const validityDate = addYears(parsedDate, 1)
-          const formattedValidityDate = format(validityDate, "dd-MM-yyyy")
+          const parsedDate = parse(data.podate, "yyyy-MM-dd", new Date())
+          const formattedPoDate = format(parsedDate, "yyyy-MM-dd")
+          const validityDate = addYears(formattedPoDate, 1)
+          const formattedValidityDate = format(validityDate, "yyyy-MM-dd")
+          console.log(formattedPoDate, formattedValidityDate)
           setSearchData({
             pono: data.pono,
             podate: data.podate,
@@ -150,13 +154,21 @@ export default function UpdatePO() {
             prod_desc: data.prod_desc,
             additional_desc: data.additional_desc,
             pack_size: data.pack_size,
-            quantity: data.quantity,
             staggered_delivery: data.staggered_delivery,
-            unit_price: data.unit_price,
-            qty_sent: data.qty_sent,
-            qty_balance: data.qty_balance,
+            // quantity: data.quantity,
+            // unit_price: data.unit_price,
+            // total_price: data.total_price,
+            // qty_sent: data.qty_sent,
+            // qty_balance: data.qty_balance,
+            quantity: parseFloat(data.quantity),
+            unit_price: parseFloat(data.unit_price),
+            total_price: parseFloat(data.total_price),
+            qty_sent: parseFloat(data.qty_sent),
+            qty_balance: parseFloat(data.qty_balance),
             delivery_date: data.delivery_date,
             hsn_sac: data.hsn_sac,
+            omat: data.omat,
+            // gst_exemption: data.gst_exemption,
           })
           console.log("data: ", data)
           console.log("searchData: ", searchData)
@@ -165,66 +177,81 @@ export default function UpdatePO() {
           console.log(error.response.data.error)
         })
     }
-    if (e.target.name === "customer_id") {
-      console.log("po_sl_no: ", e.target.value, e.target.name)
-      setSearchData({
-        ...searchData,
-        customer_id: e.target.value,
-      })
-      console.log(
-        "customer_id: ",
-        searchData.customer_id,
-        searchInputs.pono,
-        searchData.po_sl_no
-      )
-      api
-        .get("/getDataPoCust", {
-          params: {
-            customer_id: e.target.value,
-            pono: searchInputs.pono,
-            po_sl_no: searchData.po_sl_no,
-          },
-        })
-        .then((response) => {
-          let data = response.data[0]
-          console.log(data)
-          const parsedDate = parse(data.podate, "dd-MM-yyyy", new Date())
-          const validityDate = addYears(parsedDate, 1)
-          const formattedValidityDate = format(validityDate, "dd-MM-yyyy")
-          setSearchData({
-            pono: data.pono,
-            podate: data.podate,
-            po_validity: formattedValidityDate,
-            quote_id: data.quote_id,
-            customer_id: data.customer_id,
-            consignee_id: data.consignee_id,
-            po_sl_no: data.po_sl_no,
-            prod_code: data.prod_code,
-            prod_desc: data.prod_desc,
-            additional_desc: data.additional_desc,
-            pack_size: data.pack_size,
-            quantity: data.quantity,
-            staggered_delivery: data.staggered_delivery,
-            unit_price: data.unit_price,
-            qty_sent: data.qty_sent,
-            qty_balance: data.qty_balance,
-            delivery_date: data.delivery_date,
-            hsn_sac: data.hsn_sac,
-          })
-          console.log("data: ", data)
-          console.log("searchData: ", searchData)
-        })
-        .catch((error) => {
-          console.log(error.response.data.error)
-        })
-    } else {
-      console.log("entered")
-      setSearchInputs({ ...searchInputs, [e.target.name]: e.target.value })
-    }
+    // if (e.target.name === "customer_id") {
+    //   console.log("po_sl_no: ", e.target.value, e.target.name)
+    //   setSearchData({
+    //     ...searchData,
+    //     customer_id: e.target.value,
+    //   })
+    //   console.log(
+    //     "customer_id: ",
+    //     searchData.customer_id,
+    //     searchInputs.pono,
+    //     searchData.po_sl_no
+    //   )
+    //   api
+    //     .get("/getDataPoCust", {
+    //       params: {
+    //         customer_id: e.target.value,
+    //         pono: searchInputs.pono,
+    //         po_sl_no: searchData.po_sl_no,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       let data = response.data[0]
+    //       console.log(data)
+    //       const parsedDate = parse(data.podate, "yyyy-MM-dd", new Date())
+    //       const validityDate = addYears(parsedDate, 1)
+    //       const formattedValidityDate = format(validityDate, "yyyy-MM-dd")
+    //       setSearchData({
+    //         pono: data.pono,
+    //         podate: data.podate,
+    //         po_validity: formattedValidityDate,
+    //         quote_id: data.quote_id,
+    //         customer_id: data.customer_id,
+    //         consignee_id: data.consignee_id,
+    //         po_sl_no: data.po_sl_no,
+    //         prod_code: data.prod_code,
+    //         prod_desc: data.prod_desc,
+    //         additional_desc: data.additional_desc,
+    //         pack_size: data.pack_size,
+    //         staggered_delivery: data.staggered_delivery,
+    //         // quantity: data.quantity,
+    //         // unit_price: data.unit_price,
+    //         // total_price: data.tota_price,
+    //         // qty_sent: data.qty_sent,
+    //         // qty_balance: data.qty_balance,
+    //         quantity: parseFloat(data.quantity),
+    //         unit_price: parseFloat(data.unit_price),
+    //         total_price: parseFloat(data.total_price),
+    //         qty_sent: parseFloat(data.qty_sent),
+    //         qty_balance: parseFloat(data.qty_balance),
+    //         delivery_date: data.delivery_date,
+    //         hsn_sac: data.hsn_sac,
+    //         // gst_exemption: data.gst_exemption,
+    //       })
+    //       console.log("data: ", data)
+    //       console.log("searchData: ", searchData)
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.response.data.error)
+    //     })
+    // } else {
+    //   console.log("entered")
+    //   setSearchInputs({ ...searchInputs, [e.target.name]: e.target.value })
+    // }
   }
 
-  const handleChangeDate = (e) => {
-    setSearchData({ ...searchData, [e.target.name]: e.target.value })
+  const handleChangeData = (e) => {
+    const { name, value } = e.target
+    setSearchData({
+      ...searchData,
+      [name]: ["quantity", "unit_price", "qty_sent", "qty_balance"].includes(
+        name
+      )
+        ? parseFloat(value)
+        : value,
+    })
   }
 
   const onDateChange = (date, dateString) => {
@@ -235,9 +262,11 @@ export default function UpdatePO() {
   }
 
   const onDeliveryDateChange = (date, dateString) => {
+    const poDate = new Date(searchData.podate)
+    const deliveryDate = new Date(dateString)
     setSearchData((prevFormData) => ({
       ...prevFormData,
-      delivery_date: dateString,
+      delivery_date: poDate <= deliveryDate ? dateString : "",
     }))
   }
 
@@ -276,13 +305,30 @@ export default function UpdatePO() {
     }
   }
 
-  const handleCheckboxChange = (event) => {
-    setSearchData((prevFormData) => ({
-      ...prevFormData,
-      [event.target.name]: event.target.checked,
+  // const handleCheckboxChange = (event) => {
+  //   setSearchData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [event.target.name]: event.target.checked,
+  //   }))
+  //   console.log(searchData)
+  // }
+
+  useEffect(() => {
+    const balance = searchData.quantity - searchData.qty_sent
+    // const total = parseFloat(
+    //   searchData.quantity * searchData.unit_price
+    // ).toFixed(2)
+    // console.log(total)
+    setSearchData((prevData) => ({
+      ...prevData,
+      qty_balance: balance,
+      total_price: searchData.quantity * searchData.unit_price,
     }))
-    console.log(searchData)
-  };
+  }, [searchData.qty_sent, searchData.quantity, searchData.unit_price])
+
+  useEffect(() => {
+    console.log("search data: ", searchData)
+  }, [searchData.total_price])
 
   return (
     <div className="customer-container">
@@ -330,6 +376,7 @@ export default function UpdatePO() {
                   name="customer_id"
                   onChange={handleChange}
                   placeholder=" "
+                  readOnly
                 />
                 <label
                   alt="Enter the customer Id"
@@ -347,19 +394,17 @@ export default function UpdatePO() {
                 />
                 <label alt="Enter the PO_Sl_No" placeholder="PO Sl No."></label>
               </div>
-              <div
-                className="gstApplicable">
+              {/* <div className="gstApplicable">
                 <label>
                   <input
                     type="checkbox"
-                    name="gstApplicable"
-                    checked={searchData.gstApplicable}
+                    name="gst_exemption"
+                    checked={searchData.gst_exemption}
                     onChange={handleCheckboxChange}
                   />
-                  Is GST applicable
+                  GST Exemption
                 </label>
-                {/* <p>{formData.gstApplicable ? "Checkbox is checked!" : "Checkbox is not checked."}</p> */}
-              </div>
+              </div> */}
             </div>
           </form>
         </div>
@@ -376,7 +421,7 @@ export default function UpdatePO() {
                         name="podate"
                         value={
                           searchData.podate
-                            ? dayjs(searchData.podate, "DD-MM-YYYY")
+                            ? dayjs(searchData.podate, "YYYY-MM-DD")
                             : ""
                         }
                         format="DD-MM-YYYY"
@@ -396,7 +441,7 @@ export default function UpdatePO() {
                         name="po_validity"
                         value={
                           searchData.po_validity
-                            ? dayjs(searchData.po_validity, "DD-MM-YYYY")
+                            ? dayjs(searchData.po_validity, "YYYY-MM-DD")
                             : ""
                         }
                         format="DD-MM-YYYY"
@@ -414,7 +459,7 @@ export default function UpdatePO() {
                     /*required={true}*/
                     name="quote_id"
                     value={searchData.quote_id}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
@@ -428,7 +473,7 @@ export default function UpdatePO() {
                     /*required={true}*/
                     name="consignee_id"
                     value={searchData.consignee_id}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
@@ -475,7 +520,7 @@ export default function UpdatePO() {
                     required={true}
                     name="prod_id"
                     value={searchData.prod_id}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                   />
                   <label alt="Enter the prod Code" placeholder="Prod Code"></label>
                 </div> */}
@@ -485,7 +530,7 @@ export default function UpdatePO() {
                     /*required={true}*/
                     name="prod_desc"
                     value={searchData.prod_desc}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
@@ -499,12 +544,12 @@ export default function UpdatePO() {
                     /*required={true}*/
                     name="additional_desc"
                     value={searchData.additional_desc}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
                     alt="Enter the Additional Desc"
-                    placeholder="Additional Description"
+                    placeholder="MSRR"
                   ></label>
                 </div>
                 <div>
@@ -513,7 +558,7 @@ export default function UpdatePO() {
                     /*required={true}*/
                     name="omat"
                     value={searchData.omat}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label alt="Enter the OMAT" placeholder="OMAT"></label>
@@ -524,19 +569,19 @@ export default function UpdatePO() {
                     /*required={true}*/
                     name="pack_size"
                     value={searchData.pack_size}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
                     alt="Enter the Pack Size"
-                    placeholder="Pack Size"
+                    placeholder="Pack Size/UOM"
                   ></label>
                 </div>
                 <div className="input-container">
                   <select
                     name="uom"
                     value={searchData.uom}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     required
                   >
                     <option value="" disabled>
@@ -553,11 +598,11 @@ export default function UpdatePO() {
                 </div>
                 <div>
                   <input
-                    type="text"
+                    type="number"
                     /*required={true}*/
                     name="quantity"
                     value={searchData.quantity}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
@@ -571,7 +616,7 @@ export default function UpdatePO() {
                     /*required={true}*/
                     name="staggered_delivery"
                     value={searchData.staggered_delivery}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
@@ -581,26 +626,41 @@ export default function UpdatePO() {
                 </div>
                 <div>
                   <input
-                    type="text"
+                    type="number"
                     /*required={true}*/
                     name="unit_price"
                     value={searchData.unit_price}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
                     alt="Enter the Unit Price"
-                    placeholder="Unit Price"
+                    placeholder="Pack Price"
                   ></label>
                 </div>
                 <div>
                   <input
-                    type="text"
+                    type="number"
+                    /*required={true}*/
+                    name="total_price"
+                    value={searchData.total_price}
+                    placeholder=" "
+                    // readOnly
+                  />
+                  <label
+                    alt="Enter the Total Price"
+                    placeholder="Total Price"
+                  ></label>
+                </div>
+                <div>
+                  <input
+                    type="number"
                     /*required={true}*/
                     name="qty_sent"
                     value={searchData.qty_sent}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
+                    // readOnly
                   />
                   <label
                     alt="Enter the quantity sent"
@@ -609,12 +669,13 @@ export default function UpdatePO() {
                 </div>
                 <div>
                   <input
-                    type="text"
+                    type="number"
                     /*required={true}*/
                     name="qty_bal"
                     value={searchData.qty_balance}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
+                    readOnly
                   />
                   <label
                     alt="Enter the Quantity Balance"
@@ -627,7 +688,7 @@ export default function UpdatePO() {
                     /*required={true}*/
                     name="hsn_sac"
                     value={searchData.hsn_sac}
-                    onChange={handleChangeDate}
+                    onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label
@@ -642,10 +703,10 @@ export default function UpdatePO() {
                         onChange={onDeliveryDateChange}
                         value={
                           searchData.delivery_date
-                            ? dayjs(searchData.delivery_date, "DD-MM-YYYY")
+                            ? dayjs(searchData.delivery_date, "YYYY-MM-DD")
                             : ""
                         }
-                        format="DD-MM-YYYY"
+                        format="YYYY-MM-DD"
                         placeholder={"Delivery Date"}
                       />
                       {searchData.podate && (

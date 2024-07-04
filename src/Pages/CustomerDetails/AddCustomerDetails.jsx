@@ -31,7 +31,7 @@ export default function AddCustomerDetails() {
     contact_name_2: "",
     contact_phone_2: "",
     contact_email_2: "",
-    gst_exception: "0"
+    gst_exemption: "0",
   }
 
   const [formData, setFormData] = useState(initialFormData)
@@ -41,12 +41,17 @@ export default function AddCustomerDetails() {
   }, [stateData])
 
   useEffect(() => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      Cust_St_Code: stateData?.find(
-        (state) => state.state_name === formData.Cust_St_Name
-      )?.state_code,
-    }))
+    formData.Cust_St_Name != ""
+      ? setFormData((prevFormData) => ({
+          ...prevFormData,
+          Cust_St_Code: stateData?.find(
+            (state) => state.state_name === formData.Cust_St_Name
+          )?.state_code,
+        }))
+      : setFormData((prevFormData) => ({
+          ...prevFormData,
+          Cust_St_Code: "",
+        }))
   }, [formData.Cust_St_Name, stateData])
 
   const handleChange = (event) => {
@@ -64,55 +69,83 @@ export default function AddCustomerDetails() {
     }
   }
 
-  // const [isFocused, setIsFocused] = useState(false)
-
-  // const handleFocus = () => {
-  //   setIsFocused(true)
-  // }
-
-  // const handleBlur = () => {
-  //   setIsFocused(false)
-  // }
-
-  // const handleSelect = (value) => {
-  //   const selectedState = stateData.find(state => state.name === value);
-  //   if (selectedState) {
-  //     setFormData({
-  //       ...formData,
-  //       Cust_St_Name: selectedState.name,
-  //       Cust_St_Code: selectedState.code
-  //     });
-  //   }
-  // };
-
   const resetForm = () => {
     setFormData(initialFormData)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('formData: ', formData)
-    api
-      .post("/addCustomerDetails", {
-        formData: formData,
-      })
-      .then((response) => {
-        console.log(response.data)
-        // resetForm()
-      })
-      .catch((error) => {
-        console.log(error.response.data.error)
-      })
+    if (validateForm()) {
+      console.log("formData: ", formData)
+      api
+        .post("/addCustomerDetails", {
+          formData: formData,
+        })
+        .then((response) => {
+          console.log(response.data)
+          // resetForm()
+        })
+        .catch((error) => {
+          console.log(error.response.data.error)
+        })
+    } else {
+      console.log(formErrors.Cust_PIN)
+      console.log("validation error")
+    }
   }
 
-  // const handleSuggestionClick = (suggestion) => {
-  //   setFormData({
-  //     ...formData,
-  //     Cust_St_Name: suggestion.state_name,
-  //     Cust_St_Code: suggestion.state_code
-  //   });
-  //   setIsFocused(false);
-  // };
+  const [formErrors, setFormErrors] = useState({
+    Cust_PIN: "",
+    Cust_GST_ID: "",
+    contact_phone_1: "",
+    contact_phone_2: "",
+  })
+
+  const validateForm = () => {
+    let valid = true
+    const errors = {
+      Cust_PIN: "",
+      Cust_GST_ID: "",
+      contact_phone_1: "",
+      contact_phone_2: "",
+    }
+
+    //validation for Pincode
+    if (formData.Cust_PIN && !/^\d{6}$/.test(formData.Cust_PIN)) {
+      errors.Cust_PIN = "City PIN must be exactly 6 digits"
+      valid = false
+    }
+
+    //validation for GST ID
+    if (
+      formData.Cust_GST_ID &&
+      !/^[A-Za-z0-9]{15}$/.test(formData.Cust_GST_ID)
+    ) {
+      errors.Cust_GST_ID = "GST ID must be exactly 15 alphanumeric characters"
+      valid = false
+    }
+
+    //validation for phone number 1
+    if (
+      formData.contact_phone_1 &&
+      !/^\d{10}$/.test(formData.contact_phone_1)
+    ) {
+      errors.contact_phone_1 = "Phone number must be exactly 10 digits"
+      valid = false
+    }
+
+    //validation for phone number 2
+    if (
+      formData.contact_phone_2 &&
+      !/^\d{10}$/.test(formData.contact_phone_2)
+    ) {
+      errors.contact_phone_2 = "Phone number must be exactly 10 digits"
+      valid = false
+    }
+
+    setFormErrors(errors)
+    return valid
+  }
 
   return (
     <div className="addCustomerDetails-complete-container">
@@ -165,7 +198,7 @@ export default function AddCustomerDetails() {
             <div>
               <input
                 type="text"
-                required={true}
+                // required={true}
                 name="Cust_addr2"
                 value={formData.Cust_addr2}
                 onChange={handleChange}
@@ -183,7 +216,7 @@ export default function AddCustomerDetails() {
                 filteredData={filteredData}
                 setFilteredData={setFilteredData}
                 name="Cust_St_Name"
-                placeholder="Customer State Name"
+                placeholder="State Name"
                 search_value="state_name"
               />
             </div>
@@ -195,10 +228,11 @@ export default function AddCustomerDetails() {
                 value={formData.Cust_St_Code}
                 onChange={handleChange}
                 placeholder=" "
+                readOnly
               />
               <label
                 alt="Enter the Customer State Code"
-                placeholder="Customer State Code"
+                placeholder="St. Code"
               ></label>
             </div>
             <div>
@@ -210,10 +244,7 @@ export default function AddCustomerDetails() {
                 onChange={handleChange}
                 placeholder=" "
               />
-              <label
-                alt="Enter the Customer City"
-                placeholder="Customer City"
-              ></label>
+              <label alt="Enter the Customer City" placeholder="City"></label>
             </div>
             <div>
               <input
@@ -224,10 +255,10 @@ export default function AddCustomerDetails() {
                 onChange={handleChange}
                 placeholder=" "
               />
-              <label
-                alt="Enter the Customer PIN"
-                placeholder="Customer PIN"
-              ></label>
+              <label alt="Enter the Customer PIN" placeholder="PIN"></label>
+              {formErrors.Cust_PIN && (
+                <span className="error">{formErrors.Cust_PIN}</span>
+              )}
             </div>
             <div>
               <input
@@ -240,10 +271,28 @@ export default function AddCustomerDetails() {
               />
               <label
                 alt="Enter the Customer GST ID"
-                placeholder="Customer GST ID"
+                placeholder="GSTIN"
               ></label>
+              {formErrors.Cust_GST_ID && (
+                <span className="error">{formErrors.Cust_GST_ID}</span>
+              )}
             </div>
-            <div>
+            <div className="input-container">
+              <select
+                name="gst_exemption"
+                value={formData.gst_exemption}
+                onChange={handleChange}
+                // required
+              >
+                <option value="" disabled>
+                  Select an option
+                </option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <label alt="Select an Option" placeholder="Gst Exemption"></label>
+            </div>
+            <div className="grid-column-1">
               <input
                 type="text"
                 // required={true}
@@ -270,8 +319,11 @@ export default function AddCustomerDetails() {
                 alt="Enter the Contact Phone Number 1"
                 placeholder="Contact Phone 1"
               ></label>
+              {formErrors.contact_phone_1 && (
+                <span className="error">{formErrors.contact_phone_1}</span>
+              )}
             </div>
-            <div>
+            <div className="grid-column-2">
               <input
                 type="text"
                 // required={true}
@@ -285,7 +337,7 @@ export default function AddCustomerDetails() {
                 placeholder="Contact Email 1"
               ></label>
             </div>
-            <div>
+            <div className="grid-column-1">
               <input
                 type="text"
                 // required={true}
@@ -312,8 +364,11 @@ export default function AddCustomerDetails() {
                 alt="Enter the Contact Phone Number 2"
                 placeholder="Contact Phone 2"
               ></label>
+              {formErrors.contact_phone_2 && (
+                <span className="error">{formErrors.contact_phone_2}</span>
+              )}
             </div>
-            <div>
+            <div className="grid-column-2">
               <input
                 type="text"
                 // required={true}

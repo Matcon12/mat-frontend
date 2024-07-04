@@ -53,6 +53,17 @@
   align-items: center;
 }
 
+.noOfBatches {
+  grid-column: span 2;
+}
+
+.batch_quant {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+}
+
 /* @media all {
   .page-break {
     display: none;
@@ -86,7 +97,7 @@
   justify-content: space-between;
 }
 
-/* @media print {
+@media print {
   html,
   body {
     height: initial !important;
@@ -110,4 +121,4 @@
 @page {
   size: auto;
   margin: 40mm 0;
-} */
+}
