@@ -8,13 +8,16 @@ import { Link } from "react-router-dom"
 import api from "../../../api/api.jsx"
 import AutoCompleteComponent from "../../../components/AutoComplete/AutoCompleteComponent.jsx"
 import { format, addYears, parse } from "date-fns"
+// import Toast from "../../../components/Toast/Toast.jsx"
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 
 export default function Customer() {
   const [customerData, setCustomerData] = useState(0)
   const [purchaseOrder, setPurchaseOrder] = useState()
   const [filteredCustomerData, setFilteredCustomerData] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
-  const [success, setSuccess] = useState()
 
   useEffect(() => {
     api.get("/getCustomerData").then((response) => {
@@ -41,12 +44,11 @@ export default function Customer() {
     customerId: "",
     customerName: "",
     poNo: "",
-    poDate: "",
-    poValidity: "",
+    poDate: null,
+    poValidity: null,
     quoteId: "",
     consigneeId: "",
     consigneeName: "",
-    gstException: 0,
   }
 
   const initialProductDetails = {
@@ -61,7 +63,7 @@ export default function Customer() {
     quantity: "",
     unitPrice: "",
     totalPrice: "",
-    deliveryDate: "",
+    deliveryDate: null,
   }
 
   const initialFormDataValidation = {
@@ -123,11 +125,22 @@ export default function Customer() {
     if (name == "poSlNo") {
       setPsn((prevPsn) => [...prevPsn, value])
     }
+    if (name == "quantity" && value < 0) {
+      return
+    }
+    if (name == "unitPrice" && value < 0) {
+      return
+    }
     console.log(key, name)
     setProductDetails(
       productDetails.map((productDetail) => {
         if (productDetails.indexOf(productDetail) == key) {
-          return { ...productDetail, [name]: value }
+          return {
+            ...productDetail,
+            [name]: ["totalPrice", "quantity", "unitPrice"].includes(name)
+              ? parseFloat(value)
+              : value,
+          }
         }
         return productDetail
       })
@@ -143,6 +156,7 @@ export default function Customer() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    console.log("formData: ", formData, "productDetails: ", productDetails)
     api
       .post("/submitForm", {
         formData: formData,
@@ -150,10 +164,11 @@ export default function Customer() {
       })
       .then((response) => {
         console.log(response.data)
-        // resetForm()
-        setSuccess("Form submitted successfully")
+        toast.success(response.data.message)
+        resetForm()
       })
       .catch((error) => {
+        toast.error(error.response.data.message)
         console.log(error.response.data.error)
       })
   }
@@ -248,10 +263,18 @@ export default function Customer() {
   }
 
   const onProductDateChange = (date, index, dateStr) => {
+    const parsedPoDate = parse(formData.poDate, "dd-MM-yyyy", new Date())
+    const formattedPoDate = format(parsedPoDate, "dd-MM-yyyy")
+    const parsedDeliveryDate = parse(dateStr, "dd-MM-yyyy", new Date())
+    const formattedDeliveryDate = format(parsedDeliveryDate, "dd-MM-yyyy")
+
     setProductDetails(
       productDetails.map((productDetail, idx) => {
         if (idx === index) {
-          return { ...productDetail, deliveryDate: dateStr }
+          return {
+            ...productDetail,
+            deliveryDate: parsedPoDate <= parsedDeliveryDate ? dateStr : "",
+          }
         }
         return productDetail
       })
@@ -262,7 +285,7 @@ export default function Customer() {
     setProductDetails(
       productDetails.map((productDetail) => {
         if (productDetails.indexOf(productDetail) == index) {
-          return { ...productDetail, ["totalPrice"]: total }
+          return { ...productDetail, ["totalPrice"]: parseFloat(total) }
         }
         return productDetail
       })
@@ -331,7 +354,6 @@ export default function Customer() {
           consigneeId: formData.customerId,
           customerName: response.data.customer_name,
           consigneeName: response.data.customer_name,
-          gstException: response.data.gst_exception,
         }))
       })
 
@@ -358,32 +380,37 @@ export default function Customer() {
   }
 
   const addMore = () => {
-    const lastElement = psn[psn.length - 1]
-    let dup = false
+    //   const lastElement = psn[psn.length - 1]
+    //   console.log(lastElement)
+    //   let dup = false
 
-    // Check for duplicates
-    for (let i = 0; i < psn.length - 1; i++) {
-      if (psn[i] === lastElement) {
-        dup = true
-        break
-      }
-    }
+    //   // Check for duplicates
+    //   for (let i = 0; i < psn.length - 1; i++) {
+    //     if (psn[i] === lastElement) {
+    //       dup = true
+    //       break
+    //     }
+    //   }
 
-    if (dup) {
-      setProductValidation((prevProductValidation) => ({
-        ...prevProductValidation,
-        ["poSlNo"]: "Already Exists",
-      }))
-    } else {
-      setProductValidation((prevProductValidation) => ({
-        ...prevProductValidation,
-        ["poSlNo"]: "",
-      }))
-      setProductDetails((prevProductDetails) => [
-        ...prevProductDetails,
-        initialProductDetails,
-      ])
-    }
+    //   if (dup) {
+    //     setProductValidation((prevProductValidation) => ({
+    //       ...prevProductValidation,
+    //       ["poSlNo"]: "Already Exists",
+    //     }))
+    //   } else {
+    //     setProductValidation((prevProductValidation) => ({
+    //       ...prevProductValidation,
+    //       ["poSlNo"]: "",
+    //     }))
+    //     setProductDetails((prevProductDetails) => [
+    //       ...prevProductDetails,
+    //       initialProductDetails,
+    //     ])
+    //   }
+    setProductDetails((prevProductDetails) => [
+      ...prevProductDetails,
+      initialProductDetails,
+    ])
   }
 
   // const [isFocused, setIsFocused] = useState(false)
@@ -404,6 +431,36 @@ export default function Customer() {
     }))
     console.log(formData)
   }
+
+  useEffect(() => {
+    formData.consigneeId != formData.customerId
+      ? api
+          .get("/customerName", {
+            params: {
+              customerId: formData.consigneeId,
+            },
+          })
+          .then((response) => {
+            console.log("response_data: ", response.data)
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              consigneeId: formData.consigneeId,
+              consigneeName: response.data.customer_name,
+            }))
+          })
+
+          .catch((error) => {
+            // resetForm()
+            console.log(error.data.error)
+          })
+      : ""
+    if (formData.consigneeId == "") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        consigneeName: "",
+      }))
+    }
+  }, [formData.consigneeId])
 
   return (
     <div className="customer-container">
@@ -429,18 +486,9 @@ export default function Customer() {
                     name="customerId"
                     placeholder="Customer ID"
                     search_value="cust_id"
+                    required={true}
                   />
                 </div>
-                {/* <div>
-                  <input
-                    type="text"
-                    required={true}
-                    name="poNo"
-                    value={formData.poNo}
-                    onChange={handleChange}
-                  />
-                  <label alt="Enter the PO No" placeholder="PO No"></label>
-                </div> */}
                 <div className="autocomplete-wrapper">
                   <AutoCompleteComponent
                     data={purchaseOrder}
@@ -453,6 +501,7 @@ export default function Customer() {
                     name="poNo"
                     placeholder="Customer PO No."
                     search_value="pono"
+                    required={true}
                   />
                 </div>
                 <div>
@@ -511,7 +560,7 @@ export default function Customer() {
                     placeholder="Quote ID"
                   ></label>
                 </div>
-                <div>
+                {/* <div>
                   <input
                     type="text"
                     // required={true}
@@ -524,6 +573,20 @@ export default function Customer() {
                     alt="Enter the Consignee ID"
                     placeholder="Consignee ID"
                   ></label>
+                </div> */}
+                <div className="autocomplete-wrapper">
+                  <AutoCompleteComponent
+                    data={customerData}
+                    mainData={formData}
+                    setData={setCustomerData}
+                    setMainData={setFormData}
+                    handleChange={handleChange}
+                    filteredData={filteredCustomerData}
+                    setFilteredData={setFilteredCustomerData}
+                    name="consigneeId"
+                    placeholder="Consignee ID"
+                    search_value="cust_id"
+                  />
                 </div>
                 <div>
                   <input
@@ -532,6 +595,7 @@ export default function Customer() {
                     value={formData.customerName}
                     onChange={handleChange}
                     placeholder=" "
+                    readOnly
                   />
                   <label
                     alt="Enter the Customer Name"
@@ -546,13 +610,14 @@ export default function Customer() {
                     value={formData.consigneeName}
                     onChange={handleChange}
                     placeholder=" "
+                    readOnly
                   />
                   <label
                     alt="Enter the Consignee Name"
                     placeholder="Consignee Name"
                   ></label>
                 </div>
-                <div className="gstApplicable">
+                {/* <div className="gstApplicable">
                   <label>
                     <input
                       type="checkbox"
@@ -562,8 +627,7 @@ export default function Customer() {
                     />
                     Gst Exception
                   </label>
-                  {/* <p>{formData.gstApplicable ? "Checkbox is checked!" : "Checkbox is not checked."}</p> */}
-                </div>
+                </div> */}
               </div>
               {productDetails &&
                 productDetails.map((productDetail, index) => {
@@ -594,9 +658,7 @@ export default function Customer() {
                   )
                 })}
             </div>
-            <div>
-              Grand Total: {grandTotal()} {success}
-            </div>
+            <div>Grand Total: {grandTotal()}</div>
             <div className="form-button-container">
               <button type="button" value="nextEntry" onClick={addMore}>
                 Add More
@@ -609,7 +671,9 @@ export default function Customer() {
           </form>
         </div>
       </div>
-      <div></div>
+      <div>
+        <ToastContainer />
+      </div>
     </div>
   )
 }

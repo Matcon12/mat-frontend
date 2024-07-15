@@ -26,10 +26,10 @@ export default function POTable({
           </th>
           <th className="col3">PO Sl. No.</th>
           <th className="col4">HSN Code</th>
-          <th className="col15">Pack Size</th>
+          <th className="col15">Pack Size/ UOM</th>
           <th className="col5">QTY</th>
-          <th className="col6">U O M</th>
-          <th className="col7">Rate</th>
+          {/* <th className="col6">Pk Sz/UOM</th> */}
+          <th className="col7">Pack Price</th>
           <th className="col8">Total</th>
           <th className="col9">CGST Rate (%)</th>
           <th className="col10">CGST Amount (Rs)</th>
@@ -45,7 +45,7 @@ export default function POTable({
           <td className="col2 vertical-align-top"></td>
           <td className="col3 vertical-align-top"></td>
           <td className="col4 vertical-align-top"></td>
-          <td className="col15 vertical-align-top"></td>
+          {/* <td className="col15 vertical-align-top"></td> */}
           <td className="col5 vertical-align-top"></td>
           <td className="col6 vertical-align-top"></td>
           <td className="col7 vertical-align-top"></td>
@@ -71,11 +71,13 @@ export default function POTable({
                   ? ` [${data.omat}]`
                   : ""}
               </td>
-              <td className="col3">{data.po_sl_no}</td>
+              <td className="col3">
+                {data.po_sl_no in ["fr", "in", "oc"] ? data.po_sl_no : ""}
+              </td>
               <td className="col4">{data.hsn}</td>
-              <td className="col15">{data.pack_size}</td>
+              {/* <td className="col15">{data.pack_size}</td> */}
+              <td className="col6">{data.pack_size}</td>
               <td className="col5">{data.qty_delivered}</td>
-              <td className="col6">{data.uom}</td>
               <td className="col7">{data.unit_price}</td>
               <td className="col8">
                 {calculateTotal(data.qty_delivered, data.unit_price)}
@@ -108,7 +110,7 @@ export default function POTable({
             Total:
           </td>
           <td className="col15"></td>
-          <td className="col5">{total_qty}</td>
+          {/* <td className="col5">{total_qty}</td> */}
           <td className="col6"></td>
           <td className="col7"></td>
           <td className="col8">{total_taxable_value}</td>

@@ -17,10 +17,10 @@ export default function Navbar() {
     <>
       <div className="navbar">
         <img src="/image001.jpg" alt="" />
-        {pathname !== "/login" ?
+        {pathname !== "/login" ? (
           <ul>
             <li>
-              <a onClick={handleGoBack}>Back</a>
+              <Link onClick={handleGoBack}>Back</Link>
             </li>
             <li>
               {user ? (
@@ -31,7 +31,8 @@ export default function Navbar() {
                 <Link to="/login">Login</Link>
               )}
             </li>
-          </ul> : null}
+          </ul>
+        ) : null}
       </div>
     </>
   )

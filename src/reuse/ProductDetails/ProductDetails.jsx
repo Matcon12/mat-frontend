@@ -27,7 +27,7 @@ export default function ProductDetails({
   productLength,
 }) {
   useEffect(() => {
-    let total = formData.quantity * formData.unitPrice
+    let total = parseFloat(formData.quantity * formData.unitPrice)
 
     setTotal(total.toFixed(2), index)
   }, [formData.quantity, formData.unitPrice])
@@ -63,7 +63,7 @@ export default function ProductDetails({
           )}
           <input
             type="text"
-            // required={true}
+            required={true}
             name="poSlNo"
             value={formData.poSlNo}
             onChange={(e) => handleChange(index, e)}
@@ -118,11 +118,11 @@ export default function ProductDetails({
             // required={true}
             name="productDesc"
             value={formData.productDesc}
-            className={
-              formData.productDesc.trim() == ""
-                ? "textAreaEmpty"
-                : "textAreaFilled"
-            }
+            // className={
+            //   formData.productDesc.trim() == ""
+            //     ? "textAreaEmpty"
+            //     : "textAreaFilled"
+            // }
             onChange={(e) => handleChange(index, e)}
             placeholder=" "
           ></textarea>
@@ -166,11 +166,11 @@ export default function ProductDetails({
             // required={true}
             name="omat"
             value={formData.omat}
-            className={
-              formData.productDesc.trim() == ""
-                ? "textAreaEmpty"
-                : "textAreaFilled"
-            }
+            // className={
+            //   formData.productDesc.trim() == ""
+            //     ? "textAreaEmpty"
+            //     : "textAreaFilled"
+            // }
             onChange={(e) => handleChange(index, e)}
             placeholder=" "
           ></textarea>
@@ -178,7 +178,8 @@ export default function ProductDetails({
         </div>
         <div>
           <input
-            type="text"
+            type="number"
+            step="0.01"
             // required={true}
             name="quantity"
             value={formData.quantity}
@@ -189,23 +190,24 @@ export default function ProductDetails({
         </div>
         <div>
           <input
-            type="text"
+            type="number"
             // required={true}
             name="unitPrice"
             value={formData.unitPrice}
             onChange={(e) => handleChange(index, e)}
             placeholder=" "
           />
-          <label alt="Enter the Unit Price" placeholder="Unit Price"></label>
+          <label alt="Enter the Unit Price" placeholder="Pack Price"></label>
         </div>
         <div>
           <input
-            type="text"
+            type="number"
             // required={true}
             name="totalPrice"
             value={formData.totalPrice}
             onChange={(e) => handleChange(index, e)}
             placeholder=" "
+            readOnly
           />
           <label alt="Enter the Total Price" placeholder="Total Price"></label>
         </div>

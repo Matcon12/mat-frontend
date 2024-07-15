@@ -12,6 +12,7 @@
   display: grid;
   gap: 20px;
   justify-items: center;
+  grid-template-columns: 1fr 1fr;
 }
 
 .invoice-input-container > div > input {
@@ -28,7 +29,13 @@
   margin: 20px 0;
 }
 
-.invoice-form-input-container {
+/* .invoice-form-input-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+} */
+
+.invoice-form-input-only-headers {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
@@ -51,6 +58,24 @@
   display: grid;
   justify-content: center;
   align-items: center;
+}
+
+.noOfBatches {
+  grid-column: span 2;
+}
+
+.individual-batches {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.batch_quant {
+  grid-column: span 2;
+  display: grid;
+  /* grid-template-columns: 1fr 1fr; */
+  gap: 17px;
 }
 
 /* @media all {
@@ -86,7 +111,12 @@
   justify-content: space-between;
 }
 
-/* @media print {
+.individual-container {
+  border-top: 1px solid gray;
+  padding: 20px;
+}
+
+@media print {
   html,
   body {
     height: initial !important;
@@ -110,4 +140,4 @@
 @page {
   size: auto;
   margin: 40mm 0;
-} */
+}

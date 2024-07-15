@@ -3,6 +3,9 @@ import { Link } from "react-router-dom"
 import "./ProductDetails.css"
 import api from "../../api/api.jsx"
 import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteComponent.jsx"
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 
 export default function EditProductDetails() {
   const [productData, setProductData] = useState()
@@ -56,10 +59,12 @@ export default function EditProductDetails() {
           price: response.data.price ? response.data.price : "",
           hsn_code: response.data.hsn_code ? response.data.hsn_code : "",
         })
+        toast.success("Successfully fetched data!!")
       })
       .catch((error) => {
         resetForm()
         console.log(error.response.data.error)
+        toast.error("Failed to fetch data")
       })
   }
 
@@ -72,9 +77,11 @@ export default function EditProductDetails() {
       .then((response) => {
         console.log(response)
         // resetForm()
+        toast.success("Successfully updated the product details")
       })
       .catch((error) => {
         console.error("Error updating data: ", error)
+        toast.error("Error updating the product details")
       })
   }
 
@@ -195,6 +202,7 @@ export default function EditProductDetails() {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   )
 }

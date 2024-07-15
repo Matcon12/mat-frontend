@@ -2,6 +2,9 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import "./ProductDetails.css"
 import api from "../../api/api.jsx"
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 
 export default function AddProductDetails() {
   const initialFormData = {
@@ -28,15 +31,17 @@ export default function AddProductDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('formData: ', formData)
+    console.log("formData: ", formData)
     api
       .post("/addProductDetails", { formData })
       .then((response) => {
         console.log(response.data)
+        toast.success("Successfully added product!!")
         resetForm()
       })
       .catch((error) => {
         console.log(error.response.data.error)
+        toast.error("Error submitting the form")
       })
   }
 
@@ -152,6 +157,7 @@ export default function AddProductDetails() {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   )
 }

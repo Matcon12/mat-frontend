@@ -47,7 +47,7 @@ export default function Invoice({ formData }) {
               />
             </div>
             <POTable
-              po_data={formData.odc}
+              po_data={formData.inv}
               gr={formData.gr}
               total_qty={formData.total_qty}
               total_taxable_value={formData.total_taxable_value}
