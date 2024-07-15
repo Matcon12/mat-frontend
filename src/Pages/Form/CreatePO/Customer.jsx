@@ -8,13 +8,16 @@ import { Link } from "react-router-dom"
 import api from "../../../api/api.jsx"
 import AutoCompleteComponent from "../../../components/AutoComplete/AutoCompleteComponent.jsx"
 import { format, addYears, parse } from "date-fns"
+// import Toast from "../../../components/Toast/Toast.jsx"
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 
 export default function Customer() {
   const [customerData, setCustomerData] = useState(0)
   const [purchaseOrder, setPurchaseOrder] = useState()
   const [filteredCustomerData, setFilteredCustomerData] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
-  const [success, setSuccess] = useState()
 
   useEffect(() => {
     api.get("/getCustomerData").then((response) => {
@@ -41,8 +44,8 @@ export default function Customer() {
     customerId: "",
     customerName: "",
     poNo: "",
-    poDate: "",
-    poValidity: "",
+    poDate: null,
+    poValidity: null,
     quoteId: "",
     consigneeId: "",
     consigneeName: "",
@@ -60,7 +63,7 @@ export default function Customer() {
     quantity: "",
     unitPrice: "",
     totalPrice: "",
-    deliveryDate: "",
+    deliveryDate: null,
   }
 
   const initialFormDataValidation = {
@@ -161,10 +164,11 @@ export default function Customer() {
       })
       .then((response) => {
         console.log(response.data)
-        // resetForm()
-        setSuccess("Form submitted successfully")
+        toast.success(response.data.message)
+        resetForm()
       })
       .catch((error) => {
+        toast.error(error.response.data.message)
         console.log(error.response.data.error)
       })
   }
@@ -240,9 +244,9 @@ export default function Customer() {
   }
 
   const onDateChange = (date, dateString) => {
-    const parsedDate = parse(dateString, "yyyy-MM-dd", new Date())
+    const parsedDate = parse(dateString, "dd-MM-yyyy", new Date())
     const validityDate = addYears(parsedDate, 1)
-    const formattedValidityDate = format(validityDate, "yyyy-MM-dd")
+    const formattedValidityDate = format(validityDate, "dd-MM-yyyy")
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -259,14 +263,17 @@ export default function Customer() {
   }
 
   const onProductDateChange = (date, index, dateStr) => {
-    const poDate = new Date(formData.poDate)
-    const deliveryDate = new Date(dateStr)
+    const parsedPoDate = parse(formData.poDate, "dd-MM-yyyy", new Date())
+    const formattedPoDate = format(parsedPoDate, "dd-MM-yyyy")
+    const parsedDeliveryDate = parse(dateStr, "dd-MM-yyyy", new Date())
+    const formattedDeliveryDate = format(parsedDeliveryDate, "dd-MM-yyyy")
+
     setProductDetails(
       productDetails.map((productDetail, idx) => {
         if (idx === index) {
           return {
             ...productDetail,
-            deliveryDate: poDate <= deliveryDate ? dateStr : "",
+            deliveryDate: parsedPoDate <= parsedDeliveryDate ? dateStr : "",
           }
         }
         return productDetail
@@ -373,32 +380,37 @@ export default function Customer() {
   }
 
   const addMore = () => {
-    const lastElement = psn[psn.length - 1]
-    let dup = false
+    //   const lastElement = psn[psn.length - 1]
+    //   console.log(lastElement)
+    //   let dup = false
 
-    // Check for duplicates
-    for (let i = 0; i < psn.length - 1; i++) {
-      if (psn[i] === lastElement) {
-        dup = true
-        break
-      }
-    }
+    //   // Check for duplicates
+    //   for (let i = 0; i < psn.length - 1; i++) {
+    //     if (psn[i] === lastElement) {
+    //       dup = true
+    //       break
+    //     }
+    //   }
 
-    if (dup) {
-      setProductValidation((prevProductValidation) => ({
-        ...prevProductValidation,
-        ["poSlNo"]: "Already Exists",
-      }))
-    } else {
-      setProductValidation((prevProductValidation) => ({
-        ...prevProductValidation,
-        ["poSlNo"]: "",
-      }))
-      setProductDetails((prevProductDetails) => [
-        ...prevProductDetails,
-        initialProductDetails,
-      ])
-    }
+    //   if (dup) {
+    //     setProductValidation((prevProductValidation) => ({
+    //       ...prevProductValidation,
+    //       ["poSlNo"]: "Already Exists",
+    //     }))
+    //   } else {
+    //     setProductValidation((prevProductValidation) => ({
+    //       ...prevProductValidation,
+    //       ["poSlNo"]: "",
+    //     }))
+    //     setProductDetails((prevProductDetails) => [
+    //       ...prevProductDetails,
+    //       initialProductDetails,
+    //     ])
+    //   }
+    setProductDetails((prevProductDetails) => [
+      ...prevProductDetails,
+      initialProductDetails,
+    ])
   }
 
   // const [isFocused, setIsFocused] = useState(false)
@@ -474,6 +486,7 @@ export default function Customer() {
                     name="customerId"
                     placeholder="Customer ID"
                     search_value="cust_id"
+                    required={true}
                   />
                 </div>
                 <div className="autocomplete-wrapper">
@@ -488,6 +501,7 @@ export default function Customer() {
                     name="poNo"
                     placeholder="Customer PO No."
                     search_value="pono"
+                    required={true}
                   />
                 </div>
                 <div>
@@ -497,7 +511,7 @@ export default function Customer() {
                         onChange={onDateChange}
                         value={
                           formData.poDate
-                            ? dayjs(formData.poDate, "YYYY-MM-DD")
+                            ? dayjs(formData.poDate, "DD-MM-YYYY")
                             : ""
                         }
                         format="DD-MM-YYYY"
@@ -519,7 +533,7 @@ export default function Customer() {
                           onChange={onValidityChange}
                           value={
                             formData.poValidity
-                              ? dayjs(formData.poValidity, "YYYY-MM-DD")
+                              ? dayjs(formData.poValidity, "DD-MM-YYYY")
                               : ""
                           }
                           format="DD-MM-YYYY"
@@ -644,9 +658,7 @@ export default function Customer() {
                   )
                 })}
             </div>
-            <div>
-              Grand Total: {grandTotal()} {success}
-            </div>
+            <div>Grand Total: {grandTotal()}</div>
             <div className="form-button-container">
               <button type="button" value="nextEntry" onClick={addMore}>
                 Add More
@@ -659,7 +671,9 @@ export default function Customer() {
           </form>
         </div>
       </div>
-      <div></div>
+      <div>
+        <ToastContainer />
+      </div>
     </div>
   )
 }

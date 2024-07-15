@@ -3,7 +3,34 @@ import { useReactToPrint } from "react-to-print"
 import React, { useRef } from "react"
 import "./Dc.css"
 
+function groupDataByDescription(data) {
+  const groupedData = []
+  data.forEach((item, index) => {
+    const existingGroup = groupedData.find(
+      (group) => group.prod_desc === item.prod_desc
+    )
+    if (existingGroup) {
+      existingGroup.items.push(item)
+    } else {
+      groupedData.push({
+        sl_no: groupedData.length + 1,
+        prod_desc: item.prod_desc,
+        items: [item],
+      })
+    }
+  })
+  return groupedData
+}
+
+function stripUnits(value) {
+  const numericValue = parseFloat(value.replace(/[^\d.-]/g, ""))
+  const unit = value.replace(/[\d\s.-]/g, "")
+  return { numericValue, unit }
+}
+
 function DcReportC({ formData }) {
+  const groupedData = groupDataByDescription(formData.odc)
+
   return (
     <>
       <h2>DELIVERY CHALLAN</h2>
@@ -16,10 +43,8 @@ function DcReportC({ formData }) {
           <p>
             To,
             <br />
-            {/* International Aerospace Manufacturing Pvt Ltd <br />
-            Survey No.3/1, Plot No. 2,3&4, ELCOT SEZ, <br />
-            KRISHNAGIRI-635109, Tamil Nadu, India */}
             {formData.c.cust_name}
+            <br />
             {formData.c.cust_addr1}
           </p>
         </div>
@@ -56,10 +81,6 @@ function DcReportC({ formData }) {
               </tr>
             </tbody>
           </table>
-          {/* <p>DC No. : {formData.odc[0].gcn_no}</p>
-          <p>DATE : {formData.odc[0].gcn_date}</p>
-          <p>P.O. No. : {formData.odc[0].po_no}</p>
-          <p>DATE : {formData.odc[0].po_date}</p> */}
         </div>
       </div>
       <div className="message">
@@ -76,7 +97,7 @@ function DcReportC({ formData }) {
         <p>Dear Sir,</p>
         <br />
         <p>
-          Please receive the goods in good considtion and acknowledge the same.
+          Please receive the goods in good condition and acknowledge the same.
         </p>
         <br />
       </div>
@@ -95,34 +116,40 @@ function DcReportC({ formData }) {
             </tr>
           </thead>
           <tbody>
-            {formData.odc.map((data, index) => {
-              return (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    {data.prod_desc}
-                    {data.additional_desc === "N/A"
-                      ? ""
-                      : [data.additional_desc]}
-                  </td>
-                  <td>{data.qty_delivered}</td>
-                  <td>{data.pack_size}</td>
-                  <td>{data.qty_delivered * parseFloat(data.pack_size)}</td>
+            {groupedData.map((group, groupIndex) => {
+              return group.items.map((data, index) => {
+                const { numericValue: batch_quantity } = stripUnits(
+                  data.batch_quantity
+                )
+                const { numericValue: packSize, unit } = stripUnits(
+                  data.pack_size
+                )
+                const totalQty = batch_quantity * packSize
 
-                  <td>{data.uom}</td>
-                  <td>{data.batch}</td>
-                  <td>{data.coc}</td>
-                </tr>
-              )
+                return (
+                  <tr key={groupIndex + "-" + index}>
+                    {index === 0 && (
+                      <>
+                        <td rowSpan={group.items.length}>{group.sl_no}</td>
+                        <td rowSpan={group.items.length}>{group.prod_desc}</td>
+                      </>
+                    )}
+                    <td>{data.batch_quantity}</td>
+                    <td>{data.pack_size}</td>
+                    <td>{totalQty}</td>
+                    <td>{unit}</td>
+                    <td>{data.batch}</td>
+                    <td>{data.coc}</td>
+                  </tr>
+                )
+              })
             })}
           </tbody>
         </table>
       </div>
       <div className="gst_no">
         <br />
-        {/* <h3>GST NO: {formData.c.cust_gst_id}</h3> */}
         <h3>GST NO: 29AAPFM1882M1ZG</h3>
-        <div></div>
         <br />
         <br />
         <br />
@@ -145,6 +172,7 @@ function DcReportC({ formData }) {
     </>
   )
 }
+
 export default function DcPrint({ formData }) {
   const componentRef = useRef()
 

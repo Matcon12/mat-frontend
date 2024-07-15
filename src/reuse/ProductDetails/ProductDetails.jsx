@@ -63,7 +63,7 @@ export default function ProductDetails({
           )}
           <input
             type="text"
-            // required={true}
+            required={true}
             name="poSlNo"
             value={formData.poSlNo}
             onChange={(e) => handleChange(index, e)}
@@ -118,11 +118,11 @@ export default function ProductDetails({
             // required={true}
             name="productDesc"
             value={formData.productDesc}
-            className={
-              formData.productDesc.trim() == ""
-                ? "textAreaEmpty"
-                : "textAreaFilled"
-            }
+            // className={
+            //   formData.productDesc.trim() == ""
+            //     ? "textAreaEmpty"
+            //     : "textAreaFilled"
+            // }
             onChange={(e) => handleChange(index, e)}
             placeholder=" "
           ></textarea>
@@ -166,11 +166,11 @@ export default function ProductDetails({
             // required={true}
             name="omat"
             value={formData.omat}
-            className={
-              formData.productDesc.trim() == ""
-                ? "textAreaEmpty"
-                : "textAreaFilled"
-            }
+            // className={
+            //   formData.productDesc.trim() == ""
+            //     ? "textAreaEmpty"
+            //     : "textAreaFilled"
+            // }
             onChange={(e) => handleChange(index, e)}
             placeholder=" "
           ></textarea>
@@ -259,10 +259,10 @@ export default function ProductDetails({
                 onChange={productDateHandle}
                 value={
                   formData.deliveryDate
-                    ? dayjs(formData.deliveryDate, "YYYY-MM-DD")
+                    ? dayjs(formData.deliveryDate, "DD-MM-YYYY")
                     : ""
                 }
-                format="YYYY-MM-DD"
+                format="DD-MM-YYYY"
                 placeholder={"Delivery Date"}
               />
               {formData.deliveryDate && (

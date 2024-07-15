@@ -7,7 +7,10 @@ import { DatePicker, Space } from "antd"
 import dayjs from "dayjs"
 import possibleValues from "../../../../data.js"
 import AutoCompleteComponent from "../../../components/AutoComplete/AutoCompleteComponent.jsx"
-import { format, addYears, parse } from "date-fns"
+import { format, addYears, parse, isAfter } from "date-fns"
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 
 export default function UpdatePO() {
   const initialSearchInputs = {
@@ -32,7 +35,7 @@ export default function UpdatePO() {
     total_price: 0.0,
     qty_sent: 0.0,
     qty_balance: 0.0,
-    delivery_date: "",
+    delivery_date: null,
     omat: "",
     hsn_sac: "",
   }
@@ -44,6 +47,8 @@ export default function UpdatePO() {
   const [purchaseOrder, setPurchaseOrder] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
   const [success, setSucess] = useState()
+  const [poslnos, setPoslnos] = useState()
+  const [filteredPoSlNo, setFilteredPoSlNo] = useState()
 
   useEffect(() => {
     // api.get("/getCustomerData").then((response) => {
@@ -55,6 +60,10 @@ export default function UpdatePO() {
     })
   }, [])
 
+  const searchDataReset = () => {
+    setSearchData(initialSearchInputs)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     api
@@ -65,12 +74,18 @@ export default function UpdatePO() {
       })
       .then((response) => {
         const data = response.data.data
-
+        setPoslnos(response.data.po_sl_nos)
         const parsedDate = parse(data.podate, "yyyy-MM-dd", new Date())
-        const formattedPoDate = format(parsedDate, "yyyy-MM-dd")
-        const validityDate = addYears(formattedPoDate, 1)
-        const formattedValidityDate = format(validityDate, "yyyy-MM-dd")
-
+        const formattedPoDate = format(parsedDate, "dd-MM-yyyy")
+        const validityDate = addYears(data.podate, 1)
+        const formattedValidityDate = format(validityDate, "dd-MM-yyyy")
+        const formattedDeliveryDate = data.delivery_date
+          ? format(
+              parse(data.delivery_date, "yyyy-MM-dd", new Date()),
+              "dd-MM-yyyy"
+            )
+          : ""
+        console.log("uom: ", data.uom)
         setSearchData({
           pono: data.pono,
           podate: formattedPoDate,
@@ -90,15 +105,43 @@ export default function UpdatePO() {
           total_price: parseFloat(data.total_price),
           qty_sent: parseFloat(data.qty_sent),
           qty_balance: parseFloat(data.qty_balance),
-          delivery_date: data.delivery_date,
+          delivery_date: formattedDeliveryDate,
           uom: data.uom,
           hsn_sac: data.hsn_sac,
         })
+        toast.success("Successfuly fetched Data!!")
       })
       .catch((error) => {
         console.log(error.response.data.error)
       })
   }
+
+  const resetDataForm = () => {
+    setSearchData({
+      pono: searchData.pono,
+      podate: "",
+      po_validity: "",
+      quote_id: "",
+      customer_id: searchData.customer_id,
+      consignee_id: searchData.consignee_id,
+      po_sl_no: "",
+      prod_code: "",
+      prod_desc: "",
+      additional_desc: "",
+      pack_size: "",
+      uom: "",
+      quantity: 0.0,
+      staggered_delivery: "",
+      unit_price: 0.0,
+      total_price: 0.0,
+      qty_sent: 0.0,
+      qty_balance: 0.0,
+      delivery_date: null,
+      omat: "",
+      hsn_sac: "",
+    })
+  }
+
   const handleUpdate = (e) => {
     console.log("update")
     e.preventDefault()
@@ -106,7 +149,11 @@ export default function UpdatePO() {
       .put("/updateForm", { searchInputs, searchData })
       .then((response) => {
         console.log(response.data)
-        setSucess("Form Updated Successfully")
+        // setSucess("Form Updated Successfully")
+        resetDataForm()
+        toast.success(
+          `Form Updated Successfully for PO Sl No: ${searchData.po_sl_no}`
+        )
       })
       .catch((error) => {
         console.error("Error updating data: ", error)
@@ -115,17 +162,16 @@ export default function UpdatePO() {
 
   const handleChange = (e) => {
     if (e.target.name === "po_sl_no") {
-      console.log("po_sl_no: ", e.target.value, e.target.name)
+      const cust_id = searchData.customer_id
       setSearchData({
         ...searchData,
         po_sl_no: e.target.value,
       })
-      console.log(
-        "customer_id: ",
-        searchData.customer_id,
-        searchInputs.pono,
-        searchData.po_sl_no
-      )
+      console.log({
+        cust_id: searchData.customer_id,
+        po_no: searchInputs.pono,
+        po_sl_no: e.target.value,
+      })
       api
         .get("/getDataPoCust", {
           params: {
@@ -138,13 +184,32 @@ export default function UpdatePO() {
           let data = response.data[0]
           console.log(data)
           const parsedDate = parse(data.podate, "yyyy-MM-dd", new Date())
-          const formattedPoDate = format(parsedDate, "yyyy-MM-dd")
-          const validityDate = addYears(formattedPoDate, 1)
-          const formattedValidityDate = format(validityDate, "yyyy-MM-dd")
-          console.log(formattedPoDate, formattedValidityDate)
+          const formattedPoDate = format(parsedDate, "dd-MM-yyyy")
+          console.log(formattedPoDate)
+
+          const parsedValidityDate = data.po_validity
+            ? parse(data.po_validity, "yyyy-MM-dd", new Date())
+            : null
+          const formattedValidityDate = parsedValidityDate
+            ? format(parsedValidityDate, "dd-MM-yyyy")
+            : null
+          console.log(formattedValidityDate)
+
+          const parsedDeliveryDate = data.delivery_date
+            ? parse(data.delivery_date, "yyyy-MM-dd", new Date())
+            : null
+
+          const formattedDeliveryDate = parsedDeliveryDate
+            ? format(parsedDeliveryDate, "dd-MM-yyyy")
+            : null
+          console.log(
+            formattedPoDate,
+            formattedValidityDate,
+            formattedDeliveryDate
+          )
           setSearchData({
             pono: data.pono,
-            podate: data.podate,
+            podate: formattedPoDate,
             po_validity: formattedValidityDate,
             quote_id: data.quote_id,
             customer_id: data.customer_id,
@@ -155,26 +220,46 @@ export default function UpdatePO() {
             additional_desc: data.additional_desc,
             pack_size: data.pack_size,
             staggered_delivery: data.staggered_delivery,
-            // quantity: data.quantity,
-            // unit_price: data.unit_price,
-            // total_price: data.total_price,
-            // qty_sent: data.qty_sent,
-            // qty_balance: data.qty_balance,
             quantity: parseFloat(data.quantity),
             unit_price: parseFloat(data.unit_price),
             total_price: parseFloat(data.total_price),
             qty_sent: parseFloat(data.qty_sent),
             qty_balance: parseFloat(data.qty_balance),
-            delivery_date: data.delivery_date,
+            delivery_date: formattedDeliveryDate,
             hsn_sac: data.hsn_sac,
             omat: data.omat,
-            // gst_exemption: data.gst_exemption,
+            uom: data.uom,
           })
           console.log("data: ", data)
           console.log("searchData: ", searchData)
+          toast.info("Successfully fetched data for the PO Sl No.")
         })
         .catch((error) => {
+          setSearchData((prevSearchData) => ({
+            ...prevSearchData,
+            customer_id: cust_id,
+            po_sl_no: e.target.value,
+            pono: "",
+            podate: "",
+            po_validity: "",
+            quote_id: "",
+            consignee_id: "",
+            prod_code: "",
+            prod_desc: "",
+            additional_desc: "",
+            pack_size: "",
+            staggered_delivery: "",
+            quantity: 0,
+            unit_price: 0,
+            total_price: 0,
+            qty_sent: 0,
+            qty_balance: 0,
+            delivery_date: "",
+            hsn_sac: "",
+            omat: "",
+          }))
           console.log(error.response.data.error)
+          toast.error("Error fetching the data")
         })
     }
     // if (e.target.name === "customer_id") {
@@ -255,6 +340,7 @@ export default function UpdatePO() {
   }
 
   const onDateChange = (date, dateString) => {
+    console.log("dateString: ", dateString)
     setSearchData((prevFormData) => ({
       ...prevFormData,
       podate: dateString,
@@ -262,11 +348,22 @@ export default function UpdatePO() {
   }
 
   const onDeliveryDateChange = (date, dateString) => {
-    const poDate = new Date(searchData.podate)
-    const deliveryDate = new Date(dateString)
+    const poDateString = searchData.podate
+
+    // Parse the dates from "dd-MM-yyyy" format
+    const poDate = parse(poDateString, "dd-MM-yyyy", new Date())
+    const deliveryDate = parse(dateString, "dd-MM-yyyy", new Date())
+
+    console.log("PO Date:", format(poDate, "dd-MM-yyyy"))
+    console.log("Delivery Date:", format(deliveryDate, "dd-MM-yyyy"))
+
     setSearchData((prevFormData) => ({
       ...prevFormData,
-      delivery_date: poDate <= deliveryDate ? dateString : "",
+      delivery_date:
+        isAfter(deliveryDate, poDate) ||
+        format(deliveryDate, "dd-MM-yyyy") === format(poDate, "dd-MM-yyyy")
+          ? dateString
+          : "",
     }))
   }
 
@@ -326,10 +423,6 @@ export default function UpdatePO() {
     }))
   }, [searchData.qty_sent, searchData.quantity, searchData.unit_price])
 
-  useEffect(() => {
-    console.log("search data: ", searchData)
-  }, [searchData.total_price])
-
   return (
     <div className="customer-container">
       <div className="complete-form-container">
@@ -383,6 +476,20 @@ export default function UpdatePO() {
                   placeholder="Customer ID"
                 ></label>
               </div>
+              {/* <div className="autocomplete-wrapper">
+                <AutoCompleteComponent
+                  data={poslnos}
+                  mainData={searchData}
+                  setData={setPoslnos}
+                  setMainData={setSearchData}
+                  filteredData={filteredPoSlNo}
+                  setFilteredData={setFilteredPoSlNo}
+                  name="po_sl_no"
+                  placeholder="PO Sl No."
+                  search_value="po_sl_no"
+                  onchange={handleChange}
+                />
+              </div> */}
               <div>
                 <input
                   type="text"
@@ -421,7 +528,7 @@ export default function UpdatePO() {
                         name="podate"
                         value={
                           searchData.podate
-                            ? dayjs(searchData.podate, "YYYY-MM-DD")
+                            ? dayjs(searchData.podate, "DD-MM-YYYY")
                             : ""
                         }
                         format="DD-MM-YYYY"
@@ -441,7 +548,7 @@ export default function UpdatePO() {
                         name="po_validity"
                         value={
                           searchData.po_validity
-                            ? dayjs(searchData.po_validity, "YYYY-MM-DD")
+                            ? dayjs(searchData.po_validity, "DD-MM-YYYY")
                             : ""
                         }
                         format="DD-MM-YYYY"
@@ -703,10 +810,10 @@ export default function UpdatePO() {
                         onChange={onDeliveryDateChange}
                         value={
                           searchData.delivery_date
-                            ? dayjs(searchData.delivery_date, "YYYY-MM-DD")
+                            ? dayjs(searchData.delivery_date, "DD-MM-YYYY")
                             : ""
                         }
-                        format="YYYY-MM-DD"
+                        format="DD-MM-YYYY"
                         placeholder={"Delivery Date"}
                       />
                       {searchData.podate && (
@@ -727,6 +834,8 @@ export default function UpdatePO() {
           </form>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   )
 }

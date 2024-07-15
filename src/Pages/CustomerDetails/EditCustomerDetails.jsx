@@ -4,6 +4,10 @@ import { useState, useEffect } from "react"
 import api from "../../api/api.jsx"
 import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteComponent.jsx"
 
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
+
 export default function EditCustomerDetails() {
   const initialFormData = {
     cust_id: "",
@@ -65,6 +69,7 @@ export default function EditCustomerDetails() {
       .then(async (response) => {
         console.log(response.data)
         // await resetForm()
+        toast.success("Successfully fetched customer details!!")
         setFormData((prevFormData) => ({
           ...prevFormData,
           cust_name: response.data.cust_name,
@@ -83,6 +88,9 @@ export default function EditCustomerDetails() {
           contact_email_2: response.data.contact_email_2,
           gst_exemption: response.data.gst_exemption ? 1 : 0,
         }))
+      })
+      .catch((error) => {
+        toast.error("Error in fetching the customer details")
       })
   }
 
@@ -125,10 +133,12 @@ export default function EditCustomerDetails() {
         )
         .then((response) => {
           console.log(response.data)
+          toast.success("Form updated successfully!!")
           resetForm()
         })
         .catch((error) => {
           console.error("Error updating data: ", error)
+          toast.error("Error udating data")
         })
     } else {
       console.log("Validation Error!!")
@@ -434,10 +444,11 @@ export default function EditCustomerDetails() {
           </div>
           <div className="customer-update-button-container">
             <button type="submit">UPDATE CUSTOMER</button>
-            <button onClick={resetForm}>CLEAR</button>
+            {/* <button onClick={resetForm}>CLEAR</button> */}
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   )
 }

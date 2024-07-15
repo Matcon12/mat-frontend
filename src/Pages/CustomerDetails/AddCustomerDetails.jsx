@@ -3,6 +3,9 @@ import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import api from "../../api/api.jsx"
 import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteComponent.jsx"
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 
 export default function AddCustomerDetails() {
   const [stateData, setStateData] = useState()
@@ -83,10 +86,12 @@ export default function AddCustomerDetails() {
         })
         .then((response) => {
           console.log(response.data)
-          // resetForm()
+          resetForm()
+          toast.success("Added Customer Successfully!!")
         })
         .catch((error) => {
           console.log(error.response.data.error)
+          toast.error("Error")
         })
     } else {
       console.log(formErrors.Cust_PIN)
@@ -388,6 +393,7 @@ export default function AddCustomerDetails() {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   )
 }

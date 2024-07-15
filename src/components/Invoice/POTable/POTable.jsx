@@ -71,11 +71,13 @@ export default function POTable({
                   ? ` [${data.omat}]`
                   : ""}
               </td>
-              <td className="col3">{data.po_sl_no}</td>
+              <td className="col3">
+                {data.po_sl_no in ["fr", "in", "oc"] ? data.po_sl_no : ""}
+              </td>
               <td className="col4">{data.hsn}</td>
               {/* <td className="col15">{data.pack_size}</td> */}
+              <td className="col6">{data.pack_size}</td>
               <td className="col5">{data.qty_delivered}</td>
-              <td className="col6">{data.uom}</td>
               <td className="col7">{data.unit_price}</td>
               <td className="col8">
                 {calculateTotal(data.qty_delivered, data.unit_price)}

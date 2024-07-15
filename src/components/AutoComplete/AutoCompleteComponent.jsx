@@ -12,6 +12,8 @@ export default function AutoCompleteComponent({
   setPoSlNo,
   index,
   array,
+  required,
+  onchange,
 }) {
   const [isFocused, setIsFocused] = useState(false)
   useEffect(() => {
@@ -19,9 +21,9 @@ export default function AutoCompleteComponent({
   }, [data, setFilteredData])
 
   const handleChange = async (event) => {
+    console.log("entered")
     setIsFocused(true)
     const { name, value } = event.target
-
     if (name == "poSlNo") {
       setMainData((prevEntries) => {
         const newEntries = [...prevEntries]
@@ -98,8 +100,9 @@ export default function AutoCompleteComponent({
         onBlur={handleBlur}
         aria-autocomplete="list"
         aria-controls="autocomplete-list"
+        required={required}
       />
-      <label alt="Enter the Customer ID" placeholder={placeholder}></label>
+      <label alt="" placeholder={placeholder}></label>
       {isFocused && filteredData && filteredData.length > 0 && (
         <ul id="autocomplete-list" className="suggestions-list">
           {filteredData.map((suggestion, i) => (

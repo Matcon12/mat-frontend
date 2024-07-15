@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import "./Invoice.css"
 import { useNavigate } from "react-router-dom"
 import api from "../../api/api.jsx"
 import AutoCompleteComponent from "../../components/AutoComplete/AutoCompleteComponent.jsx"
+import { ToastContainer, toast } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 
 export default function Invoice() {
   const initialFormData = {
@@ -55,18 +58,38 @@ export default function Invoice() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    const transformedEntries = entries.map((entry) => {
+      const quantitiesSum = entry.quantities.reduce(
+        (sum, quantity) => sum + Number(quantity),
+        0
+      )
+      return {
+        poSlNo: entry.poSlNo,
+        hsnSac: entry.hsnSac,
+        quantities: quantitiesSum,
+        noOfBatches: entry.noOfBatches,
+        batch_coc_quant: {
+          batch: entry.batches,
+          coc: entry.cocs,
+          quantity: entry.quantities,
+        },
+      }
+    })
+
     const formData2 = {
       customerId: formData.customerId,
       consigneeName: formData.consigneeId,
       newConsigneeName: formData.newConsigneeId,
       contactName: formData.contactName,
       poNo: formData.poNo,
-      items: entries,
+      items: transformedEntries,
       freightCharges: formData.freightCharges,
       insuranceCharges: formData.insuranceCharges,
       otherCharges: formData.otherCharges,
     }
-    console.log("items: ", entries)
+
+    console.log({ formData2 })
     api
       .post(
         "/invoiceProcessing",
@@ -87,6 +110,7 @@ export default function Invoice() {
       })
       .catch((error) => {
         console.log(error.response.data.error)
+        toast.error(error.response.data.error)
       })
   }
 
@@ -119,17 +143,22 @@ export default function Invoice() {
 
   const purchaseFields = (e) => {
     e.preventDefault()
-    setShow(true)
-    setEntries(
-      Array.from({ length: Number(formData.totalEntries) }, () => ({
-        noOfBatches: 1,
-        poSlNo: "",
-        hsnSac: "",
-        quantities: [""],
-        batches: [""],
-        cocs: [""],
-      }))
-    )
+
+    if (formData.poNo) {
+      setShow(true)
+      setEntries(
+        Array.from({ length: Number(formData.totalEntries) }, () => ({
+          noOfBatches: 1,
+          poSlNo: "",
+          hsnSac: "",
+          quantities: [""],
+          batches: [""],
+          cocs: [""],
+        }))
+      )
+    } else {
+      toast.warning("Enter PO No.")
+    }
   }
 
   const getData = () => {
@@ -305,145 +334,150 @@ export default function Invoice() {
           >
             Enter Purchase Orders
           </button>
-
+        </div>
+        <div>
           {show && (
             <div className="invoice-input-complete-container">
               {Array.isArray(entries) &&
                 entries.map((entry, entryIndex) => (
-                  <div key={entryIndex}>
+                  <div key={entryIndex} className="individual-container">
                     <p>Entry {entryIndex + 1}</p>
                     <div className="invoice-form-input-container">
-                      <div className="noOfBatches">
-                        <input
-                          type="text"
-                          name="noOfBatches"
-                          value={entry.noOfBatches}
-                          onChange={(e) =>
-                            handleChange(
-                              entryIndex,
-                              null,
-                              "noOfBatches",
-                              e.target.value
-                            )
-                          }
-                          placeholder=" "
-                        />
-                        <label
-                          alt="Enter the number of Batches"
-                          placeholder="Number of Batches"
-                        ></label>
+                      <div className="invoice-form-input-only-headers">
+                        <div className="noOfBatches">
+                          <input
+                            type="text"
+                            name="noOfBatches"
+                            value={entry.noOfBatches}
+                            onChange={(e) =>
+                              handleChange(
+                                entryIndex,
+                                null,
+                                "noOfBatches",
+                                e.target.value
+                              )
+                            }
+                            placeholder=" "
+                          />
+                          <label
+                            alt="Enter the number of Batches"
+                            placeholder="Number of Batches"
+                          ></label>
+                        </div>
+                        <div className="autocomplete-wrapper">
+                          <AutoCompleteComponent
+                            data={purchaseOrderDetails}
+                            mainData={entries}
+                            setData={setPurchaseOrderDetails}
+                            setMainData={setEntries}
+                            filteredData={filteredCustomerData}
+                            handleArrayChange={(e) =>
+                              handleChange(
+                                entryIndex,
+                                null,
+                                "poSlNo",
+                                e.target.value
+                              )
+                            }
+                            setFilteredData={setFilteredCustomerData}
+                            name="poSlNo"
+                            placeholder="PO Sl No."
+                            search_value="po_sl_no"
+                            setPoSlNo={setPoSlNo}
+                            array={true}
+                            index={entryIndex}
+                          />
+                        </div>
+                        <div>
+                          <input
+                            type="text"
+                            name="hsnSac"
+                            value={entry.hsnSac}
+                            onChange={(e) =>
+                              handleChange(
+                                entryIndex,
+                                null,
+                                "hsnSac",
+                                e.target.value
+                              )
+                            }
+                            placeholder=" "
+                          />
+                          <label
+                            alt="Enter the hsn/sac"
+                            placeholder="HSN/SAC"
+                          ></label>
+                        </div>
                       </div>
-                      <div className="autocomplete-wrapper">
-                        <AutoCompleteComponent
-                          data={purchaseOrderDetails}
-                          mainData={entries}
-                          setData={setPurchaseOrderDetails}
-                          setMainData={setEntries}
-                          filteredData={filteredCustomerData}
-                          handleArrayChange={(e) =>
-                            handleChange(
-                              entryIndex,
-                              null,
-                              "poSlNo",
-                              e.target.value
-                            )
-                          }
-                          setFilteredData={setFilteredCustomerData}
-                          name="poSlNo"
-                          placeholder="PO Sl No."
-                          search_value="po_sl_no"
-                          setPoSlNo={setPoSlNo}
-                          array={true}
-                          index={entryIndex}
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          name="hsnSac"
-                          value={entry.hsnSac}
-                          onChange={(e) =>
-                            handleChange(
-                              entryIndex,
-                              null,
-                              "hsnSac",
-                              e.target.value
-                            )
-                          }
-                          placeholder=" "
-                        />
-                        <label
-                          alt="Enter the hsn/sac"
-                          placeholder="HSN/SAC"
-                        ></label>
-                      </div>
-                      {entry.quantities.map((quantity, fieldIndex) => (
-                        <>
-                          <p>Batch: {fieldIndex + 1}</p>
-                          <div className="batch_quant" key={fieldIndex}>
-                            <div>
-                              <input
-                                type="text"
-                                name={`quantity-${fieldIndex}`}
-                                value={quantity}
-                                onChange={(e) =>
-                                  handleChange(
-                                    entryIndex,
-                                    fieldIndex,
-                                    "quantities",
-                                    e.target.value
-                                  )
-                                }
-                                placeholder=" "
-                              />
-                              <label
-                                alt="Enter the quantity"
-                                placeholder="Quantity"
-                              ></label>
-                            </div>
-                            <div>
-                              <input
-                                type="text"
-                                name={`batch-${fieldIndex}`}
-                                value={entry.batches[fieldIndex]}
-                                onChange={(e) =>
-                                  handleChange(
-                                    entryIndex,
-                                    fieldIndex,
-                                    "batches",
-                                    e.target.value
-                                  )
-                                }
-                                placeholder=" "
-                              />
-                              <label
-                                alt="Enter the batch no."
-                                placeholder="Batch No."
-                              ></label>
-                            </div>
-                            <div>
-                              <input
-                                type="text"
-                                name={`coc-${fieldIndex}`}
-                                value={entry.cocs[fieldIndex]}
-                                onChange={(e) =>
-                                  handleChange(
-                                    entryIndex,
-                                    fieldIndex,
-                                    "cocs",
-                                    e.target.value
-                                  )
-                                }
-                                placeholder=" "
-                              />
-                              <label
-                                alt="Enter the COC No."
-                                placeholder="COC No."
-                              ></label>
+                      <div className="individual-batches">
+                        {entry.quantities.map((quantity, fieldIndex) => (
+                          <div>
+                            <p>Batch: {fieldIndex + 1}</p>
+                            <div className="batch_quant" key={fieldIndex}>
+                              <div>
+                                <input
+                                  type="text"
+                                  name={`quantity-${fieldIndex}`}
+                                  value={quantity}
+                                  onChange={(e) =>
+                                    handleChange(
+                                      entryIndex,
+                                      fieldIndex,
+                                      "quantities",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder=" "
+                                />
+                                <label
+                                  alt="Enter the quantity"
+                                  placeholder="Quantity"
+                                ></label>
+                              </div>
+                              <div>
+                                <input
+                                  type="text"
+                                  name={`batch-${fieldIndex}`}
+                                  value={entry.batches[fieldIndex]}
+                                  onChange={(e) =>
+                                    handleChange(
+                                      entryIndex,
+                                      fieldIndex,
+                                      "batches",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder=" "
+                                />
+                                <label
+                                  alt="Enter the batch no."
+                                  placeholder="Batch No."
+                                ></label>
+                              </div>
+                              <div>
+                                <input
+                                  type="text"
+                                  name={`coc-${fieldIndex}`}
+                                  value={entry.cocs[fieldIndex]}
+                                  onChange={(e) =>
+                                    handleChange(
+                                      entryIndex,
+                                      fieldIndex,
+                                      "cocs",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder=" "
+                                />
+                                <label
+                                  alt="Enter the COC No."
+                                  placeholder="COC No."
+                                ></label>
+                              </div>
                             </div>
                           </div>
-                        </>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -454,6 +488,7 @@ export default function Invoice() {
           )}
         </div>
       </form>
+      <ToastContainer />
     </div>
   )
 }
