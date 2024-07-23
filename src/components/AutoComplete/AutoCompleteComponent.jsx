@@ -13,6 +13,7 @@ export default function AutoCompleteComponent({
   index,
   array,
   required,
+  readonly,
   onchange,
 }) {
   const [isFocused, setIsFocused] = useState(false)
@@ -21,7 +22,6 @@ export default function AutoCompleteComponent({
   }, [data, setFilteredData])
 
   const handleChange = async (event) => {
-    console.log("entered")
     setIsFocused(true)
     const { name, value } = event.target
     if (name == "poSlNo") {
@@ -90,6 +90,7 @@ export default function AutoCompleteComponent({
 
   return (
     <>
+      {console.log(mainData)}
       <input
         type="text"
         placeholder=" "
@@ -101,6 +102,7 @@ export default function AutoCompleteComponent({
         aria-autocomplete="list"
         aria-controls="autocomplete-list"
         required={required}
+        readOnly={readonly}
       />
       <label alt="" placeholder={placeholder}></label>
       {isFocused && filteredData && filteredData.length > 0 && (

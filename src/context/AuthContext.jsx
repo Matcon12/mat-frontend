@@ -54,8 +54,9 @@ export const AuthProvider = ({ children }) => {
       .post("/login", credentials)
       .then((response) => {
         const data = response.data
+        console.log("response: ", response)
         console.log("data", data)
-        if (response.statusText) {
+        if (response.data) {
           localStorage.setItem("jwt", data.token)
           setUser({ token: data.token, ...data.user })
           navigate("/", { replace: true })

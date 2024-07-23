@@ -29,7 +29,7 @@ export default function POTable({
           <th className="col15">Pack Size/ UOM</th>
           <th className="col5">QTY</th>
           {/* <th className="col6">Pk Sz/UOM</th> */}
-          <th className="col7">Pack Price</th>
+          <th className="col7">Unit Price</th>
           <th className="col8">Total</th>
           <th className="col9">CGST Rate (%)</th>
           <th className="col10">CGST Amount (Rs)</th>
@@ -63,13 +63,7 @@ export default function POTable({
               <td className="col1">{index + 1}</td>
               <td className="col2">
                 {data.prod_desc}
-                {data.additional_desc && data.omat
-                  ? ` [${data.additional_desc}, ${data.omat}]`
-                  : data.additional_desc
-                  ? ` [${data.additional_desc}]`
-                  : data.omat
-                  ? ` [${data.omat}]`
-                  : ""}
+                {data.additional_desc ? " " + data.additional_desc : ""}
               </td>
               <td className="col3">
                 {data.po_sl_no in ["fr", "in", "oc"] ? data.po_sl_no : ""}
@@ -78,7 +72,7 @@ export default function POTable({
               {/* <td className="col15">{data.pack_size}</td> */}
               <td className="col6">{data.pack_size}</td>
               <td className="col5">{data.qty_delivered}</td>
-              <td className="col7">{data.unit_price}</td>
+              <td className="col7">{data.unit_price.toFixed(2)}</td>
               <td className="col8">
                 {calculateTotal(data.qty_delivered, data.unit_price)}
               </td>
@@ -86,19 +80,19 @@ export default function POTable({
                 {parseInt(total_cgst) === 0 ? "" : gr.cgst_rate}
               </td>
               <td className="col10">
-                {parseInt(total_cgst) === 0 ? "" : data.cgst_price}
+                {parseInt(total_cgst) === 0 ? "" : data.cgst_price.toFixed(2)}
               </td>
               <td className="col11">
                 {parseInt(total_sgst) === 0 ? "" : gr.sgst_rate}
               </td>
               <td className="col12">
-                {parseInt(total_sgst) === 0 ? "" : data.sgst_price}
+                {parseInt(total_sgst) === 0 ? "" : data.sgst_price.toFixed(2)}
               </td>
               <td className="col13">
                 {parseInt(total_igst) === 0 ? "" : gr.igst_rate}
               </td>
               <td className="col14">
-                {parseInt(total_igst) === 0 ? "" : data.igst_price}
+                {parseInt(total_igst) === 0 ? "" : data.igst_price.toFixed(2)}
               </td>
             </tr>
           )

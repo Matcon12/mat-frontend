@@ -36,7 +36,7 @@ export default function UpdatePO() {
     qty_sent: 0.0,
     qty_balance: 0.0,
     delivery_date: null,
-    omat: "",
+    // omat: "",
     hsn_sac: "",
   }
 
@@ -51,12 +51,8 @@ export default function UpdatePO() {
   const [filteredPoSlNo, setFilteredPoSlNo] = useState()
 
   useEffect(() => {
-    // api.get("/getCustomerData").then((response) => {
-    //   setCustomerData(response.data.customerData)
-    // })
     api.get("/getPurchaseOrder").then((response) => {
       setPurchaseOrder(response.data.distinct_pono)
-      // console.log("response: ", response.data.purchaseOrder)
     })
   }, [])
 
@@ -97,7 +93,7 @@ export default function UpdatePO() {
           prod_code: data.prod_code,
           prod_desc: data.prod_desc,
           additional_desc: data.additional_desc,
-          omat: data.omat,
+          // omat: data.omat,
           pack_size: data.pack_size,
           staggered_delivery: data.staggered_delivery,
           quantity: parseFloat(data.quantity),
@@ -137,7 +133,7 @@ export default function UpdatePO() {
       qty_sent: 0.0,
       qty_balance: 0.0,
       delivery_date: null,
-      omat: "",
+      // omat: "",
       hsn_sac: "",
     })
   }
@@ -227,7 +223,7 @@ export default function UpdatePO() {
             qty_balance: parseFloat(data.qty_balance),
             delivery_date: formattedDeliveryDate,
             hsn_sac: data.hsn_sac,
-            omat: data.omat,
+            // omat: data.omat,
             uom: data.uom,
           })
           console.log("data: ", data)
@@ -256,7 +252,7 @@ export default function UpdatePO() {
             qty_balance: 0,
             delivery_date: "",
             hsn_sac: "",
-            omat: "",
+            // omat: "",
           }))
           console.log(error.response.data.error)
           toast.error("Error fetching the data")
@@ -412,14 +408,14 @@ export default function UpdatePO() {
 
   useEffect(() => {
     const balance = searchData.quantity - searchData.qty_sent
-    // const total = parseFloat(
-    //   searchData.quantity * searchData.unit_price
-    // ).toFixed(2)
-    // console.log(total)
+    const total = parseFloat(
+      searchData.quantity * searchData.unit_price
+    ).toFixed(2)
+
     setSearchData((prevData) => ({
       ...prevData,
       qty_balance: balance,
-      total_price: searchData.quantity * searchData.unit_price,
+      total_price: total,
     }))
   }, [searchData.qty_sent, searchData.quantity, searchData.unit_price])
 
@@ -600,6 +596,7 @@ export default function UpdatePO() {
                     aria-autocomplete="list"
                     aria-controls="autocomplete-list"
                     placeholder=" "
+                    readOnly={true}
                   />
                   {/* <input type="text" required={true} name="prodId" value={formData.prodId} onChange={(e) => handleInputChange(index, e)} onFocus={(e) => handleFocus(index, e)} onBlur={(e) => handleBlur(index, e)} aria-autocomplete="list" aria-controls="autocomplete-list" /> */}
                   <label
@@ -645,7 +642,7 @@ export default function UpdatePO() {
                     placeholder="Product Description"
                   ></label>
                 </div>
-                <div>
+                <div className="specifications-span-2">
                   <input
                     type="text"
                     /*required={true}*/
@@ -656,20 +653,20 @@ export default function UpdatePO() {
                   />
                   <label
                     alt="Enter the Additional Desc"
-                    placeholder="MSRR"
+                    placeholder="Specifications"
                   ></label>
                 </div>
-                <div>
+                {/* <div>
                   <input
                     type="text"
-                    /*required={true}*/
+                    //required={true}
                     name="omat"
                     value={searchData.omat}
                     onChange={handleChangeData}
                     placeholder=" "
                   />
                   <label alt="Enter the OMAT" placeholder="OMAT"></label>
-                </div>
+                </div> */}
                 <div>
                   <input
                     type="text"
@@ -678,18 +675,32 @@ export default function UpdatePO() {
                     value={searchData.pack_size}
                     onChange={handleChangeData}
                     placeholder=" "
+                    readOnly
                   />
                   <label
                     alt="Enter the Pack Size"
                     placeholder="Pack Size/UOM"
                   ></label>
                 </div>
-                <div className="input-container">
+                <div>
+                  <input
+                    type="text"
+                    /*required={true}*/
+                    name="uom"
+                    value={searchData.uom}
+                    onChange={handleChangeData}
+                    placeholder=" "
+                    readOnly
+                  />
+                  <label alt="Enter the UOM" placeholder="UOM"></label>
+                </div>
+                {/* <div className="input-container">
                   <select
                     name="uom"
                     value={searchData.uom}
                     onChange={handleChangeData}
                     required
+                    readOnly
                   >
                     <option value="" disabled>
                       Select an option
@@ -702,7 +713,7 @@ export default function UpdatePO() {
                     <option value="Doc">Doc</option>
                   </select>
                   <label alt="Select an Option" placeholder="UOM"></label>
-                </div>
+                </div> */}
                 <div>
                   <input
                     type="number"
@@ -742,7 +753,7 @@ export default function UpdatePO() {
                   />
                   <label
                     alt="Enter the Unit Price"
-                    placeholder="Pack Price"
+                    placeholder="Unit Price"
                   ></label>
                 </div>
                 <div>
@@ -752,7 +763,7 @@ export default function UpdatePO() {
                     name="total_price"
                     value={searchData.total_price}
                     placeholder=" "
-                    // readOnly
+                    readOnly
                   />
                   <label
                     alt="Enter the Total Price"

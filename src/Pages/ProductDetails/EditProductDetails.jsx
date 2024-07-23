@@ -106,6 +106,7 @@ export default function EditProductDetails() {
                 name="prod_id"
                 placeholder="Product ID"
                 search_value="prod_id"
+                readonly={true}
               />
             </div>
             <div className="get-data-container">
@@ -121,6 +122,7 @@ export default function EditProductDetails() {
                 value={formData.supp_id}
                 onChange={handleChange}
                 placeholder=" "
+                readOnly
               />
               <label
                 alt="Enter the Supplier ID"
@@ -149,6 +151,7 @@ export default function EditProductDetails() {
                 value={formData.spec_id}
                 onChange={handleChange}
                 placeholder=" "
+                readOnly
               />
               <label alt="Enter the Spec ID" placeholder="Spec ID"></label>
             </div>
@@ -160,6 +163,7 @@ export default function EditProductDetails() {
                 value={formData.pack_size}
                 onChange={handleChange}
                 placeholder=" "
+                readOnly
               />
               <label alt="Enter the Pack Size" placeholder="Pack Size"></label>
             </div>
@@ -171,6 +175,7 @@ export default function EditProductDetails() {
                 value={formData.currency}
                 onChange={handleChange}
                 placeholder=" "
+                readOnly
               />
               <label alt="Enter the Currency" placeholder="Currency"></label>
             </div>
@@ -193,6 +198,7 @@ export default function EditProductDetails() {
                 value={formData.hsn_code}
                 onChange={handleChange}
                 placeholder=" "
+                readOnly
               />
               <label alt="Enter the HSN code" placeholder="HSN Code"></label>
             </div>

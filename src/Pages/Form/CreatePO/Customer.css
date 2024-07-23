@@ -261,6 +261,11 @@ button[value="nextEntry"]:hover {
   width: 50em;
 }
 
+.product-desc-only-inputs {
+  display: flex;
+  gap: 10px;
+}
+
 .productDescContainer > div {
   height: 100%;
   align-content: end;
@@ -418,4 +423,8 @@ hr {
   display: flex;
   justify-content: end;
   align-items: center;
+}
+
+.specifications-span-2 {
+  grid-column: span 2;
 }

@@ -16,8 +16,10 @@ import "react-toastify/dist/ReactToastify.css"
 export default function Customer() {
   const [customerData, setCustomerData] = useState(0)
   const [purchaseOrder, setPurchaseOrder] = useState()
+  const [suggestions, setSuggestions] = useState([])
   const [filteredCustomerData, setFilteredCustomerData] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
+  const [filteredSuggestions, setFilteredSuggestions] = useState()
 
   useEffect(() => {
     api.get("/getCustomerData").then((response) => {
@@ -25,7 +27,11 @@ export default function Customer() {
     })
     api.get("/getPurchaseOrder").then((response) => {
       setPurchaseOrder(response.data.distinct_pono)
-      console.log("response: ", response.data.distinct_pono)
+      console.log("PO: ", response.data.distinct_pono)
+    })
+    api.get("/getProductCodes").then((response) => {
+      setSuggestions(response.data.prod_code)
+      console.log("product codes: ", response.data.prod_code)
     })
   }, [])
 
@@ -57,7 +63,7 @@ export default function Customer() {
     packSize: "",
     productDesc: "",
     msrr: "",
-    omat: "",
+    // omat: "",
     uom: "",
     hsn_sac: "",
     quantity: "",
@@ -92,7 +98,6 @@ export default function Customer() {
 
   const [formData, setFormData] = useState(initialFormData)
   const [productDetails, setProductDetails] = useState([initialProductDetails])
-  const [suggestions, setSuggestions] = useState([])
   const [psn, setPsn] = useState([])
   // const [formDataValidation, setFormDataValidation] = useState(initialFormDataValidation);
   const [productValidation, setProductValidation] = useState(
@@ -629,34 +634,37 @@ export default function Customer() {
                   </label>
                 </div> */}
               </div>
-              {productDetails &&
+              {/* {productDetails &&
                 productDetails.map((productDetail, index) => {
                   return (
-                    <>
-                      <hr />
-                      <ProductDetails
-                        key={index}
-                        index={index}
-                        formData={productDetail}
-                        handleChange={handleProductChange}
-                        suggestions={suggestions}
-                        handleSuggestionClick={handleSuggestionClick}
-                        options={options}
-                        handleInputChange={handleInputChange}
-                        additionalDescPlaceholder={additionalDescPlaceholder}
-                        descPlaceholderOnFocus={descPlaceholderOnFocus}
-                        descPlaceholderOnBlur={descPlaceholderOnBlur}
-                        onProductDateChange={onProductDateChange}
-                        setTotal={setTotal}
-                        handleMultipleSelectChange={handleMultipleSelectChange}
-                        handleProductDelete={handleProductDelete}
-                        handleProductClear={handleProductClear}
-                        productValidation={productValidation}
-                        productLength={productDetails.length}
-                      />
-                    </>
+                    <> */}
+              <ProductDetails
+                // key={index}
+                // index={index}
+                formData={productDetails}
+                setFormData={setProductDetails}
+                handleChange={handleProductChange}
+                suggestions={suggestions}
+                setSuggestions={setSuggestions}
+                filteredSuggestions={filteredSuggestions}
+                setFilteredSuggestions={setFilteredSuggestions}
+                handleSuggestionClick={handleSuggestionClick}
+                options={options}
+                handleInputChange={handleInputChange}
+                additionalDescPlaceholder={additionalDescPlaceholder}
+                descPlaceholderOnFocus={descPlaceholderOnFocus}
+                descPlaceholderOnBlur={descPlaceholderOnBlur}
+                onProductDateChange={onProductDateChange}
+                setTotal={setTotal}
+                handleMultipleSelectChange={handleMultipleSelectChange}
+                handleProductDelete={handleProductDelete}
+                handleProductClear={handleProductClear}
+                productValidation={productValidation}
+                productLength={productDetails.length}
+              />
+              {/* </>
                   )
-                })}
+                })} */}
             </div>
             <div>Grand Total: {grandTotal()}</div>
             <div className="form-button-container">

@@ -121,7 +121,7 @@ export default function AddProductDetails() {
             <div>
               <input
                 type="text"
-                // required={true}
+                required={true}
                 name="Currency"
                 value={formData.Currency}
                 onChange={handleChange}

@@ -107,7 +107,7 @@ function DcReportC({ formData }) {
             <tr>
               <th>Sl No.</th>
               <th style={{ width: "250px" }}>Description of Goods</th>
-              <th>QTY</th>
+              <th>No. of packs</th>
               <th>Pack Size</th>
               <th>Total Qty</th>
               <th>UOM</th>
@@ -124,7 +124,8 @@ function DcReportC({ formData }) {
                 const { numericValue: packSize, unit } = stripUnits(
                   data.pack_size
                 )
-                const totalQty = batch_quantity * packSize
+                // const totalQty = batch_quantity * packSize
+                const totalQty = packSize / batch_quantity
 
                 return (
                   <tr key={groupIndex + "-" + index}>
