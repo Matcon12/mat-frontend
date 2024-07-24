@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import "./ProductDetails.css"
 import api from "../../api/api.jsx"
@@ -18,12 +18,33 @@ export default function AddProductDetails() {
     hsn_code: "",
   }
 
+  const PackSizeBreakup = {
+    pack_size: "",
+    uom: "",
+  }
+
   const [formData, setFormData] = useState(initialFormData)
+  const [packSize, setPackSize] = useState(PackSizeBreakup)
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
+  const handlePackSizeChange = (e) => {
+    const { name, value } = e.target
+    console.log(name, value)
+    setPackSize({ ...packSize, [name]: value })
+  }
+
+  useEffect(() => {
+    console.log("entered")
+    setFormData({
+      ...formData,
+      Pack_Size: packSize.pack_size + " " + packSize.uom,
+    })
+  }, [packSize.pack_size, packSize.uom])
+
+  console.log(formData)
 
   const resetForm = () => {
     setFormData(initialFormData)
@@ -107,16 +128,54 @@ export default function AddProductDetails() {
               />
               <label alt="Enter the Spec ID" placeholder="Spec ID"></label>
             </div>
-            <div>
-              <input
-                type="text"
-                // required={true}
-                name="Pack_Size"
-                value={formData.Pack_Size}
-                onChange={handleChange}
-                placeholder=" "
-              />
-              <label alt="Enter the Pack Size" placeholder="Pack Size"></label>
+            <div className="pack_size_uom">
+              <div>
+                <input
+                  type="text"
+                  // required={true}
+                  name="pack_size"
+                  value={packSize.pack_size}
+                  onChange={handlePackSizeChange}
+                  placeholder=" "
+                />
+                <label
+                  alt="Enter the Pack Size"
+                  placeholder="Pack Size"
+                ></label>
+              </div>
+              <div className="input-container">
+                <select
+                  name="uom"
+                  value={packSize.uom}
+                  onChange={handlePackSizeChange}
+                  // required
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="L">L</option>
+                  <option value="ML">ML</option>
+                  <option value="Kg">Kg</option>
+                  <option value="No.">No.</option>
+                  <option value="Kit">Kit</option>
+                  <option value="Doc">Doc</option>
+                </select>
+                <label alt="Select an Option" placeholder="UOM"></label>
+              </div>
+              {/* <div>
+                <input
+                  type="text"
+                  // required={true}
+                  name="Pack_Size"
+                  value={formData.Pack_Size}
+                  onChange={handleChange}
+                  placeholder=" "
+                />
+                <label
+                  alt="Enter the Pack Size"
+                  placeholder="Pack Size"
+                ></label>
+              </div> */}
             </div>
             <div>
               <input

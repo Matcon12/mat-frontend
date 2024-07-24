@@ -15,6 +15,7 @@ export default function AutoCompleteComponent({
   required,
   readonly,
   onchange,
+  nested,
 }) {
   const [isFocused, setIsFocused] = useState(false)
   useEffect(() => {
@@ -35,6 +36,16 @@ export default function AutoCompleteComponent({
         return newEntries
       })
       setIsFocused(false)
+    } else if (array && nested) {
+      setMainData((prevEntries) => {
+        const newEntries = [...prevEntries]
+        newEntries[index] = {
+          ...newEntries[index],
+          [name]: value,
+        }
+        setIsFocused(false)
+        return newEntries
+      })
     } else {
       setMainData((prevFormData) => ({
         ...prevFormData,
@@ -90,7 +101,6 @@ export default function AutoCompleteComponent({
 
   return (
     <>
-      {console.log(mainData)}
       <input
         type="text"
         placeholder=" "

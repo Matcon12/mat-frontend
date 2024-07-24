@@ -15,15 +15,18 @@ import "react-toastify/dist/ReactToastify.css"
 
 export default function Customer() {
   const [customerData, setCustomerData] = useState(0)
+  const [consigneeData, setConsigneeData] = useState()
   const [purchaseOrder, setPurchaseOrder] = useState()
   const [suggestions, setSuggestions] = useState([])
   const [filteredCustomerData, setFilteredCustomerData] = useState()
+  const [filteredConsigneeData, setFilteredConsigneeData] = useState()
   const [filteredPurchaseData, setFilteredPurchaseData] = useState()
   const [filteredSuggestions, setFilteredSuggestions] = useState()
 
   useEffect(() => {
     api.get("/getCustomerData").then((response) => {
       setCustomerData(response.data.customerData)
+      setConsigneeData(response.data.customerData)
     })
     api.get("/getPurchaseOrder").then((response) => {
       setPurchaseOrder(response.data.distinct_pono)
@@ -99,25 +102,12 @@ export default function Customer() {
   const [formData, setFormData] = useState(initialFormData)
   const [productDetails, setProductDetails] = useState([initialProductDetails])
   const [psn, setPsn] = useState([])
-  // const [formDataValidation, setFormDataValidation] = useState(initialFormDataValidation);
   const [productValidation, setProductValidation] = useState(
     initialProductValidation
   )
 
   const handleChange = async (event) => {
     const { name, value } = event.target
-    // if (name === "customerId") {
-    //   setFormData((prevFormData) => ({
-    //     ...prevFormData,
-    //     [name]: value,
-    //     consigneeId: value,
-    //   }))
-    //   const filtered = customerData.filter(suggestion =>
-    //     suggestion.cust_id.toLowerCase().includes(value.toLowerCase())
-    //   );
-    //   setFilteredData(filtered);
-    //   return
-    // }
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -150,13 +140,6 @@ export default function Customer() {
         return productDetail
       })
     )
-  }
-
-  const handleMultipleSelectChange = (key, event) => {
-    const updatedProductDetails = [...productDetails]
-    updatedProductDetails[key].additionalDesc = event
-    setProductDetails(updatedProductDetails)
-    console.log(productDetails)
   }
 
   const handleSubmit = (event) => {
@@ -208,45 +191,45 @@ export default function Customer() {
     }
   }
 
-  const handleSuggestionClick = (value, index) => {
-    setProductDetails(
-      productDetails.map((productDetail, idx) => {
-        if (idx == index) {
-          return { ...productDetail, ["prodId"]: value }
-        }
-        return productDetail
-      })
-    )
-    setSuggestions([])
-    getPackSizeAndDesc(value, index)
-  }
+  // const handleSuggestionClick = (value, index) => {
+  //   setProductDetails(
+  //     productDetails.map((productDetail, idx) => {
+  //       if (idx == index) {
+  //         return { ...productDetail, ["prodId"]: value }
+  //       }
+  //       return productDetail
+  //     })
+  //   )
+  //   setSuggestions([])
+  //   getPackSizeAndDesc(value, index)
+  // }
 
-  const getPackSizeAndDesc = (value, index) => {
-    api
-      .get("/packSize", {
-        params: {
-          prodId: value,
-        },
-      })
-      .then((response) => {
-        setProductDetails(
-          productDetails.map((productDetail, idx) => {
-            if (idx === index) {
-              return {
-                ...productDetail,
-                prodId: value,
-                packSize: response.data.pack_size,
-                productDesc: response.data.prod_desc,
-              }
-            }
-            return productDetail
-          })
-        )
-      })
-      .catch((error) => {
-        console.log(error.response.data.error)
-      })
-  }
+  // const getPackSizeAndDesc = (value, index) => {
+  //   api
+  //     .get("/packSize", {
+  //       params: {
+  //         prodId: value,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       setProductDetails(
+  //         productDetails.map((productDetail, idx) => {
+  //           if (idx === index) {
+  //             return {
+  //               ...productDetail,
+  //               prodId: value,
+  //               packSize: response.data.pack_size,
+  //               productDesc: response.data.prod_desc,
+  //             }
+  //           }
+  //           return productDetail
+  //         })
+  //       )
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response.data.error)
+  //     })
+  // }
 
   const onDateChange = (date, dateString) => {
     const parsedDate = parse(dateString, "dd-MM-yyyy", new Date())
@@ -429,13 +412,13 @@ export default function Customer() {
   // }
 
   // Handle change events
-  const handleCheckboxChange = (event) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [event.target.name]: event.target.checked,
-    }))
-    console.log(formData)
-  }
+  // const handleCheckboxChange = (event) => {
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [event.target.name]: event.target.checked,
+  //   }))
+  //   console.log(formData)
+  // }
 
   useEffect(() => {
     formData.consigneeId != formData.customerId
@@ -485,7 +468,7 @@ export default function Customer() {
                     mainData={formData}
                     setData={setCustomerData}
                     setMainData={setFormData}
-                    handleChange={handleChange}
+                    // handleChange={handleChange}
                     filteredData={filteredCustomerData}
                     setFilteredData={setFilteredCustomerData}
                     name="customerId"
@@ -581,16 +564,16 @@ export default function Customer() {
                 </div> */}
                 <div className="autocomplete-wrapper">
                   <AutoCompleteComponent
-                    data={customerData}
+                    data={consigneeData}
                     mainData={formData}
-                    setData={setCustomerData}
+                    setData={setConsigneeData}
                     setMainData={setFormData}
                     handleChange={handleChange}
-                    filteredData={filteredCustomerData}
-                    setFilteredData={setFilteredCustomerData}
+                    filteredData={filteredConsigneeData}
+                    setFilteredData={setFilteredConsigneeData}
                     name="consigneeId"
                     placeholder="Consignee ID"
-                    search_value="cust_id"
+                    search_value="consignee_id"
                   />
                 </div>
                 <div>
@@ -634,37 +617,32 @@ export default function Customer() {
                   </label>
                 </div> */}
               </div>
-              {/* {productDetails &&
+              {console.log("product details: ", productDetails)}
+              {productDetails &&
                 productDetails.map((productDetail, index) => {
                   return (
-                    <> */}
-              <ProductDetails
-                // key={index}
-                // index={index}
-                formData={productDetails}
-                setFormData={setProductDetails}
-                handleChange={handleProductChange}
-                suggestions={suggestions}
-                setSuggestions={setSuggestions}
-                filteredSuggestions={filteredSuggestions}
-                setFilteredSuggestions={setFilteredSuggestions}
-                handleSuggestionClick={handleSuggestionClick}
-                options={options}
-                handleInputChange={handleInputChange}
-                additionalDescPlaceholder={additionalDescPlaceholder}
-                descPlaceholderOnFocus={descPlaceholderOnFocus}
-                descPlaceholderOnBlur={descPlaceholderOnBlur}
-                onProductDateChange={onProductDateChange}
-                setTotal={setTotal}
-                handleMultipleSelectChange={handleMultipleSelectChange}
-                handleProductDelete={handleProductDelete}
-                handleProductClear={handleProductClear}
-                productValidation={productValidation}
-                productLength={productDetails.length}
-              />
-              {/* </>
+                    <>
+                      <ProductDetails
+                        key={index}
+                        index={index}
+                        formData={productDetails}
+                        setFormData={setProductDetails}
+                        handleChange={handleProductChange}
+                        suggestions={suggestions}
+                        setSuggestions={setSuggestions}
+                        filteredSuggestions={filteredSuggestions}
+                        setFilteredSuggestions={setFilteredSuggestions}
+                        onProductDateChange={onProductDateChange}
+                        setTotal={setTotal}
+                        // handleMultipleSelectChange={handleMultipleSelectChange}
+                        handleProductDelete={handleProductDelete}
+                        handleProductClear={handleProductClear}
+                        productValidation={productValidation}
+                        productLength={productDetails.length}
+                      />
+                    </>
                   )
-                })} */}
+                })}
             </div>
             <div>Grand Total: {grandTotal()}</div>
             <div className="form-button-container">

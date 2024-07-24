@@ -106,7 +106,7 @@ export default function EditProductDetails() {
                 name="prod_id"
                 placeholder="Product ID"
                 search_value="prod_id"
-                readonly={true}
+                // readonly={true}
               />
             </div>
             <div className="get-data-container">
